@@ -34,7 +34,7 @@ class CollapsiblePane(ttk.Frame):
         # main reason to do this is button do not support
         # variable piton but checkbutton do
         self._button = ttk.Checkbutton(self, variable=self._variable,
-                                        command=self._activate, style="TButton")
+                                        command=self._activate, style="TMenubutton")
         self._button.grid(row=0, column=0)
 
         # This will create a separator 
@@ -68,3 +68,24 @@ class CollapsiblePane(ttk.Frame):
         """switches the label frame to the opposite state."""
         self._variable.set(not self._variable.get())
         self._activate()
+
+
+
+class CollapsibleFrame(ctk.CTkFrame):
+    
+    def __init__(self, master=None, **kwargs):
+        ctk.CTkFrame.__init__(self, master, **kwargs)
+
+        self.button_toggle = ctk.CTkButton(self, text="toggle", command=self.toggle)
+        self.button_toggle.pack()
+
+        self.frame_contents = ctk.CTkFrame(self)
+        self.frame_contents.pack()
+
+    def toggle(self):
+        if self.frame_contents.winfo_viewable():
+            self.frame_contents.pack_forget()
+        else:
+            self.frame_contents.pack()
+
+    
