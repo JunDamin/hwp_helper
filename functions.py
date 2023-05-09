@@ -8,9 +8,11 @@ Created on Tue May  9 09:31:12 2023
 import customtkinter as ctk
 from PIL import Image, ImageChops
 from pathlib import Path
-from hwpapi import App
+import re
+import shutil as sh
+from hwpapi.core import App
 
-def set_button(ctkframe, image_path, command=None):
+def set_button(ctkframe, text, image_path, command=None):
     """set image button"""
     image_path = Path(image_path)
     img = Image.open(image_path)
@@ -20,8 +22,6 @@ def set_button(ctkframe, image_path, command=None):
         dark_image=img,
         size=img.size
         )
-
-    text = image_path.stem
 
     btn = ctk.CTkButton(ctkframe, text=text, image=image, fg_color="transparent", compound='bottom', command=command)
     btn.pack()
@@ -36,6 +36,49 @@ def crop_background(image):
     bbox = diff.getbbox()
     return img.crop(bbox)
 
+
+
 # %%
-images = list(Path("images").glob("*"))
+# %%
+# %%
+def update_template():
+    
+    #clear old image and create temp folder for images
+    if Path("images").is_dir(): sh.rmtree("images")
+    if Path("temp").is_dir(): sh.rmtree("temp")
+    Path("temp").mkdir()
+    Path("images").mkdir()
+    # convert hwp into png
+    hwps = list(Path("templates").glob("*"))
+    app = App()
+    for hwp in hwps:
+        app.open(hwp)
+        app.save(f"temp/{hwp.stem}.png")
+    app.quit()
+
+    # crop images
+    temps = list(Path("temp").glob("*"))
+    for temp in temps:
+        if not temp.suffix == ".png":
+            continue
+        cropped = crop_background(temp)
+        cropped.save(f"images/{re.sub('001$', '', temp.stem)}.png")
+    
+    sh.rmtree("temp")
+# %%
+
+def get_categories():
+    """get iamges names"""
+    images = list(Path("images").glob("*"))
+    categories = {}
+    for image in images:
+        splited = image.stem.split("_")
+        if len(splited) == 1:
+            splited = [splited[0], splited]
+        key, value = splited[0], splited[1]
+        components = categories.get(key, [])
+        components.append((value, image))
+        categories[key] = components
+    return categories
+
 # %%
