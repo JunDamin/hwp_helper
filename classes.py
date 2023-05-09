@@ -76,8 +76,8 @@ class CollapsibleFrame(ctk.CTkFrame):
     def __init__(self, master=None, text="toggle", **kwargs):
         ctk.CTkFrame.__init__(self, master, **kwargs)
 
-        self.button_toggle = ctk.CTkButton(self, text=text, command=self.toggle, border_spacing=10)
-        self.button_toggle.pack()
+        self.button_toggle = ctk.CTkButton(self, text=text, command=self.toggle, border_spacing=5)
+        self.button_toggle.pack(fill='x')
 
         self.frame_contents = ctk.CTkFrame(self, )
         self.frame_contents.pack()
