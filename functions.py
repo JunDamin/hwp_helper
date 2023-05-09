@@ -55,7 +55,13 @@ def update_template():
     app = App()
     for hwp in hwps:
         app.open(hwp)
-        app.save(f"temp/{hwp.stem}.png")
+        app.actions.MoveDocEnd().run()
+        # if it is not end with blank line
+        if app.get_text() != "\r\n":
+            app.actions.BreakPara().run()
+            app.save()    
+        _, n, _ = app.api.GetPos()
+        app.save(f"temp/{hwp.stem}_{n}.png")
     app.quit()
 
     # crop images
@@ -76,10 +82,11 @@ def get_categories():
     for image in images:
         splited = image.stem.split("_")
         if len(splited) == 1:
-            splited = [splited[0], splited]
-        key, value = splited[0], splited[1]
+            splited = [splited[0], "None", "0"]
+        key, value, n = splited[0], splited[1], splited[2]
+        filename = f"{key}_{value}" if value != "None" else key
         components = categories.get(key, [])
-        components.append((value, image))
+        components.append((value, image, filename, int(n)))
         categories[key] = components
     return categories
 
