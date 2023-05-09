@@ -6,7 +6,7 @@ class CollapsibleFrame(ctk.CTkFrame):
     def __init__(self, master=None, text="toggle", **kwargs):
         ctk.CTkFrame.__init__(self, master, **kwargs)
 
-        self.button_toggle = ctk.CTkButton(self, text=text, command=self.toggle, border_spacing=5)
+        self.button_toggle = ctk.CTkButton(self, text=text, command=self.toggle, border_spacing=10)
         self.button_toggle.pack(fill='x')
 
         self.frame_contents = ctk.CTkFrame(self, )
@@ -22,12 +22,14 @@ class CollapsibleFrame(ctk.CTkFrame):
         self.frame_contents.pack_forget()
 
 
-class CategoryFrame(ctk.CTkFrame):
+class CategoryFrame(ctk.CTkScrollableFrame):
     """
     from categories from images file
     """
     def __init__(self, parent):
         super().__init__(parent)
+
+        # get categrory data from packages
         categories = get_categories()
         for key, value in categories.items():
             cframe = CollapsibleFrame(self, key)
@@ -42,9 +44,10 @@ class Helper(ctk.CTk):
     def __init__(self):
 
         super().__init__()
-        category_frame = CategoryFrame(self)
-        category_frame.pack(fill='x')
-
         self.geometry("850x800")
         self.title("test")
         self.attributes('-topmost', 1)
+
+        # set category frame
+        category_frame = CategoryFrame(self)
+        category_frame.pack(fill='both', expand=True)

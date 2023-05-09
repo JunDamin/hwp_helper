@@ -34,6 +34,8 @@ def crop_background(image):
     diff = ImageChops.difference(img, bg)
     diff = ImageChops.add(diff, diff, 2.0, -100)
     bbox = diff.getbbox()
+    if bbox[0] - bbox[1] < 300:
+        bbox = (bbox[0], bbox[1], bbox[0]+300, bbox[3])
     return img.crop(bbox)
 
 
