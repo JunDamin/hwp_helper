@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from functions import set_button, get_categories
+from functions import set_button, get_categories, update_templates
 from hwpapi.core import App
 
 class CollapsibleFrame(ctk.CTkFrame):
@@ -28,16 +28,17 @@ class CategoryFrame(ctk.CTkScrollableFrame):
     """
     from categories from images file
     """
-    def __init__(self, parent):
+    def __init__(self, parent, app):
         super().__init__(parent)
         self.parent = parent
+        self.app = app
  
         # make command
         def make_func(path, n):
             def func():
-                self.parent.app.insert_file(path)
+                self.app.insert_file(path)
                 for _ in range(n):
-                    self.parent.app.move("NextPara")
+                    self.app.move("NextPara")
                 return None
             return func
         
@@ -62,6 +63,32 @@ class CategoryFrame(ctk.CTkScrollableFrame):
             cframe.collapse()
 
 
+class NaviBar(ctk.CTkFrame):
+
+    def __init__(self, parent, app):
+        super().__init__(parent)
+        self.parent = parent
+        self.app = app
+ 
+        update_btn = ctk.CTkButton(self, text="update template", command=self.update_templates)
+        update_btn.pack()
+
+    def update_templates(self):
+ 
+        self.progress_bar = ctk.CTkProgressBar(self)
+        self.progress_bar.pack(padx=10, pady=10)
+        self.progress_bar.set(0)
+        self.update() 
+
+        # new window and progress bar
+        for i, n in update_templates():
+            progress = i/(n-1)
+            self.progress_bar.set(progress)
+            self.update()
+
+        self.progress_bar.pack_forget()
+        self.parent.refresh()
+
 class Helper(ctk.CTk):
 
     def __init__(self):
@@ -69,11 +96,22 @@ class Helper(ctk.CTk):
         super().__init__()
         self.geometry("850x800")
         self.title("test")
-        self.attributes('-topmost', 1)
+        # self.attributes('-topmost', 1)
 
         # set app
         self.app = App()
 
+        # set navi bar
+        self.navi_bar = NaviBar(self, self.app)
+        self.navi_bar.pack()
+
         # set category frame
-        category_frame = CategoryFrame(self)
-        category_frame.pack(fill='both', expand=True)
+        self.category_frame = CategoryFrame(self, self.app)
+        self.category_frame.pack(fill='both', expand=True)
+
+    def refresh(self):
+
+        self.category_frame.pack_forget()
+        self.category_frame.destroy()
+        self.category_frame = CategoryFrame(self, self.app)
+        self.category_frame.pack(fill="both", expand=True)

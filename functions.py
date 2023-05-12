@@ -11,6 +11,7 @@ from pathlib import Path
 import re
 import shutil as sh
 from hwpapi.core import App
+from time import sleep
 
 def set_button(ctkframe, text, image_path, command=None):
     """set image button"""
@@ -34,16 +35,30 @@ def crop_background(image):
     diff = ImageChops.difference(img, bg)
     diff = ImageChops.add(diff, diff, 2.0, -100)
     bbox = diff.getbbox()
-    if bbox[0] - bbox[1] < 300:
+    if bbox[2] - bbox[0] < 300:
         bbox = (bbox[0], bbox[1], bbox[0]+300, bbox[3])
     return img.crop(bbox)
 
 
+# %%
 
-# %%
-# %%
-# %%
-def update_template():
+def update_template(app, hwp):
+    hwp = Path(hwp)
+    app.open(hwp)
+    app.actions.MoveDocEnd().run()
+    # if it is not end with blank line
+    if app.get_text() != "\r\n":
+        app.actions.BreakPara().run()
+        app.save()    
+
+    _, n, _ = app.api.GetPos()
+    temp = Path(f"temp/{hwp.stem}_{n}.png")
+    app.save(temp)
+    cropped = crop_background("temp/" + temp.stem + "001.png")
+    cropped.save(f"images/{re.sub('001$', '', temp.stem)}.png")
+    return hwp
+
+def update_templates():
     
     #clear old image and create temp folder for images
     if Path("images").is_dir(): sh.rmtree("images")
@@ -52,26 +67,13 @@ def update_template():
     Path("images").mkdir()
     # convert hwp into png
     hwps = list(Path("templates").glob("*"))
-    app = App()
-    for hwp in hwps:
-        app.open(hwp)
-        app.actions.MoveDocEnd().run()
-        # if it is not end with blank line
-        if app.get_text() != "\r\n":
-            app.actions.BreakPara().run()
-            app.save()    
-        _, n, _ = app.api.GetPos()
-        app.save(f"temp/{hwp.stem}_{n}.png")
-    app.quit()
+    n = len(hwps)
 
-    # crop images
-    temps = list(Path("temp").glob("*"))
-    for temp in temps:
-        if not temp.suffix == ".png":
-            continue
-        cropped = crop_background(temp)
-        cropped.save(f"images/{re.sub('001$', '', temp.stem)}.png")
-    
+    app = App(is_visible=False)
+    for i, hwp in enumerate(hwps):
+        update_template(app, hwp)
+        yield i, n
+    app.quit()
     sh.rmtree("temp")
 # %%
 
@@ -91,3 +93,5 @@ def get_categories():
     return categories
 
 # %%
+if __name__ == "__main__":
+    update_templates()
