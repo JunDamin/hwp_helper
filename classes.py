@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from functions import set_button, get_categories, update_templates
+from functions import set_button, get_categories, update_templates, set_forewindows, set_hwp_size, get_screen_size, check_app
 from hwpapi.core import App
 
 class CollapsibleFrame(ctk.CTkFrame):
@@ -36,6 +36,8 @@ class CategoryFrame(ctk.CTkScrollableFrame):
         # make command
         def make_func(path, n):
             def func():
+                check_app(self.app)
+                set_forewindows(self.app)
                 self.app.insert_file(path)
                 for _ in range(n):
                     self.app.move("NextPara")
@@ -69,13 +71,21 @@ class NaviBar(ctk.CTkFrame):
         super().__init__(parent)
         self.parent = parent
         self.app = app
- 
+
         update_btn = ctk.CTkButton(self, text="update template", command=self.update_templates)
-        update_btn.pack()
+        update_btn.pack(side="left", padx=10, pady=10)
+
+        fullscreen_btn = ctk.CTkButton(self, text="full screen", command=self.set_fullscreen)
+        fullscreen_btn.pack(side="left", padx=10, pady=10)
 
     def update_templates(self):
- 
-        self.progress_bar = ctk.CTkProgressBar(self)
+        
+        toplevel = ctk.CTkToplevel(self)  # master argument is optional  
+        toplevel.focus()
+
+        title = ctk.CTkLabel(toplevel, text="update template")
+        title.pack()
+        self.progress_bar = ctk.CTkProgressBar(toplevel)
         self.progress_bar.pack(padx=10, pady=10)
         self.progress_bar.set(0)
         self.update() 
@@ -87,19 +97,36 @@ class NaviBar(ctk.CTkFrame):
             self.update()
 
         self.progress_bar.pack_forget()
+        toplevel.destroy()
+
         self.parent.refresh()
+
+    def set_fullscreen(self):
+        x1, y1, x2, y2 = get_screen_size()
+        width = x2-x1
+        height = y2-y1
+        hwp_width = int(width/2)
+        set_hwp_size(self.parent.app, x1, y1, hwp_width, height)
+        self.parent.set_windows(x1+hwp_width, y1, 0.5)
 
 class Helper(ctk.CTk):
 
     def __init__(self):
 
         super().__init__()
-        self.geometry("850x800")
+        
+        x1, y1, x2, y2 = get_screen_size()
+        width = x2-x1
+        height = y2-y1
+        hwp_width = int(width/2)
+        
         self.title("test")
-        # self.attributes('-topmost', 1)
+        self.set_windows(x1+hwp_width, y1, 0.5)
 
         # set app
         self.app = App()
+        set_hwp_size(self.app, x1, y1, hwp_width, height)
+
 
         # set navi bar
         self.navi_bar = NaviBar(self, self.app)
@@ -115,3 +142,8 @@ class Helper(ctk.CTk):
         self.category_frame.destroy()
         self.category_frame = CategoryFrame(self, self.app)
         self.category_frame.pack(fill="both", expand=True)
+
+    def set_windows(self, left, top, width_ratio=0.5, height_ratio=1):
+        width = self.winfo_screenwidth()
+        height = self.winfo_screenheight()
+        self.geometry(f'{int(width*width_ratio)}x{int(height*height_ratio)}+{int(left)}+{int(top)}')

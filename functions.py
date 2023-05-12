@@ -11,7 +11,10 @@ from pathlib import Path
 import re
 import shutil as sh
 from hwpapi.core import App
-from time import sleep
+import win32gui as wg
+from win32api import GetMonitorInfo, MonitorFromPoint
+import pywintypes
+import functools
 
 def set_button(ctkframe, text, image_path, command=None):
     """set image button"""
@@ -91,6 +94,31 @@ def get_categories():
         components.append((value, image, filename, int(n)))
         categories[key] = components
     return categories
+
+
+def set_forewindows(app):
+    hwnd = app.api.XHwpWindows.Active_XHwpWindow.WindowHandle
+    return wg.SetForegroundWindow(hwnd)
+
+def get_screen_size(): 
+    x1, y1, x2, y2 = GetMonitorInfo(MonitorFromPoint((0, 0))).get("Work")
+    return x1, y1, x2-x1, y2-y1
+
+def set_hwp_size(app, left, top, width, height):
+    app.api.XHwpWindows.Active_XHwpWindow.Left = left
+    app.api.XHwpWindows.Active_XHwpWindow.Top = top
+    app.api.XHwpWindows.Active_XHwpWindow.Width = width
+    app.api.XHwpWindows.Active_XHwpWindow.Height = height
+
+
+
+def check_app(app):
+    try:
+        return app.api.PageCount
+    except pywintypes.com_error as e:
+        return app.reload()
+
+
 
 # %%
 if __name__ == "__main__":
