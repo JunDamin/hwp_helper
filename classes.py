@@ -32,7 +32,17 @@ class CategoryFrame(ctk.CTkScrollableFrame):
         super().__init__(parent)
         self.parent = parent
         self.app = app
- 
+        self.set_frames()
+
+    def refresh(self):
+
+        for child in self.winfo_children():
+            child.destroy()
+        
+        self.set_frames()
+
+
+    def set_frames(self):
         # make command
         def make_func(path, n):
             def func():
@@ -65,6 +75,41 @@ class CategoryFrame(ctk.CTkScrollableFrame):
             cframe.collapse()
 
 
+
+class UpdateTemplateForm(ctk.CTkToplevel):
+
+    def __init__(self, parent, template_form):
+
+        super().__init__(parent)
+        self.title = ctk.CTkLabel(self, text="update template")
+        self.title.pack()
+        self.template_form = template_form
+        
+        self.update_btn = ctk.CTkButton(self, text="update", command=self.update_templates)
+        self.update_btn.pack()
+        
+
+    def update_templates(self):
+        
+        self.update_btn.destroy()
+
+        self.progress_bar = ctk.CTkProgressBar(self)
+        self.progress_bar.pack(padx=10, pady=10)
+        self.progress_bar.set(0)
+        self.update() 
+
+        # new window and progress bar
+        for i, n in update_templates():
+            progress = i/(n-1)
+            self.progress_bar.set(progress)
+            self.update()
+
+        self.progress_bar.pack_forget()
+
+        self.template_form.refresh()
+
+        self.destroy()
+
 class NaviBar(ctk.CTkFrame):
 
     def __init__(self, parent, app):
@@ -80,26 +125,8 @@ class NaviBar(ctk.CTkFrame):
 
     def update_templates(self):
         
-        toplevel = ctk.CTkToplevel(self)  # master argument is optional  
+        toplevel = UpdateTemplateForm(self, self.parent.category_frame)  # master argument is optional  
         toplevel.focus()
-
-        title = ctk.CTkLabel(toplevel, text="update template")
-        title.pack()
-        self.progress_bar = ctk.CTkProgressBar(toplevel)
-        self.progress_bar.pack(padx=10, pady=10)
-        self.progress_bar.set(0)
-        self.update() 
-
-        # new window and progress bar
-        for i, n in update_templates():
-            progress = i/(n-1)
-            self.progress_bar.set(progress)
-            self.update()
-
-        self.progress_bar.pack_forget()
-        toplevel.destroy()
-
-        self.parent.refresh()
 
     def set_fullscreen(self):
         x1, y1, x2, y2 = get_screen_size()
@@ -135,13 +162,6 @@ class Helper(ctk.CTk):
         # set category frame
         self.category_frame = CategoryFrame(self, self.app)
         self.category_frame.pack(fill='both', expand=True)
-
-    def refresh(self):
-
-        self.category_frame.pack_forget()
-        self.category_frame.destroy()
-        self.category_frame = CategoryFrame(self, self.app)
-        self.category_frame.pack(fill="both", expand=True)
 
     def set_windows(self, left, top, width_ratio=0.5, height_ratio=1):
         width = self.winfo_screenwidth()
