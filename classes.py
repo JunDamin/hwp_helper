@@ -120,21 +120,13 @@ class NaviBar(ctk.CTkFrame):
         update_btn = ctk.CTkButton(self, text="update template", command=self.update_templates)
         update_btn.pack(side="left", padx=10, pady=10)
 
-        fullscreen_btn = ctk.CTkButton(self, text="full screen", command=self.set_fullscreen)
+        fullscreen_btn = ctk.CTkButton(self, text="full screen", command=self.parent.set_fullscreen)
         fullscreen_btn.pack(side="left", padx=10, pady=10)
 
     def update_templates(self):
         
         toplevel = UpdateTemplateForm(self, self.parent.category_frame)  # master argument is optional  
         toplevel.focus()
-
-    def set_fullscreen(self):
-        x1, y1, x2, y2 = get_screen_size()
-        width = x2-x1
-        height = y2-y1
-        hwp_width = int(width/2)
-        set_hwp_size(self.parent.app, x1, y1, hwp_width, height)
-        self.parent.set_windows(x1+hwp_width, y1, 0.5)
 
 class Helper(ctk.CTk):
 
@@ -167,3 +159,12 @@ class Helper(ctk.CTk):
         width = self.winfo_screenwidth()
         height = self.winfo_screenheight()
         self.geometry(f'{int(width*width_ratio)}x{int(height*height_ratio)}+{int(left)}+{int(top)}')
+
+    def set_fullscreen(self):
+        x1, y1, x2, y2 = get_screen_size()
+        width = x2-x1
+        height = y2-y1
+        hwp_width = int(width/2)
+        set_hwp_size(self.app, x1, y1, hwp_width, height)
+        self.set_windows(x1+hwp_width, y1, 0.5)
+
