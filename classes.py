@@ -163,6 +163,15 @@ class Helper(ctk.CTk):
         width = x2-x1
         height = y2-y1
         hwp_width = int(width*hwp_ratio)
-        set_hwp_size(self.app, x1, y1, hwp_width, height)
-        self.set_windows(x1+hwp_width, y1, 1-hwp_ratio)
+
+        hwp_x, hwp_y = x1+int(width * (1-hwp_ratio)), y1
+        app_x, app_y = x1, y1
+
+        if side == "left":
+            hwp_x, hwp_y = x1, y1
+            app_x, app_y = x1+hwp_width, y1
+    
+
+        set_hwp_size(self.app, hwp_x, hwp_y, hwp_width, height)
+        self.set_windows(app_x, app_y, width_ratio = 1-hwp_ratio)
 
