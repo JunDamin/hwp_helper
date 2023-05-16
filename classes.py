@@ -140,12 +140,10 @@ class Helper(ctk.CTk):
         hwp_width = int(width/2)
         
         self.title("test")
-        self.set_windows(x1+hwp_width, y1, 0.5)
 
         # set app
         self.app = App()
-        set_hwp_size(self.app, x1, y1, hwp_width, height)
-
+        self.set_fullscreen()
 
         # set navi bar
         self.navi_bar = NaviBar(self, self.app)
@@ -160,11 +158,11 @@ class Helper(ctk.CTk):
         height = self.winfo_screenheight()
         self.geometry(f'{int(width*width_ratio)}x{int(height*height_ratio)}+{int(left)}+{int(top)}')
 
-    def set_fullscreen(self):
+    def set_fullscreen(self, hwp_ratio=0.5, side='left'):
         x1, y1, x2, y2 = get_screen_size()
         width = x2-x1
         height = y2-y1
-        hwp_width = int(width/2)
+        hwp_width = int(width*hwp_ratio)
         set_hwp_size(self.app, x1, y1, hwp_width, height)
-        self.set_windows(x1+hwp_width, y1, 0.5)
+        self.set_windows(x1+hwp_width, y1, 1-hwp_ratio)
 
