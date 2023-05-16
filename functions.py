@@ -118,6 +118,12 @@ def check_app(app):
     except pywintypes.com_error as e:
         return app.reload()
 
+def get_ratio(ctk_app):
+    app_width = ctk_app.winfo_screenwidth()
+    app_height = ctk_app.winfo_screenheight()
+    _, _, screen_width, screen_height = get_screen_size()
+    return min(app_width/screen_width, app_height/screen_height)
+
 
 
 # %%

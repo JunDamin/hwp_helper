@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from functions import set_button, get_categories, update_templates, set_forewindows, set_hwp_size, get_screen_size, check_app
+from functions import set_button, get_categories, update_templates, set_forewindows, set_hwp_size, get_screen_size, check_app, get_ratio
 from hwpapi.core import App
 
 class CollapsibleFrame(ctk.CTkFrame):
@@ -149,14 +149,21 @@ class Helper(ctk.CTk):
         self.navi_bar = NaviBar(self, self.app)
         self.navi_bar.pack()
 
+
+        tabview = ctk.CTkTabview(master=self)
+        tabview.pack(padx=20, pady=20, fill="both", expand=True)
+
+        tabview.add("template")  # add tab at the end
+        tabview.add("features")  # add tab at the end
+        tabview.set("features")  # set currently visible tab
+
         # set category frame
-        self.category_frame = CategoryFrame(self, self.app)
+        self.category_frame = CategoryFrame(tabview.tab("template"), self.app)
         self.category_frame.pack(fill='both', expand=True)
 
-    def set_windows(self, left, top, width_ratio=0.5, height_ratio=1):
-        width = self.winfo_screenwidth()
-        height = self.winfo_screenheight()
-        self.geometry(f'{int(width*width_ratio)}x{int(height*height_ratio)}+{int(left)}+{int(top)}')
+    def set_windows(self, left, top, width, height):
+        ratio = get_ratio(self)
+        self.geometry(f'{int(width*ratio)}x{int(height*ratio)}+{int(left)}+{int(top)}')
 
     def set_fullscreen(self, hwp_ratio=0.5, side='left'):
         x1, y1, x2, y2 = get_screen_size()
@@ -173,5 +180,5 @@ class Helper(ctk.CTk):
     
 
         set_hwp_size(self.app, hwp_x, hwp_y, hwp_width, height)
-        self.set_windows(app_x, app_y, width_ratio = 1-hwp_ratio)
+        self.set_windows(app_x, app_y, width= width - hwp_width, height=height)
 
