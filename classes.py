@@ -74,6 +74,24 @@ class CategoryFrame(ctk.CTkScrollableFrame):
                     )
             cframe.collapse()
 
+class HwpFeatureFrame(ctk.CTkScrollableFrame):
+    """"""
+
+    def __init__(self, parent, app):
+        super().__init__(parent)
+        self.app = app
+
+        cell_border_btn = ctk.CTkButton(self, text="표 테두리", command=self.set_cell_border)
+        cell_border_btn.grid(row=0, column=0, pady=3, padx=3)
+
+        cell_color_btn = ctk.CTkButton(self, text="셀 색", command=self.set_cell_color)
+        cell_color_btn.grid(row=0, column=1, pady=3, padx=3)       
+
+    def set_cell_border(self):
+        return self.app.set_cell_border(right=0, left=0, top_width=0.4, bottom_width=0.4)
+        
+    def set_cell_color(self):
+        return self.app.set_cell_color(bg_color=(250, 243, 219))
 
 
 class UpdateTemplateForm(ctk.CTkToplevel):
@@ -160,6 +178,10 @@ class Helper(ctk.CTk):
         # set category frame
         self.category_frame = CategoryFrame(tabview.tab("template"), self.app)
         self.category_frame.pack(fill='both', expand=True)
+
+        # set feature frame
+        self.feature_frame = HwpFeatureFrame(tabview.tab("features"), self.app)
+        self.feature_frame.pack(fill='both', expand=True)
 
     def set_windows(self, left, top, width, height):
         ratio = get_ratio(self)
