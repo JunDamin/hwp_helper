@@ -4,7 +4,7 @@ Created on Tue May  9 09:31:12 2023
 
 @author: 2015026
 """
-# %% 
+# %%
 import customtkinter as ctk
 from PIL import Image, ImageChops
 from pathlib import Path
@@ -16,34 +16,40 @@ from win32api import GetMonitorInfo, MonitorFromPoint
 import pywintypes
 import functools
 
+
 def set_button(ctkframe, text, image_path, command=None):
     """set image button"""
     image_path = Path(image_path)
     img = Image.open(image_path)
 
-    image = ctk.CTkImage(   
-        light_image=img,
-        dark_image=img,
-        size=img.size
-        )
+    image = ctk.CTkImage(light_image=img, dark_image=img, size=img.size)
 
-    btn = ctk.CTkButton(ctkframe, text=text, image=image, fg_color="transparent", compound='bottom', command=command)
+    btn = ctk.CTkButton(
+        ctkframe,
+        text=text,
+        image=image,
+        fg_color="transparent",
+        compound="bottom",
+        command=command,
+    )
     btn.pack()
     return btn
+
 
 def crop_background(image):
     """crop background of image"""
     img = Image.open(image)
-    bg = Image.new(img.mode, img.size, img.getpixel((0,0)))
+    bg = Image.new(img.mode, img.size, img.getpixel((0, 0)))
     diff = ImageChops.difference(img, bg)
     diff = ImageChops.add(diff, diff, 2.0, -100)
     bbox = diff.getbbox()
     if bbox[2] - bbox[0] < 300:
-        bbox = (bbox[0], bbox[1], bbox[0]+300, bbox[3])
+        bbox = (bbox[0], bbox[1], bbox[0] + 300, bbox[3])
     return img.crop(bbox)
 
 
 # %%
+
 
 def update_template(app, hwp):
     hwp = Path(hwp)
@@ -52,7 +58,7 @@ def update_template(app, hwp):
     # if it is not end with blank line
     if app.get_text() != "\r\n":
         app.actions.BreakPara().run()
-        app.save()    
+        app.save()
 
     _, n, _ = app.api.GetPos()
     temp = Path(f"temp/{hwp.stem}_{n}.png")
@@ -61,11 +67,13 @@ def update_template(app, hwp):
     cropped.save(f"images/{re.sub('001$', '', temp.stem)}.png")
     return hwp
 
+
 def update_templates():
-    
-    #clear old image and create temp folder for images
-    if Path("images").is_dir(): sh.rmtree("images")
-    if Path("temp").is_dir(): sh.rmtree("temp")
+    # clear old image and create temp folder for images
+    if Path("images").is_dir():
+        sh.rmtree("images")
+    if Path("temp").is_dir():
+        sh.rmtree("temp")
     Path("temp").mkdir()
     Path("images").mkdir()
     # convert hwp into png
@@ -78,7 +86,10 @@ def update_templates():
         yield i, n
     app.quit()
     sh.rmtree("temp")
+
+
 # %%
+
 
 def get_categories():
     """get iamges names"""
@@ -100,9 +111,11 @@ def set_forewindows(app):
     hwnd = app.api.XHwpWindows.Active_XHwpWindow.WindowHandle
     return wg.SetForegroundWindow(hwnd)
 
-def get_screen_size(): 
+
+def get_screen_size():
     x1, y1, x2, y2 = GetMonitorInfo(MonitorFromPoint((0, 0))).get("Work")
-    return x1, y1, x2-x1, y2-y1
+    return x1, y1, x2 - x1, y2 - y1
+
 
 def set_hwp_size(app, left, top, width, height):
     app.api.XHwpWindows.Active_XHwpWindow.Left = left
@@ -111,27 +124,29 @@ def set_hwp_size(app, left, top, width, height):
     app.api.XHwpWindows.Active_XHwpWindow.Height = height
 
 
-
 def check_app(app):
     try:
         return app.api.PageCount
     except pywintypes.com_error as e:
         return app.reload()
 
+
 def get_ratio(ctk_app):
     app_width = ctk_app.winfo_screenwidth()
     app_height = ctk_app.winfo_screenheight()
     _, _, screen_width, screen_height = get_screen_size()
-    return min(app_width/screen_width, app_height/screen_height)
+    return min(app_width / screen_width, app_height / screen_height)
 
 
 def back_to_app(method):
-   def func_wrapper(self, *args, **kwargs):
+    def func_wrapper(self, *args, **kwargs):
         check_app(self.app)
         set_forewindows(self.app)
         result = method(self, *args, **kwargs)
         return result
-   return func_wrapper
+
+    return func_wrapper
+
 
 # %%
 if __name__ == "__main__":
