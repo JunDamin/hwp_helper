@@ -125,6 +125,13 @@ def get_ratio(ctk_app):
     return min(app_width/screen_width, app_height/screen_height)
 
 
+def back_to_app(method):
+   def func_wrapper(self, *args, **kwargs):
+        check_app(self.app)
+        set_forewindows(self.app)
+        result = method(self, *args, **kwargs)
+        return result
+   return func_wrapper
 
 # %%
 if __name__ == "__main__":

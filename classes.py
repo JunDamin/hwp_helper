@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from functions import set_button, get_categories, update_templates, set_forewindows, set_hwp_size, get_screen_size, check_app, get_ratio
+from functions import set_button, get_categories, update_templates, set_forewindows, set_hwp_size, get_screen_size, check_app, get_ratio, back_to_app
 from hwpapi.core import App
 
 class CollapsibleFrame(ctk.CTkFrame):
@@ -87,9 +87,11 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
         cell_color_btn = ctk.CTkButton(self, text="셀 색", command=self.set_cell_color)
         cell_color_btn.grid(row=0, column=1, pady=3, padx=3)       
 
+    @back_to_app
     def set_cell_border(self):
         return self.app.set_cell_border(right=0, left=0, top_width=0.4, bottom_width=0.4)
         
+    @back_to_app
     def set_cell_color(self):
         return self.app.set_cell_color(bg_color=(250, 243, 219))
 
