@@ -182,11 +182,15 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
             table_frame, text="표 테두리", command=self.set_cell_border
         )
         cell_border_btn.grid(row=1, column=0, pady=3, padx=3, sticky="nsew")
-        tooltip = ToolTip(cell_border_btn, "This is a tooltip!")
+        tooltip = ToolTip(
+            cell_border_btn, "선택한 셀영역의 가장 위와 가장 아래 테두리는 굵은 선으로 바꾸고 좌우 끝의 테두리를 없앱니다."
+        )
 
-
-        cell_color_btn = ctk.CTkButton(table_frame, text="헤더 스타일 넣기", command=self.set_header_style)
+        cell_color_btn = ctk.CTkButton(
+            table_frame, text="헤더 스타일 넣기", command=self.set_header_style
+        )
         cell_color_btn.grid(row=1, column=1, pady=3, padx=3, sticky="nsew")
+        tooltip = ToolTip(cell_color_btn, "선택한 셀영역가장 아래 테두리를 두줄로 바꾸고 셀에 연노란 바탕색을 넣습니다.")
 
         # alignment related feature
         ctk.CTkLabel(self, text="정렬 기능").pack()
@@ -197,40 +201,50 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
             alignment_frame, text="현재 커서 위치에 맞춰 들여쓰기", command=self.set_para_indent
         )
         para_indent_btn.grid(row=1, column=0, pady=3, padx=3, sticky="nsew")
-
+        ToolTip(para_indent_btn, "현재 커서 위치에 맞춰 들여쓰기를 적용합니다. 표에서도 사용이 가능합니다.")
 
         # page break related feature
         ctk.CTkLabel(self, text="페이지 관련 기능").pack()
         layout_frame = ctk.CTkFrame(self)
         layout_frame.pack()
 
-
         break_section_btn = ctk.CTkButton(
             layout_frame, text="구역 나누기", command=self.break_section
         )
         break_section_btn.grid(row=1, column=0, pady=3, padx=3, sticky="nsew")
+        ToolTip(
+            break_section_btn,
+            "구역 나누기를 합니다. 구역이 나누어지면 다른 페이지 여백을 설정하거나 이후부터 페이지 가로 세로를 바꾸는 적용이 가능해 집니다.",
+        )
 
-        break_page_btn = ctk.CTkButton(layout_frame, text="페이지 나누기", command=self.break_page)
+        break_page_btn = ctk.CTkButton(
+            layout_frame, text="페이지 나누기", command=self.break_page
+        )
         break_page_btn.grid(row=1, column=1, pady=3, padx=3, sticky="nsew")
-
+        ToolTip(break_page_btn, "다음 페이지부터 시작하도록 합니다. 여러번 엔터를 칠 필요 없이 다음 페이지부터 시작합니다.")
 
         # shape related feature
         ctk.CTkLabel(self, text="형태 설정 기능").pack()
         shape_frame = ctk.CTkFrame(self)
         shape_frame.pack()
 
-        super_script_btn = ctk.CTkButton(shape_frame, text="윗첨자", command=self.super_script)
+        super_script_btn = ctk.CTkButton(
+            shape_frame, text="윗첨자", command=self.super_script
+        )
         super_script_btn.grid(row=1, column=0, pady=3, padx=3, sticky="nsew")
+        ToolTip(super_script_btn, "선택한 영역을 윗첨자, 혹은 원래 형태로 바꿉니다.")
 
         insert_endnote_btn = ctk.CTkButton(
             shape_frame, text="미주넣기", command=self.insert_endnote
         )
         insert_endnote_btn.grid(row=1, column=1, pady=3, padx=3, sticky="nsew")
+        ToolTip(insert_endnote_btn, "현재 위치에 번호를 표시하고 마지막 페이지에 설명을 적을 수 있는 미주를 추가합니다.")
 
         insert_footnote_btn = ctk.CTkButton(
             shape_frame, text="각주넣기", command=self.insert_footnote
         )
         insert_footnote_btn.grid(row=1, column=2, pady=3, padx=3, sticky="nsew")
+        ToolTip(insert_footnote_btn, "현재 위치에 번호를 표시하고 현재 페이지 아래쪽에 설명을 추가합니다.")
 
     @back_to_app
     def set_cell_border(self):
@@ -332,8 +346,10 @@ class UpdateTemplateForm(ctk.CTkToplevel):
 
         self.destroy()
 
+
 import tkinter as tk
 import customtkinter as ctk
+
 
 class ToolTip:
     def __init__(self, widget, text):
@@ -352,7 +368,7 @@ class ToolTip:
         tw.wm_overrideredirect(True)  # Remove window decorations
         tw.wm_geometry(f"+{x}+{y}")  # Position tooltip
 
-        label = tk.Label(tw, text=self.text, background="#dddddd")
+        label = tk.Label(tw, text=self.text, background="#dddddd", wraplength=200)
         label.pack()
 
     def hide_tooltip(self, event=None):
@@ -361,10 +377,10 @@ class ToolTip:
             self.tooltip_window = None
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     print("test")
     root = ctk.CTk()
     root.geometry("800x800")
     app = HwpFeatureFrame(root, None)
-    app.pack(fill='both', expand=True)
+    app.pack(fill="both", expand=True)
     root.mainloop()
