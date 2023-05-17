@@ -10,6 +10,7 @@ from functions import (
     check_app,
     get_ratio,
     back_to_app,
+    get_path
 )
 from hwpapi.core import App
 
@@ -22,7 +23,7 @@ class Helper(ctk.CTk):
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
         self.title("Hwp Helper v.0.2.0")
-        self.iconbitmap("src/ai.ico")
+        self.iconbitmap(get_path("src/ai.ico"))
 
         # set app
         self.app = App()
@@ -51,7 +52,7 @@ class Helper(ctk.CTk):
         self.icon = ctk.CTkLabel(
             self.menu,
             text="",
-            image=ctk.CTkImage(Image.open("src/ai.png"), size=(50, 50)),
+            image=ctk.CTkImage(Image.open(get_path("src/ai.png")), size=(50, 50)),
             compound="left",
         )
         self.icon.grid(row=0, column=0, padx=10)

@@ -14,7 +14,9 @@ from hwpapi.core import App
 import win32gui as wg
 from win32api import GetMonitorInfo, MonitorFromPoint
 import pywintypes
-import functools
+import sys
+import os
+
 
 
 def set_button(ctkframe, text, image_path, command=None):
@@ -146,6 +148,14 @@ def back_to_app(method):
         return result
 
     return func_wrapper
+
+
+def get_path(path):
+    if getattr(sys, 'frozen', False):
+        base_dir = sys._MEIPASS
+    else:
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(base_dir, path)
 
 
 # %%

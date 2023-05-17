@@ -2,3 +2,5 @@ __pycache__
 images
 templates
 menu.json
+build
+dist
