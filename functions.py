@@ -45,6 +45,8 @@ def crop_background(image):
     diff = ImageChops.difference(img, bg)
     diff = ImageChops.add(diff, diff, 2.0, -100)
     bbox = diff.getbbox()
+    if not bbox:
+        return None
     if bbox[2] - bbox[0] < 300:
         bbox = (bbox[0], bbox[1], bbox[0] + 300, bbox[3])
     return img.crop(bbox)
@@ -66,6 +68,9 @@ def update_template(app, hwp):
     temp = Path(f"temp/{hwp.stem}_{n}.png")
     app.save(temp)
     cropped = crop_background("temp/" + temp.stem + "001.png")
+    
+    if not cropped:
+        return None
     cropped.save(f"images/{re.sub('001$', '', temp.stem)}.png")
     return hwp
 
