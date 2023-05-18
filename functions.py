@@ -166,3 +166,5 @@ def get_path(path):
 # %%
 if __name__ == "__main__":
     update_templates()
+
+# %%
