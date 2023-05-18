@@ -11,7 +11,7 @@ from functions import (
     check_app,
     get_ratio,
     back_to_app,
-    get_path
+    get_path,
 )
 
 
@@ -77,11 +77,10 @@ class Helper(ctk.CTk):
         self.geometry(f"{int(width*ratio)}x{int(height*ratio)}+{int(left)}+{int(top)}")
 
     def set_fullscreen(self):
-
         setting = self.context["setting"]
         app_width = setting.get("app_width", 800)
         side = setting.get("side", "left")
-        
+
         x1, y1, x2, y2 = get_screen_size()
         width = x2 - x1
         height = y2 - y1
@@ -99,7 +98,7 @@ class Helper(ctk.CTk):
         self.set_windows(app_x, app_y, width=width - hwp_width, height=height)
 
     def on_closing(self):
-        with open("setting.yaml", 'w') as f:
+        with open("setting.yaml", "w") as f:
             yaml.safe_dump(self.context["setting"], f)
         self.destroy()
 
@@ -186,88 +185,106 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
         super().__init__(parent)
         self.app = context["app"]
 
+        # set a function for btn
+        def set_feature_btn(parent, name, command, text):
+            btn = ctk.CTkButton(parent, text=name, command=command)
+            ToolTip(btn, text)
+            return btn
+
         # table related feature
         ctk.CTkLabel(self, text="테이블 관련 기능").pack()
 
         table_frame = ctk.CTkFrame(self)
         table_frame.pack()
 
-        cell_border_btn = ctk.CTkButton(
-            table_frame, text="표 테두리", command=self.set_cell_border
+        cell_border_btn = set_feature_btn(
+            table_frame,
+            "표 테두리",
+            command=self.set_cell_border,
+            text="선택한 셀영역의 가장 위와 가장 아래 테두리는 굵은 선으로 바꾸고 좌우 끝의 테두리를 없앱니다.",
         )
         cell_border_btn.grid(row=1, column=0, pady=3, padx=3, sticky="nsew")
-        tooltip = ToolTip(
-            cell_border_btn, "선택한 셀영역의 가장 위와 가장 아래 테두리는 굵은 선으로 바꾸고 좌우 끝의 테두리를 없앱니다."
-        )
 
-        cell_color_btn = ctk.CTkButton(
-            table_frame, text="헤더 스타일 넣기", command=self.set_header_style
+        cell_color_btn = set_feature_btn(
+            table_frame,
+            "헤더 스타일 넣기",
+            command=self.set_header_style,
+            text="선택한 셀영역가장 아래 테두리를 두줄로 바꾸고 셀에 연노란 바탕색을 넣습니다.",
         )
         cell_color_btn.grid(row=1, column=1, pady=3, padx=3, sticky="nsew")
-        tooltip = ToolTip(cell_color_btn, "선택한 셀영역가장 아래 테두리를 두줄로 바꾸고 셀에 연노란 바탕색을 넣습니다.")
 
         # alignment related feature
         ctk.CTkLabel(self, text="정렬 기능").pack()
         alignment_frame = ctk.CTkFrame(self)
         alignment_frame.pack()
 
-        para_indent_btn = ctk.CTkButton(
-            alignment_frame, text="현재 커서 위치에 맞춰 들여쓰기", command=self.set_para_indent
+        para_indent_btn = set_feature_btn(
+            alignment_frame,
+            "현재 커서 위치에 맞춰 들여쓰기",
+            command=self.set_para_indent,
+            text="현재 커서 위치에 맞춰 들여쓰기를 적용합니다. 표에서도 사용이 가능합니다.",
         )
         para_indent_btn.grid(row=1, column=0, pady=3, padx=3, sticky="nsew")
-        ToolTip(para_indent_btn, "현재 커서 위치에 맞춰 들여쓰기를 적용합니다. 표에서도 사용이 가능합니다.")
 
         # page break related feature
         ctk.CTkLabel(self, text="페이지 관련 기능").pack()
         layout_frame = ctk.CTkFrame(self)
         layout_frame.pack()
 
-        break_section_btn = ctk.CTkButton(
-            layout_frame, text="구역 나누기", command=self.break_section
+        break_section_btn = set_feature_btn(
+            layout_frame,
+            "구역 나누기",
+            command=self.break_section,
+            text="구역 나누기를 합니다. 구역이 나누어지면 다른 페이지 여백을 설정하거나 이후부터 페이지 가로 세로를 바꾸는 적용이 가능해 집니다.",
         )
         break_section_btn.grid(row=1, column=0, pady=3, padx=3, sticky="nsew")
-        ToolTip(
-            break_section_btn,
-            "구역 나누기를 합니다. 구역이 나누어지면 다른 페이지 여백을 설정하거나 이후부터 페이지 가로 세로를 바꾸는 적용이 가능해 집니다.",
-        )
 
-        break_page_btn = ctk.CTkButton(
-            layout_frame, text="페이지 나누기", command=self.break_page
+        break_page_btn = set_feature_btn(
+            layout_frame,
+            "페이지 나누기",
+            command=self.break_page,
+            text="다음 페이지부터 시작하도록 합니다. 여러번 엔터를 칠 필요 없이 다음 페이지부터 시작합니다.",
         )
         break_page_btn.grid(row=1, column=1, pady=3, padx=3, sticky="nsew")
-        ToolTip(break_page_btn, "다음 페이지부터 시작하도록 합니다. 여러번 엔터를 칠 필요 없이 다음 페이지부터 시작합니다.")
 
         # shape related feature
         ctk.CTkLabel(self, text="형태 설정 기능").pack()
         shape_frame = ctk.CTkFrame(self)
         shape_frame.pack()
 
-        super_script_btn = ctk.CTkButton(
-            shape_frame, text="윗첨자", command=self.super_script
+        super_script_btn = set_feature_btn(
+            shape_frame,
+            "윗첨자",
+            command=self.super_script,
+            text="선택한 영역을 윗첨자, 혹은 원래 형태로 바꿉니다.",
         )
         super_script_btn.grid(row=1, column=0, pady=3, padx=3, sticky="nsew")
-        ToolTip(super_script_btn, "선택한 영역을 윗첨자, 혹은 원래 형태로 바꿉니다.")
 
-        insert_endnote_btn = ctk.CTkButton(
-            shape_frame, text="미주넣기", command=self.insert_endnote
+        insert_endnote_btn = set_feature_btn(
+            shape_frame,
+            "미주넣기",
+            command=self.insert_endnote,
+            text="현재 위치에 번호를 표시하고 마지막 페이지에 설명을 적을 수 있는 미주를 추가합니다.",
         )
         insert_endnote_btn.grid(row=1, column=1, pady=3, padx=3, sticky="nsew")
-        ToolTip(insert_endnote_btn, "현재 위치에 번호를 표시하고 마지막 페이지에 설명을 적을 수 있는 미주를 추가합니다.")
 
-        insert_footnote_btn = ctk.CTkButton(
-            shape_frame, text="각주넣기", command=self.insert_footnote
+        insert_footnote_btn = set_feature_btn(
+            shape_frame,
+            "각주넣기",
+            command=self.insert_footnote,
+            text="현재 위치에 번호를 표시하고 현재 페이지 아래쪽에 설명을 추가합니다.",
         )
         insert_footnote_btn.grid(row=1, column=2, pady=3, padx=3, sticky="nsew")
-        ToolTip(insert_footnote_btn, "현재 위치에 번호를 표시하고 현재 페이지 아래쪽에 설명을 추가합니다.")
 
-        insert_memo_btn = ctk.CTkButton(shape_frame, text="메모넣기", command=self.insert_memo)
+        insert_memo_btn = set_feature_btn(
+            shape_frame, "메모넣기", command=self.insert_memo, text="메모를 넣습니다."
+        )
         insert_memo_btn.grid(row=2, column=0, padx=3, pady=3, sticky="nsew")
-        ToolTip(insert_memo_btn, "메모를 넣습니다.")
-        
-        delete_memo_btn = ctk.CTkButton(shape_frame, text="메모지우기", command=self.delete_memo)
-        delete_memo_btn.grid(row=2, column=1, padx=3, pady=3, sticky="nsew")
-        ToolTip(delete_memo_btn, "메모를 지웁니다.")
 
+        delete_memo_btn = set_feature_btn(
+            shape_frame, "메모지우기", command=self.delete_memo, text="메모를 지웁니다."
+        )
+        delete_memo_btn.grid(row=2, column=1, padx=3, pady=3, sticky="nsew")
 
     @back_to_app
     def set_cell_border(self):
@@ -308,11 +325,11 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
     @back_to_app
     def insert_memo(self):
         return self.app.actions.InsertFieldMemo().run()
-    
+
     @back_to_app
     def delete_memo(self):
         return self.app.actions.DeleteFieldMemo().run()
-    
+
 
 class NaviBar(ctk.CTkFrame):
     def __init__(self, parent, context):
@@ -406,7 +423,7 @@ if __name__ == "__main__":
     print("test")
     root = ctk.CTk()
     root.geometry("800x800")
-    context={"app": None}
+    context = {"app": None}
     app = HwpFeatureFrame(root, context)
     app.pack(fill="both", expand=True)
     root.mainloop()
