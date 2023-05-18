@@ -1,3 +1,2 @@
-full_screen_ratio: 1
-nt: test
-save: s
+app_width: 1000
+side: left

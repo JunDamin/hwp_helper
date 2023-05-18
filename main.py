@@ -13,8 +13,9 @@ import yaml
 
 ctk.set_appearance_mode("dark")
 
+context = {}
 with open("setting.yaml", encoding='utf-8') as f:
-    context = yaml.safe_load(f)
+    context["setting"] = yaml.safe_load(f)
 
 context["app"] = App()
 helper = Helper(context)

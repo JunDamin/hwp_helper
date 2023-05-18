@@ -76,7 +76,12 @@ class Helper(ctk.CTk):
         ratio = get_ratio(self)
         self.geometry(f"{int(width*ratio)}x{int(height*ratio)}+{int(left)}+{int(top)}")
 
-    def set_fullscreen(self, side="left", app_width=1100):
+    def set_fullscreen(self):
+
+        setting = self.context["setting"]
+        app_width = setting.get("app_width", 800)
+        side = setting.get("side", "left")
+        
         x1, y1, x2, y2 = get_screen_size()
         width = x2 - x1
         height = y2 - y1
