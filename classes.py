@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from PIL import Image
+import yaml
 from functions import (
     set_button,
     get_categories,
@@ -17,6 +18,8 @@ from functions import (
 class Helper(ctk.CTk):
     def __init__(self, context):
         super().__init__()
+
+        self.context = context
 
         context["helper"] = self
 
@@ -91,7 +94,8 @@ class Helper(ctk.CTk):
         self.set_windows(app_x, app_y, width=width - hwp_width, height=height)
 
     def on_closing(self):
-        # self.app.save()
+        with open("setting.yaml", 'w') as f:
+            yaml.safe_dump(self.context["setting"], f)
         self.destroy()
 
 
@@ -367,10 +371,6 @@ class UpdateTemplateForm(ctk.CTkToplevel):
         self.destroy()
 
 
-import tkinter as tk
-import customtkinter as ctk
-
-
 class ToolTip:
     def __init__(self, widget, text):
         self.widget = widget
@@ -401,6 +401,7 @@ if __name__ == "__main__":
     print("test")
     root = ctk.CTk()
     root.geometry("800x800")
-    app = HwpFeatureFrame(root, None)
+    context={"app": None}
+    app = HwpFeatureFrame(root, context)
     app.pack(fill="both", expand=True)
     root.mainloop()
