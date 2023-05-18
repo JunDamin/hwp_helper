@@ -12,12 +12,13 @@ from functions import (
     back_to_app,
     get_path
 )
-from hwpapi.core import App
 
 
 class Helper(ctk.CTk):
-    def __init__(self, app):
+    def __init__(self, context):
         super().__init__()
+
+        context["helper"] = self
 
         # Override the default close behavior
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
@@ -26,7 +27,7 @@ class Helper(ctk.CTk):
         self.iconbitmap(get_path("src/ai.ico"))
 
         # set app
-        self.app = app
+        self.app = context["app"]
         self.set_fullscreen()
 
         # set navi bar
@@ -37,17 +38,19 @@ class Helper(ctk.CTk):
         tabview = ctk.CTkTabview(master=self)
         tabview.pack(padx=20, pady=20, fill="both", expand=True)
 
-        tabview.add("template")  # add tab at the end
+        tabview.add("templates")  # add tab at the end
         tabview.add("features")  # add tab at the end
         tabview.set("features")  # set currently visible tab
 
         # set category frame
-        self.category_frame = CategoryFrame(tabview.tab("template"), self.app)
-        self.category_frame.pack(fill="both", expand=True)
+        template_frame = CategoryFrame(tabview.tab("templates"), context)
+        template_frame.pack(fill="both", expand=True)
+        context["template_frame"] = template_frame
 
         # set feature frame
-        self.feature_frame = HwpFeatureFrame(tabview.tab("features"), self.app)
-        self.feature_frame.pack(fill="both", expand=True)
+        feature_frame = HwpFeatureFrame(tabview.tab("features"), context)
+        feature_frame.pack(fill="both", expand=True)
+        context["feature_frame"] = feature_frame
 
         icon = ctk.CTkLabel(
             self.menu,
@@ -62,8 +65,9 @@ class Helper(ctk.CTk):
         )
         header.grid(row=0, column=1, padx=10)
 
-        self.navi_bar = NaviBar(self.menu, self, self.category_frame, self.app)
-        self.navi_bar.grid(row=0, column=2)
+        navi_bar = NaviBar(self.menu, context)
+        navi_bar.grid(row=0, column=2)
+        context["navi_bar"] = navi_bar
 
     def set_windows(self, left, top, width, height):
         ratio = get_ratio(self)
@@ -96,10 +100,10 @@ class CategoryFrame(ctk.CTkScrollableFrame):
     from categories from images file
     """
 
-    def __init__(self, parent, app):
+    def __init__(self, parent, context):
         super().__init__(parent)
         self.parent = parent
-        self.app = app
+        self.app = context["app"]
         self.set_frames()
 
     def refresh(self):
@@ -169,9 +173,9 @@ class CollapsibleFrame(ctk.CTkFrame):
 class HwpFeatureFrame(ctk.CTkScrollableFrame):
     """"""
 
-    def __init__(self, parent, app):
+    def __init__(self, parent, context):
         super().__init__(parent)
-        self.app = app
+        self.app = context["app"]
 
         # table related feature
         ctk.CTkLabel(self, text="테이블 관련 기능").pack()
@@ -302,12 +306,10 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
     
 
 class NaviBar(ctk.CTkFrame):
-    def __init__(self, parent, root, ctrl_win, app):
+    def __init__(self, parent, context):
         super().__init__(parent)
-        self.parent = parent
-        self.win_ctrl = ctrl_win
-        self.root = root
-        self.app = app
+        self.app = context["app"]
+        self.context = context
 
         update_btn = ctk.CTkButton(
             self, text="update template", command=self.update_templates
@@ -315,13 +317,13 @@ class NaviBar(ctk.CTkFrame):
         update_btn.pack(side="left", padx=10, pady=10)
 
         fullscreen_btn = ctk.CTkButton(
-            self, text="full screen", command=self.root.set_fullscreen
+            self, text="full screen", command=context["helper"].set_fullscreen
         )
         fullscreen_btn.pack(side="left", padx=10, pady=10)
 
     def update_templates(self):
         toplevel = UpdateTemplateForm(
-            self, self.win_ctrl
+            self, self.context["template_frame"]
         )  # master argument is optional
         toplevel.focus()
 
