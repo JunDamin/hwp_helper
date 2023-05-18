@@ -16,7 +16,7 @@ from hwpapi.core import App
 
 
 class Helper(ctk.CTk):
-    def __init__(self):
+    def __init__(self, app):
         super().__init__()
 
         # Override the default close behavior
@@ -26,7 +26,7 @@ class Helper(ctk.CTk):
         self.iconbitmap(get_path("src/ai.ico"))
 
         # set app
-        self.app = App()
+        self.app = app
         self.set_fullscreen()
 
         # set navi bar
@@ -49,18 +49,18 @@ class Helper(ctk.CTk):
         self.feature_frame = HwpFeatureFrame(tabview.tab("features"), self.app)
         self.feature_frame.pack(fill="both", expand=True)
 
-        self.icon = ctk.CTkLabel(
+        icon = ctk.CTkLabel(
             self.menu,
             text="",
             image=ctk.CTkImage(Image.open(get_path("src/ai.png")), size=(50, 50)),
             compound="left",
         )
-        self.icon.grid(row=0, column=0, padx=10)
-        self.header = ctk.CTkLabel(
+        icon.grid(row=0, column=0, padx=10)
+        header = ctk.CTkLabel(
             self.menu,
             text="Hwp Helper v.0.2.0",
         )
-        self.header.grid(row=0, column=1, padx=10)
+        header.grid(row=0, column=1, padx=10)
 
         self.navi_bar = NaviBar(self.menu, self, self.category_frame, self.app)
         self.navi_bar.grid(row=0, column=2)
@@ -247,6 +247,15 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
         insert_footnote_btn.grid(row=1, column=2, pady=3, padx=3, sticky="nsew")
         ToolTip(insert_footnote_btn, "현재 위치에 번호를 표시하고 현재 페이지 아래쪽에 설명을 추가합니다.")
 
+        insert_memo_btn = ctk.CTkButton(shape_frame, text="메모넣기", command=self.insert_memo)
+        insert_memo_btn.grid(row=2, column=0, padx=3, pady=3, sticky="nsew")
+        ToolTip(insert_memo_btn, "메모를 넣습니다.")
+        
+        delete_memo_btn = ctk.CTkButton(shape_frame, text="메모지우기", command=self.delete_memo)
+        delete_memo_btn.grid(row=2, column=1, padx=3, pady=3, sticky="nsew")
+        ToolTip(delete_memo_btn, "메모를 지웁니다.")
+
+
     @back_to_app
     def set_cell_border(self):
         return self.app.set_cell_border(
@@ -283,6 +292,14 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
     def insert_footnote(self):
         return self.app.actions.InsertFootnote().run()
 
+    @back_to_app
+    def insert_memo(self):
+        return self.app.actions.InsertFieldMemo().run()
+    
+    @back_to_app
+    def delete_memo(self):
+        return self.app.actions.DeleteFieldMemo().run()
+    
 
 class NaviBar(ctk.CTkFrame):
     def __init__(self, parent, root, ctrl_win, app):
