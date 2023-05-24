@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import tkinter as tk
 from PIL import Image
 import yaml
 from functions import (
@@ -410,7 +411,7 @@ class ToolTip:
         tw.wm_overrideredirect(True)  # Remove window decorations
         tw.wm_geometry(f"+{x}+{y}")  # Position tooltip
 
-        label = tk.Label(tw, text=self.text, background="#dddddd", wraplength=200)
+        label = tk.Label(tw, text=self.text, background="#dddddd", wraplength=500, font=15)
         label.pack()
 
     def hide_tooltip(self, event=None):
@@ -420,7 +421,6 @@ class ToolTip:
 
 
 if __name__ == "__main__":
-    print("test")
     root = ctk.CTk()
     root.geometry("800x800")
     context = {"app": None}
