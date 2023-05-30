@@ -125,7 +125,7 @@ class FontStyleBtns(ctk.CTkFrame):
         ).pack(pady=5)
 
         self.frame.collapse()
-        
+
     def add_style(self):
         FontStyleBtn(self.frame.frame_contents, self.app).pack(pady=5)
 
@@ -144,14 +144,14 @@ class FontStyleBtn(ctk.CTkFrame):
         self.parashape = parashape
 
         ctk.CTkFrame.__init__(self, parent, **kwargs)
-        FontDisplay(self, charshape, parashape).grid(
-            row=0, rowspan=2, column=0, padx=5, pady=5
-        )
         ctk.CTkButton(self, text="적용하기", command=self.apply).grid(
-            row=0, column=1, pady=5
+            row=0, column=0, pady=5
         )
         ctk.CTkButton(self, text="삭제하기", command=self.destroy).grid(
-            row=1, column=1, pady=5
+            row=1, column=0, pady=5
+        )
+        FontDisplay(self, charshape, parashape).grid(
+            row=0, rowspan=2, column=1, padx=5, pady=5
         )
 
     def apply(self):
@@ -176,7 +176,7 @@ class FontDisplay(ctk.CTkFrame):
         )
 
         hangul = ctk.CTkLabel(
-            self, text=f"폰트 {charshape.hangul_font}", font=hangul_font
+            self, text=f"{charshape.hangul_font}", font=hangul_font
         )
         hangul.grid(row=0, column=0, rowspan=2, padx=3)
         char_info = ctk.CTkLabel(
