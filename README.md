@@ -16,3 +16,7 @@ refactoring
 
 - add font style add and apply
 
+- add logging features
+- make template from selected area
+- template set idea => import and export files
+

@@ -2,7 +2,6 @@ import customtkinter as ctk
 from PIL import Image
 import yaml
 from functions import (
-    set_hwp_size,
     get_screen_size,
     set_window_position,
     get_ratio,
@@ -76,7 +75,7 @@ class Helper(ctk.CTk):
         ratio = get_ratio(self)
         self.geometry(f"{int(width*ratio)}x{int(height*ratio)}+{int(left)}+{int(top)}")
 
-    def set_fullscreen(self):
+    def set_fullscreen(self, ratio=None):
         setting = self.context["setting"]
         app_width = setting.get("app_width", 800)
         side = setting.get("side", "left")

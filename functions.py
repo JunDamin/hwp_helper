@@ -19,7 +19,6 @@ import os
 import win32con
 
 
-
 def set_button(ctkframe, text, image_path, command=None):
     """set image button"""
     image_path = Path(image_path)
@@ -124,17 +123,21 @@ def get_screen_size():
     x1, y1, x2, y2 = GetMonitorInfo(MonitorFromPoint((0, 0))).get("Work")
     return x1, y1, x2 - x1, y2 - y1
 
+
 def get_window_position(hwnd):
-    pass
+    rect = wg.GetWindowRect(hwnd)
+    # Window position
+    x = rect[0]
+    y = rect[1]
+
+    # Window size
+    width = rect[2] - x
+    height = rect[3] - y
+    return x, y, width, height
+
 
 def set_window_position(hwnd, x, y, width, height):
     wg.SetWindowPos(hwnd, win32con.HWND_TOP, x, y, width, height, 0)
-
-def set_hwp_size(app, left, top, width, height):
-    app.api.XHwpWindows.Active_XHwpWindow.Left = left
-    app.api.XHwpWindows.Active_XHwpWindow.Top = top
-    app.api.XHwpWindows.Active_XHwpWindow.Width = width
-    app.api.XHwpWindows.Active_XHwpWindow.Height = height
 
 
 def check_app(app):
