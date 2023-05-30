@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import tkinter as tk
 from PIL import Image
 import yaml
 from functions import (
@@ -11,8 +12,6 @@ from features import HwpFeatureFrame
 from templates import CategoryFrame
 from navibar import NaviBar
 import win32gui as wg
-import win32con
-from time import sleep
 
 
 class Helper(ctk.CTk):
@@ -35,7 +34,7 @@ class Helper(ctk.CTk):
         # set navi bar
 
         self.menu = ctk.CTkFrame(self)
-        self.menu.pack()
+        self.menu.pack(fill=tk.X)
 
         tabview = ctk.CTkTabview(master=self)
         tabview.pack(padx=20, pady=20, fill="both", expand=True)
@@ -60,15 +59,15 @@ class Helper(ctk.CTk):
             image=ctk.CTkImage(Image.open(get_path("src/ai.png")), size=(50, 50)),
             compound="left",
         )
-        icon.grid(row=0, column=0, padx=10)
+        icon.pack(anchor="w", side=tk.LEFT, padx=5, pady=5)
         header = ctk.CTkLabel(
             self.menu,
             text="Hwp Helper v.0.2.0",
         )
-        header.grid(row=0, column=1, padx=10)
+        header.pack(anchor="w", side=tk.LEFT, padx=5, pady=5)
 
         navi_bar = NaviBar(self.menu, context)
-        navi_bar.grid(row=0, column=2)
+        navi_bar.pack(anchor="e", side=tk.RIGHT)
         context["navi_bar"] = navi_bar
 
     def set_windows(self, left, top, width, height):

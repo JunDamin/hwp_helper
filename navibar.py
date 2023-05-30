@@ -4,8 +4,8 @@ from functions import (
 )
 
 class NaviBar(ctk.CTkFrame):
-    def __init__(self, parent, context):
-        super().__init__(parent)
+    def __init__(self, parent, context, **kwargs):
+        super().__init__(parent, **kwargs)
         self.app = context["app"]
         self.context = context
 
@@ -63,3 +63,18 @@ class UpdateTemplateForm(ctk.CTkToplevel):
         self.template_form.refresh()
 
         self.destroy()
+
+
+if __name__=="__main__":
+    
+    from types import SimpleNamespace
+    # create mockup
+    d = {'set_fullscreen': 1, 'b': 2}
+    ns = SimpleNamespace(**d)
+
+    root = ctk.CTk()
+    root.geometry("800x800")
+    context = {"app": None, "helper": ns}
+    app = NaviBar(root, context)
+    app.pack(fill="both", expand=True)
+    root.mainloop()
