@@ -1,9 +1,13 @@
+# %%
+
 import customtkinter as ctk
+from customtkinter import CTkFont
 import tkinter as tk
 from PIL import Image, ImageTk
 from itertools import count, cycle
 
 
+# %%
 class ImageLabel(tk.Label):
     """
     A Label that displays images, and plays them if they are gifs
@@ -42,7 +46,7 @@ class ImageLabel(tk.Label):
             self.config(image=next(self.frames))
             self.after(self.delay, self.next_frame)
 
-
+# %%
 class ToolTip:
     def __init__(self, widget, text, gif=None):
         self.widget = widget
@@ -62,7 +66,7 @@ class ToolTip:
         tw.wm_geometry(f"+{x}+{y}")  # Position tooltip
 
         label = tk.Label(
-            tw, text=self.text, background="#dddddd", wraplength=350, font=15
+            tw, text=self.text, background="#dddddd", wraplength=350, font=15, ipady=15
         )
         label.pack()
         if self.gif:
@@ -75,7 +79,7 @@ class ToolTip:
             self.tooltip_window.destroy()
             self.tooltip_window = None
 
-
+# %%
 class CollapsibleFrame(ctk.CTkFrame):
     """This Frame is for create collapsible frame for sub components"""
 
@@ -101,11 +105,46 @@ class CollapsibleFrame(ctk.CTkFrame):
     def collapse(self):
         self.frame_contents.pack_forget()
 
+# %%
+class FontDisplay(ctk.CTkFrame):
+    def __init__(self, master, charshape, parashape, **kwargs):
+        ctk.CTkFrame.__init__(self, master, **kwargs)
+        self.charshape = charshape
+        self.parashape = parashape
 
+        hangul_font = CTkFont(
+            family=charshape.hangul_font,
+            size=int(charshape.fontsize),
+            weight="bold" if charshape.bold else "normal",
+            slant="italic" if charshape.italic else "roman",
+            underline=1 if charshape.underline_type else 0,
+            overstrike=1 if charshape.strike_out_type else 0,
+        )
+        latin_font = CTkFont(
+            family=charshape.hangul_font,
+            size=int(charshape.fontsize),
+            weight="bold" if charshape.bold else "normal",
+            slant="italic" if charshape.italic else "roman",
+            underline=1 if charshape.underline_type else 0,
+            overstrike=1 if charshape.strike_out_type else 0,
+        )
+
+
+
+        hangul = ctk.CTkLabel(self, text=f"폰트 {charshape.hangul_font}", font=hangul_font)
+        hangul.grid(row=0, column=0, rowspan=2, padx=5)
+        char_info = ctk.CTkLabel(self, text=f"{charshape.fontsize:.01f}pt, 장평 {charshape.ratio}%, 자간 {charshape.spacing}%", font=hangul_font)
+        char_info.grid(row=0, column=1)
+        paragraph = ctk.CTkLabel(self, text=f"들여쓰기: {parashape.indentation}, 줄간격: {parashape.line_spacing}", font=hangul_font)
+        paragraph.grid(row=1, column=1)
+
+# %%
 if __name__ == "__main__":
     # demo :
-    root = tk.Tk()
-    lbl = ImageLabel(root)
-    lbl.pack()
-    lbl.load("src/align_btn.gif")
+    from hwpapi.core import App
+    app = App()
+    charshape = app.get_charshape()
+    root = ctk.CTk()
+    fonts = FontDisplay(root, "test", charshape, None)
+    fonts.pack()
     root.mainloop()
