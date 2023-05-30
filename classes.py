@@ -14,6 +14,7 @@ from functions import (
     back_to_app,
     get_path,
 )
+from gif_class import ImageLabel
 
 
 class Helper(ctk.CTk):
@@ -187,9 +188,9 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
         self.app = context["app"]
 
         # set a function for btn
-        def set_feature_btn(parent, name, command, text):
+        def set_feature_btn(parent, name, command, text, gif=None):
             btn = ctk.CTkButton(parent, text=name, command=command)
-            ToolTip(btn, text)
+            ToolTip(btn, text, gif)
             return btn
 
         # table related feature
@@ -224,6 +225,7 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
             "현재 커서 위치에 맞춰 들여쓰기",
             command=self.set_para_indent,
             text="현재 커서 위치에 맞춰 들여쓰기를 적용합니다. 표에서도 사용이 가능합니다.",
+            gif="src/align_btn.gif"
         )
         para_indent_btn.grid(row=1, column=0, pady=3, padx=3, sticky="nsew")
 
@@ -395,9 +397,10 @@ class UpdateTemplateForm(ctk.CTkToplevel):
 
 
 class ToolTip:
-    def __init__(self, widget, text):
+    def __init__(self, widget, text, gif=None):
         self.widget = widget
         self.text = text
+        self.gif = gif
         self.tooltip_window = None
         self.widget.bind("<Enter>", self.show_tooltip)
         self.widget.bind("<Leave>", self.hide_tooltip)
@@ -411,8 +414,12 @@ class ToolTip:
         tw.wm_overrideredirect(True)  # Remove window decorations
         tw.wm_geometry(f"+{x}+{y}")  # Position tooltip
 
-        label = tk.Label(tw, text=self.text, background="#dddddd", wraplength=500, font=15)
+        label = tk.Label(tw, text=self.text, background="#dddddd", wraplength=350, font=15)
         label.pack()
+        if self.gif:
+            imagelabel = ImageLabel(tw)
+            imagelabel.pack()
+            imagelabel.load(self.gif)
 
     def hide_tooltip(self, event=None):
         if self.tooltip_window:
