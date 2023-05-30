@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import tkinter as tk
 from functions import (
     back_to_app,
     get_path,
@@ -14,7 +15,7 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
         self.app = context["app"]
 
         font_style_btns = FontStyleBtns(self, self.app)
-        font_style_btns.pack()
+        font_style_btns.pack(fill=tk.X)
 
         # set a function for btn
         def set_feature_btn(parent, name, command, text, gif=None):
@@ -26,7 +27,7 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
         ctk.CTkLabel(self, text="테이블 관련 기능").pack()
 
         table_frame = ctk.CTkFrame(self)
-        table_frame.pack()
+        table_frame.pack(fill=tk.X)
 
         table_border_btn = set_feature_btn(
             table_frame,
@@ -49,7 +50,7 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
         # alignment related feature
         ctk.CTkLabel(self, text="정렬 기능").pack()
         alignment_frame = ctk.CTkFrame(self)
-        alignment_frame.pack()
+        alignment_frame.pack(fill=tk.X)
 
         para_indent_btn = set_feature_btn(
             alignment_frame,
@@ -63,7 +64,7 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
         # page break related feature
         ctk.CTkLabel(self, text="페이지 관련 기능").pack()
         layout_frame = ctk.CTkFrame(self)
-        layout_frame.pack()
+        layout_frame.pack(fill=tk.X)
 
         break_section_btn = set_feature_btn(
             layout_frame,
@@ -84,7 +85,7 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
         # shape related feature
         ctk.CTkLabel(self, text="형태 설정 기능").pack()
         shape_frame = ctk.CTkFrame(self)
-        shape_frame.pack()
+        shape_frame.pack(fill=tk.X)
 
         super_script_btn = set_feature_btn(
             shape_frame,

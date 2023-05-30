@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import tkinter as tk
 from components import CollapsibleFrame
 from functions import (
     set_button,
@@ -42,7 +43,7 @@ class CategoryFrame(ctk.CTkScrollableFrame):
         categories = get_categories()
         for key, value in categories.items():
             cframe = CollapsibleFrame(self, key)
-            cframe.pack(fill="x", pady=5, padx=5)
+            cframe.pack(fill=tk.X, pady=5, padx=5)
 
             for text, image_path, filename, n in value:
                 path = f"templates/{filename}.hwp"
@@ -55,3 +56,12 @@ class CategoryFrame(ctk.CTkScrollableFrame):
                     command=make_func(path, n),
                 )
             cframe.collapse()
+
+
+if __name__ == "__main__":
+    root = ctk.CTk()
+    root.geometry("800x800")
+    context = {"app": None}
+    app = CategoryFrame(root, context)
+    app.pack(fill="both", expand=True)
+    root.mainloop()
