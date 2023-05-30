@@ -38,7 +38,8 @@ class Helper(ctk.CTk):
 
         tabview = ctk.CTkTabview(master=self)
         tabview.pack(padx=20, pady=20, fill="both", expand=True)
-
+        context["tabview"] = tabview
+        
         tabview.add("templates")  # add tab at the end
         tabview.add("features")  # add tab at the end
         tabview.set("features")  # set currently visible tab

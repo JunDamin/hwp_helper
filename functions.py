@@ -17,7 +17,11 @@ import pywintypes
 import sys
 import os
 import win32con
+import re
 
+def prettify_filename(name):
+    result = re.sub(r"[!\"\$\&\'\*\+\,/:;<=>\?@\\^_`{|}~\n]", "_", name)
+    return re.sub(r" +", r" ", result)
 
 def set_button(ctkframe, text, image_path, command=None):
     """set image button"""
@@ -49,14 +53,16 @@ def crop_background(image):
         return None
     if bbox[2] - bbox[0] < 300:
         bbox = (bbox[0], bbox[1], bbox[0] + 300, bbox[3])
+    
+    bbox = (bbox[0]-2, bbox[1]-2, bbox[2]+2, bbox[3]+2)
     return img.crop(bbox)
 
 
 # %%
 
 
-def update_template(app, hwp):
-    hwp = Path(hwp)
+def update_template(app, hwp_path):
+    hwp = Path(hwp_path)
     app.open(hwp)
     app.actions.MoveDocEnd().run()
     # if it is not end with blank line

@@ -1,7 +1,11 @@
 import customtkinter as ctk
 from functions import (
     update_templates,
+    update_template,
+    prettify_filename
 )
+from pathlib import Path
+import shutil as sh 
 
 class NaviBar(ctk.CTkFrame):
     def __init__(self, parent, context, **kwargs):
@@ -10,12 +14,17 @@ class NaviBar(ctk.CTkFrame):
         self.context = context
 
         update_btn = ctk.CTkButton(
-            self, text="update template", command=self.update_templates
+            self, text="탬플릿 업데이트", command=self.update_templates
         )
         update_btn.pack(side="left", padx=10, pady=10)
 
+        add_template_btn = ctk.CTkButton(
+            self, text="선택영역 탬플릿으로 추가하기", command=self.add_template
+        )
+        add_template_btn.pack(side="left", padx=10, pady=10)
+
         fullscreen_btn = ctk.CTkButton(
-            self, text="full screen", command=context["helper"].set_fullscreen
+            self, text="전체화면", command=context["helper"].set_fullscreen
         )
         fullscreen_btn.pack(side="left", padx=10, pady=10)
 
@@ -25,6 +34,9 @@ class NaviBar(ctk.CTkFrame):
         )  # master argument is optional
         toplevel.focus()
 
+    def add_template(self):
+        toplevel = AddTemplateForm(self, self.context)
+        toplevel.focus()
 
 class UpdateTemplateForm(ctk.CTkToplevel):
     def __init__(self, parent, template_form):
@@ -63,6 +75,46 @@ class UpdateTemplateForm(ctk.CTkToplevel):
         self.template_form.refresh()
 
         self.destroy()
+
+class AddTemplateForm(ctk.CTkToplevel):
+
+    def __init__(self, parent, context):
+        super().__init__(parent)
+        self.context = context
+        self.app = context["app"]
+
+
+        self.intro = ctk.CTkLabel(self, text="아래 항목들을 채우고 버튼을 눌러주세요.")
+        self.intro.grid(row=0, column=0, columnspan=2, padx=5, pady=5)
+        ctk.CTkLabel(self, text="구분").grid(row=1, column=0)
+        ctk.CTkLabel(self, text="이름").grid(row=2, column=0)
+        self.category = category = ctk.CTkEntry(self, placeholder_text="구분명을 입력하세요.")
+        self.name = name = ctk.CTkEntry(self, placeholder_text="구분명을 입력하세요.")
+        category.grid(row=1, column=1, pady=5, padx=5)
+        name.grid(row=2, column=1, pady=5, padx=5)
+        ctk.CTkButton(self, text="반영하기", command=self.add_template).grid(row=3, column=0, columnspan=2, pady=5)
+
+
+    def add_template(self):
+        
+        self.temp = Path("temp")
+        self.temp.mkdir(exist_ok=True)
+        self.temp_path = temp_path = Path("temp/temp.hwp")
+        self.app.save_block(temp_path)
+
+        fname = prettify_filename(f"{self.category.get()}_{self.name.get()}")
+        
+        destination = Path(f"templates/{fname}.hwp")
+        if destination.exists():
+            return self.intro.configure(text="같은 이름의 파일이 존재합니다. 다른 이름으로 수정해 주세요.")  # deletes the file
+        Path(self.temp_path).rename(destination)
+
+        update_template(self.app, destination)
+        self.context["template_frame"].refresh()
+        sh.rmtree("temp")
+        self.destroy()
+        self.context["tabview"].set("templates")
+
 
 
 if __name__=="__main__":
