@@ -122,8 +122,10 @@ class FontStyleBtns(ctk.CTkFrame):
 
         ctk.CTkButton(
             self.frame.frame_contents, text="현재 서식 저장", command=self.add_style
-        ).pack()
+        ).pack(pady=5)
 
+        self.frame.collapse()
+        
     def add_style(self):
         FontStyleBtn(self.frame.frame_contents, self.app).pack(pady=5)
 
