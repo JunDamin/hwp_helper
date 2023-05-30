@@ -171,3 +171,12 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
     @back_to_app
     def delete_memo(self):
         return self.app.actions.DeleteFieldMemo().run()
+
+
+if __name__ == "__main__":
+    root = ctk.CTk()
+    root.geometry("800x800")
+    context = {"app": None}
+    app = HwpFeatureFrame(root, context)
+    app.pack(fill="both", expand=True)
+    root.mainloop()

@@ -91,7 +91,8 @@ class Helper(ctk.CTk):
             hwp_x, hwp_y = x1, y1
             app_x, app_y = x1 + hwp_width, y1
 
-        set_hwp_size(self.app, hwp_x, hwp_y, hwp_width, height)
+        if self.app:
+            set_hwp_size(self.app, hwp_x, hwp_y, hwp_width, height)
         self.set_windows(app_x, app_y, width=width - hwp_width, height=height)
 
     def on_closing(self):
@@ -101,9 +102,8 @@ class Helper(ctk.CTk):
 
 
 if __name__ == "__main__":
-    root = ctk.CTk()
-    root.geometry("800x800")
     context = {"app": None}
-    app = HwpFeatureFrame(root, context)
-    app.pack(fill="both", expand=True)
-    root.mainloop()
+    with open("setting.yaml", encoding='utf-8') as f:
+        context["setting"] = yaml.safe_load(f)
+    app = Helper(context)
+    app.mainloop()
