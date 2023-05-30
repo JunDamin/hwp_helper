@@ -3,7 +3,7 @@ from functions import (
     back_to_app,
     get_path,
 )
-from components import ToolTip
+from components import ToolTip, FontStyleBtns
 
 
 class HwpFeatureFrame(ctk.CTkScrollableFrame):
@@ -12,6 +12,9 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
     def __init__(self, parent, context):
         super().__init__(parent)
         self.app = context["app"]
+
+        font_style_btns = FontStyleBtns(self, self.app)
+        font_style_btns.pack()
 
         # set a function for btn
         def set_feature_btn(parent, name, command, text, gif=None):
@@ -171,7 +174,6 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
     @back_to_app
     def delete_memo(self):
         return self.app.actions.DeleteFieldMemo().run()
-
 
 if __name__ == "__main__":
     root = ctk.CTk()

@@ -67,7 +67,7 @@ class ToolTip:
         tw.wm_geometry(f"+{x}+{y}")  # Position tooltip
 
         label = tk.Label(
-            tw, text=self.text, background="#dddddd", wraplength=350, font=15, ipady=15
+            tw, text=self.text, background="#dddddd", wraplength=350, font=15, pady=15
         )
         label.pack()
         if self.gif:
@@ -85,8 +85,8 @@ class ToolTip:
 class CollapsibleFrame(ctk.CTkFrame):
     """This Frame is for create collapsible frame for sub components"""
 
-    def __init__(self, master=None, text="toggle", **kwargs):
-        ctk.CTkFrame.__init__(self, master, **kwargs)
+    def __init__(self, parent=None, text="toggle", **kwargs):
+        ctk.CTkFrame.__init__(self, parent, **kwargs)
 
         self.button_toggle = ctk.CTkButton(
             self, text=text, command=self.toggle, border_spacing=10
@@ -106,12 +106,55 @@ class CollapsibleFrame(ctk.CTkFrame):
 
     def collapse(self):
         self.frame_contents.pack_forget()
+# %%
+
+class FontStyleBtn(ctk.CTkFrame):
+
+    def __init__(self, parent, app, **kwargs):
+        
+        charshape = app.get_charshape()
+        parashape = app.get_parashape()
+
+        self.app = app
+        self.parent = parent       
+        self.charshape = charshape
+        self.parashape = parashape 
+
+
+        ctk.CTkFrame.__init__(self, parent, **kwargs)
+        FontDisplay(self, charshape, parashape).grid(row=0, rowspan=2, column=0, padx=5, pady=5)
+        ctk.CTkButton(self, text="적용하기", command=self.apply).grid(row=0, column=1, pady=5)
+        ctk.CTkButton(self, text="삭제하기", command=self.destroy).grid(row=1, column=1, pady=5)
+
+    def apply(self):
+
+        self.app.set_charshape(self.charshape)
+        self.app.set_parashape(self.parashape)
+
+
+class FontStyleBtns(ctk.CTkFrame):
+        
+        def __init__(self, parent, app, **kwargs):
+            
+            self.app = app
+            self.parent = parent 
+        
+        
+            ctk.CTkFrame.__init__(self, parent, **kwargs)
+            self.frame = CollapsibleFrame(self, text="글자서식")
+            self.frame.pack()
+
+            ctk.CTkButton(self.frame.frame_contents, text="현재 서식 저장", command=self.add_style).pack()
+        
+        def add_style(self):
+            FontStyleBtn(self.frame.frame_contents, self.app).pack(pady=5)
+
 
 
 # %%
 class FontDisplay(ctk.CTkFrame):
-    def __init__(self, master, charshape, parashape, **kwargs):
-        ctk.CTkFrame.__init__(self, master, **kwargs)
+    def __init__(self, parent, charshape, parashape, **kwargs):
+        ctk.CTkFrame.__init__(self, parent, **kwargs)
         self.charshape = charshape
         self.parashape = parashape
 
