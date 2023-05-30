@@ -199,21 +199,23 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
         table_frame = ctk.CTkFrame(self)
         table_frame.pack()
 
-        cell_border_btn = set_feature_btn(
+        table_border_btn = set_feature_btn(
             table_frame,
             "표 테두리",
             command=self.set_cell_border,
             text="선택한 셀영역의 가장 위와 가장 아래 테두리는 굵은 선으로 바꾸고 좌우 끝의 테두리를 없앱니다.",
+            gif=get_path("src/table_border_btn.gif")
         )
-        cell_border_btn.grid(row=1, column=0, pady=3, padx=3, sticky="nsew")
+        table_border_btn.grid(row=1, column=0, pady=3, padx=3, sticky="nsew")
 
-        cell_color_btn = set_feature_btn(
+        cell_header_btn = set_feature_btn(
             table_frame,
             "헤더 스타일 넣기",
             command=self.set_header_style,
             text="선택한 셀영역가장 아래 테두리를 두줄로 바꾸고 셀에 연노란 바탕색을 넣습니다.",
+            gif=get_path("src/table_header_btn.gif")
         )
-        cell_color_btn.grid(row=1, column=1, pady=3, padx=3, sticky="nsew")
+        cell_header_btn.grid(row=1, column=1, pady=3, padx=3, sticky="nsew")
 
         # alignment related feature
         ctk.CTkLabel(self, text="정렬 기능").pack()
@@ -225,7 +227,7 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
             "현재 커서 위치에 맞춰 들여쓰기",
             command=self.set_para_indent,
             text="현재 커서 위치에 맞춰 들여쓰기를 적용합니다. 표에서도 사용이 가능합니다.",
-            gif="src/align_btn.gif"
+            gif=get_path("src/align_btn.gif")
         )
         para_indent_btn.grid(row=1, column=0, pady=3, padx=3, sticky="nsew")
 
@@ -260,6 +262,7 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
             "윗첨자",
             command=self.super_script,
             text="선택한 영역을 윗첨자, 혹은 원래 형태로 바꿉니다.",
+            gif=get_path("src/super_script_btn.gif")
         )
         super_script_btn.grid(row=1, column=0, pady=3, padx=3, sticky="nsew")
 
@@ -268,6 +271,7 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
             "미주넣기",
             command=self.insert_endnote,
             text="현재 위치에 번호를 표시하고 마지막 페이지에 설명을 적을 수 있는 미주를 추가합니다.",
+            gif=get_path("src/endnote_btn.gif")
         )
         insert_endnote_btn.grid(row=1, column=1, pady=3, padx=3, sticky="nsew")
 
@@ -276,16 +280,17 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
             "각주넣기",
             command=self.insert_footnote,
             text="현재 위치에 번호를 표시하고 현재 페이지 아래쪽에 설명을 추가합니다.",
+            gif=get_path("src/footnote_btn.gif")
         )
         insert_footnote_btn.grid(row=1, column=2, pady=3, padx=3, sticky="nsew")
 
         insert_memo_btn = set_feature_btn(
-            shape_frame, "메모넣기", command=self.insert_memo, text="메모를 넣습니다."
+            shape_frame, "메모넣기", command=self.insert_memo, text="메모를 넣습니다.", gif=get_path("src/add_memo_btn.gif")
         )
         insert_memo_btn.grid(row=2, column=0, padx=3, pady=3, sticky="nsew")
 
         delete_memo_btn = set_feature_btn(
-            shape_frame, "메모지우기", command=self.delete_memo, text="메모를 지웁니다."
+            shape_frame, "메모지우기", command=self.delete_memo, text="메모를 지웁니다.", gif=get_path("src/remove_memo_btn.gif")
         )
         delete_memo_btn.grid(row=2, column=1, padx=3, pady=3, sticky="nsew")
 
