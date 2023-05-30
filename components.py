@@ -118,7 +118,7 @@ class FontStyleBtns(ctk.CTkFrame):
 
         ctk.CTkFrame.__init__(self, parent, **kwargs)
         self.frame = CollapsibleFrame(self, text="글자서식")
-        self.frame.pack(pady=5)
+        self.frame.pack(pady=5, fill='x')
 
         ctk.CTkButton(
             self.frame.frame_contents, text="현재 서식 저장", command=self.add_style
