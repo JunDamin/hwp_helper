@@ -117,7 +117,7 @@ class FontDisplay(ctk.CTkFrame):
 
         hangul_font = CTkFont(
             family=charshape.hangul_font,
-            size=int(charshape.fontsize),
+            size=int(charshape.fontsize) if charshape.fontsize > 10 else 10,
             weight="bold" if charshape.bold else "normal",
             slant="italic" if charshape.italic else "roman",
             underline=1 if charshape.underline_type else 0,
@@ -127,19 +127,19 @@ class FontDisplay(ctk.CTkFrame):
         hangul = ctk.CTkLabel(
             self, text=f"폰트 {charshape.hangul_font}", font=hangul_font
         )
-        hangul.grid(row=0, column=0, rowspan=2, padx=5)
+        hangul.grid(row=0, column=0, rowspan=2, padx=3)
         char_info = ctk.CTkLabel(
             self,
             text=f"{charshape.fontsize:.01f}pt, 장평 {charshape.ratio}%, 자간 {charshape.spacing}%",
             font=hangul_font,
         )
-        char_info.grid(row=0, column=1)
+        char_info.grid(row=0, column=1, padx=5, pady=3)
         paragraph = ctk.CTkLabel(
             self,
             text=f"들여쓰기: {parashape.indentation}, 줄간격: {parashape.line_spacing}",
             font=hangul_font,
         )
-        paragraph.grid(row=1, column=1)
+        paragraph.grid(row=1, column=1, padx=5, pady=3)
 
 
 # %%
@@ -149,7 +149,10 @@ if __name__ == "__main__":
 
     app = App()
     charshape = app.get_charshape()
+    parashape= app.get_parashape()
     root = ctk.CTk()
-    fonts = FontDisplay(root, "test", charshape, None)
+    fonts = FontDisplay(root, charshape, parashape)
     fonts.pack()
     root.mainloop()
+
+# %%
