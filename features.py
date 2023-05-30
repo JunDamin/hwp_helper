@@ -54,12 +54,30 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
 
         para_indent_btn = set_feature_btn(
             alignment_frame,
-            "현재 커서 위치에 맞춰 들여쓰기",
+            "현재 커서 위치에 맞춰 들여쓰기(shift+tab)",
             command=self.set_para_indent,
-            text="현재 커서 위치에 맞춰 들여쓰기를 적용합니다. 표에서도 사용이 가능합니다.",
+            text="현재 커서 위치에 맞춰 들여쓰기를 적용합니다. 표에서는 ctrl+shift+tab으로 가능합니다.",
             gif=get_path("src/align_btn.gif"),
         )
         para_indent_btn.grid(row=1, column=0, pady=3, padx=3, sticky="nsew")
+
+        decrease_line_spacing_btn = set_feature_btn(
+            alignment_frame,
+            "줄간격 줄이기(alt+shift+A)",
+            command=self.decrease_line_spacing,
+            text="현재 커서 위치 문장 간격을 줄입니다.",
+            gif=get_path("src/decrease_line_spacing_btn.gif"),
+        )
+        decrease_line_spacing_btn.grid(row=0, column=0, pady=3, padx=3, sticky="nsew")
+
+        increase_line_spacing_btn = set_feature_btn(
+            alignment_frame,
+            "줄간격 늘리기(alt+shift+Z)",
+            command=self.increase_line_spacing,
+            text="현재 커서 위치 문장 간격을 늘립니다.",
+            gif=get_path("src/increase_line_spacing_btn.gif"),
+        )
+        increase_line_spacing_btn.grid(row=0, column=1, pady=3, padx=3, sticky="nsew")
 
         # page break related feature
         ctk.CTkLabel(self, text="페이지 관련 기능").pack()
@@ -89,7 +107,7 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
 
         super_script_btn = set_feature_btn(
             shape_frame,
-            "윗첨자",
+            "윗첨자(alt+shift+P)",
             command=self.super_script,
             text="선택한 영역을 윗첨자, 혹은 원래 형태로 바꿉니다.",
             gif=get_path("src/super_script_btn.gif"),
@@ -175,6 +193,15 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
     @back_to_app
     def delete_memo(self):
         return self.app.actions.DeleteFieldMemo().run()
+
+    @back_to_app
+    def increase_line_spacing(self):
+        return self.app.actions.ParagraphShapeIncreaseLineSpacing().run()
+
+    @back_to_app
+    def decrease_line_spacing(self):
+        return self.app.actions.ParagraphShapeDecreaseLineSpacing().run()
+
 
 if __name__ == "__main__":
     root = ctk.CTk()

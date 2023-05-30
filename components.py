@@ -138,24 +138,40 @@ class FontStyleBtn(ctk.CTkFrame):
         charshape = app.get_charshape()
         parashape = app.get_parashape()
 
+        charshape.super_script = 0
+        charshape.sub_script = 0
+
         self.app = app
         self.parent = parent
         self.charshape = charshape
         self.parashape = parashape
 
         ctk.CTkFrame.__init__(self, parent, **kwargs)
-        ctk.CTkButton(self, text="적용하기", command=self.apply).grid(
+        ctk.CTkButton(self, text="글자적용", command=self.apply_char, width=70).grid(
+            row=0, column=1, pady=5
+        )
+        ctk.CTkButton(self, text="문단적용", command=self.apply_para, width=70).grid(
+            row=1, column=1, pady=5
+        )
+        ctk.CTkButton(self, text="둘다적용", command=self.apply, width=70).grid(
             row=0, column=0, pady=5
         )
-        ctk.CTkButton(self, text="삭제하기", command=self.destroy).grid(
+        ctk.CTkButton(self, text="삭제하기", command=self.destroy, width=70, fg_color='red').grid(
             row=1, column=0, pady=5
         )
         FontDisplay(self, charshape, parashape).grid(
-            row=0, rowspan=2, column=1, padx=5, pady=5
+            row=0, rowspan=2, column=2, padx=5, pady=5
         )
 
     def apply(self):
         self.app.set_charshape(self.charshape)
+        self.app.set_parashape(self.parashape)
+
+
+    def apply_char(self):
+        self.app.set_charshape(self.charshape)
+
+    def apply_para(self):
         self.app.set_parashape(self.parashape)
 
 
