@@ -4,12 +4,16 @@ import yaml
 from functions import (
     set_hwp_size,
     get_screen_size,
+    set_window_position,
     get_ratio,
     get_path,
 )
 from features import HwpFeatureFrame
 from templates import CategoryFrame
 from navibar import NaviBar
+import win32gui as wg
+import win32con
+from time import sleep
 
 
 class Helper(ctk.CTk):
@@ -28,7 +32,6 @@ class Helper(ctk.CTk):
 
         # set app
         self.app = context["app"]
-        self.set_fullscreen()
 
         # set navi bar
 
@@ -78,23 +81,27 @@ class Helper(ctk.CTk):
         app_width = setting.get("app_width", 800)
         side = setting.get("side", "left")
 
-        x1, y1, x2, y2 = get_screen_size()
-        width = x2 - x1
-        height = y2 - y1
+        x, y, width, height = get_screen_size()
         hwp_ratio = (width - app_width) / width
         hwp_width = int(width * hwp_ratio)
 
-        hwp_x, hwp_y = x1 + int(width * (1 - hwp_ratio)), y1
-        app_x, app_y = x1, y1
+        hwp_x, hwp_y = x + int(width * (1 - hwp_ratio)), y
+        app_x, app_y = x, y
 
         if side == "left":
-            hwp_x, hwp_y = x1, y1
-            app_x, app_y = x1 + hwp_width, y1
+            hwp_x, hwp_y = x, y
+            app_x, app_y = x + hwp_width, y
 
         if self.app:
-            set_hwp_size(self.app, hwp_x, hwp_y, hwp_width, height)
-        self.set_windows(app_x, app_y, width=width - hwp_width, height=height)
+            set_window_position(self.app.get_hwnd(), hwp_x, hwp_y, hwp_width, height)
+        self.set_window(app_x, app_y, width=(width - hwp_width), height=height)
 
+
+    def set_window(self, x, y, width, height):
+        self.update_idletasks()
+        hwnd = wg.GetParent(self.winfo_id())
+        set_window_position(hwnd, x, y, width, height)
+        
     def on_closing(self):
         with open("setting.yaml", "w") as f:
             yaml.safe_dump(self.context["setting"], f)
@@ -106,4 +113,5 @@ if __name__ == "__main__":
     with open("setting.yaml", encoding='utf-8') as f:
         context["setting"] = yaml.safe_load(f)
     app = Helper(context)
+    app.set_fullscreen()
     app.mainloop()

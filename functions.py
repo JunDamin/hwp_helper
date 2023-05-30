@@ -16,6 +16,7 @@ from win32api import GetMonitorInfo, MonitorFromPoint
 import pywintypes
 import sys
 import os
+import win32con
 
 
 
@@ -68,7 +69,7 @@ def update_template(app, hwp):
     temp = Path(f"temp/{hwp.stem}_{n}.png")
     app.save(temp)
     cropped = crop_background("temp/" + temp.stem + "001.png")
-    
+
     if not cropped:
         return None
     cropped.save(f"images/{re.sub('001$', '', temp.stem)}.png")
@@ -123,6 +124,11 @@ def get_screen_size():
     x1, y1, x2, y2 = GetMonitorInfo(MonitorFromPoint((0, 0))).get("Work")
     return x1, y1, x2 - x1, y2 - y1
 
+def get_window_position(hwnd):
+    pass
+
+def set_window_position(hwnd, x, y, width, height):
+    wg.SetWindowPos(hwnd, win32con.HWND_TOP, x, y, width, height, 0)
 
 def set_hwp_size(app, left, top, width, height):
     app.api.XHwpWindows.Active_XHwpWindow.Left = left
@@ -156,7 +162,7 @@ def back_to_app(method):
 
 
 def get_path(path):
-    if getattr(sys, 'frozen', False):
+    if getattr(sys, "frozen", False):
         base_dir = sys._MEIPASS
     else:
         base_dir = os.path.dirname(os.path.abspath(__file__))

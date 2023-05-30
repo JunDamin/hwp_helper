@@ -19,4 +19,5 @@ with open("setting.yaml", encoding='utf-8') as f:
 
 context["app"] = App()
 helper = Helper(context)
+helper.set_fullscreen()
 helper.mainloop()
