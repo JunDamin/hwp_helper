@@ -39,7 +39,7 @@ class Helper(ctk.CTk):
         self.menu.pack(fill=tk.X)
 
         tabview = ctk.CTkTabview(master=self)
-        tabview.pack(padx=20, pady=20, fill="both", expand=True)
+        tabview.pack(padx=3, pady=3, fill="both", expand=True)
         context["tabview"] = tabview
         
         tabview.add("templates")  # add tab at the end

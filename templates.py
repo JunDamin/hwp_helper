@@ -43,7 +43,7 @@ class CategoryFrame(ctk.CTkScrollableFrame):
         categories = get_categories()
         for key, value in categories.items():
             cframe = CollapsibleFrame(self, key)
-            cframe.pack(fill=tk.X, pady=5, padx=5)
+            cframe.pack(fill=tk.X, pady=2, padx=2)
 
             for text, image_path, filename, n in value:
                 path = f"templates/{filename}.hwp"

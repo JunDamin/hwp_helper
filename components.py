@@ -95,7 +95,7 @@ class CollapsibleFrame(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, parent, **kwargs)
 
         self.button_toggle = ctk.CTkButton(
-            self, text=text, command=self.toggle, border_spacing=10
+            self, text=text, command=self.toggle, border_spacing=1
         )
         self.button_toggle.pack(fill="x")
 
@@ -293,14 +293,14 @@ class TemplateControl(ctk.CTkFrame):
         self.parent = parent
         self.target_frame = target_frame
 
-        ctk.CTkButton(self, text="삭제", command=self.check).grid(row=0, column=0, pady=5, padx=5)
+        ctk.CTkButton(self, text="삭제", command=self.check).grid(row=0, column=0, pady=2, padx=2)
         ctk.CTkLabel(
             self,
             text=text,
             image=get_image(image_path),
             compound="bottom",
-        ).grid(row=0, column=1, rowspan=2, pady=5, padx=5)
-        ctk.CTkButton(self, text="이름 바꾸기", command=self.rename).grid(row=1, column=0, pady=5, padx=5)
+        ).grid(row=0, column=1, rowspan=2, pady=2, padx=2)
+        ctk.CTkButton(self, text="이름 바꾸기", command=self.rename).grid(row=1, column=0, pady=2, padx=2)
         
 
 
@@ -320,9 +320,9 @@ class ConfirmDialog(ctk.CTkToplevel):
     def __init__(self, parent, text, command, **kwargs):
         super().__init__(parent, **kwargs)
         self.title("확인")
-        ctk.CTkLabel(self, text=text).grid(row=0, column=0, columnspan=2, pady=3, padx=5)
-        ctk.CTkButton(self, text="확인", command=command).grid(row=1, column=0, pady=3, padx=5)
-        ctk.CTkButton(self, text="취소", command=self.destroy).grid(row=1, column=1, pady=3, padx=5)
+        ctk.CTkLabel(self, text=text).grid(row=0, column=0, columnspan=2, pady=2, padx=2)
+        ctk.CTkButton(self, text="확인", command=command).grid(row=1, column=0, pady=2, padx=2)
+        ctk.CTkButton(self, text="취소", command=self.destroy).grid(row=1, column=1, pady=2, padx=2)
         
         self.attributes('-topmost', 1)
 
