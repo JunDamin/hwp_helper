@@ -5,6 +5,7 @@ import yaml
 from functions import (
     get_screen_size,
     set_window_position,
+    get_window_position,
     get_ratio,
     get_path,
 )
@@ -79,6 +80,8 @@ class Helper(ctk.CTk):
         setting = self.context["setting"]
         app_width = setting.get("app_width", 800)
         side = setting.get("side", "left")
+        _, _, app_width, _ = self.get_window()
+        setting["app_width"] = app_width
 
         x, y, width, height = get_screen_size()
         hwp_ratio = (width - app_width) / width
@@ -101,6 +104,13 @@ class Helper(ctk.CTk):
         hwnd = wg.GetParent(self.winfo_id())
         set_window_position(hwnd, x, y, width, height)
         
+
+    def get_window(self):
+        self.update_idletasks()
+        hwnd = wg.GetParent(self.winfo_id())
+        return get_window_position(hwnd)
+        
+         
     def on_closing(self):
         with open("setting.yaml", "w") as f:
             yaml.safe_dump(self.context["setting"], f)
