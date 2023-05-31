@@ -309,7 +309,7 @@ class RenameTemplateForm(ctk.CTkToplevel):
         name.grid(row=2, column=1, pady=5, padx=5)
         ctk.CTkButton(self, text="반영하기", command=self.rename_template).grid(row=3, column=0, columnspan=2, pady=5)
 
-        make_topmost(self)
+        self.attributes('-topmost', 1)
         
     def rename_template(self):
 
