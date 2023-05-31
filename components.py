@@ -124,9 +124,9 @@ class AddTemplateForm(ctk.CTkToplevel):
         self.intro = ctk.CTkLabel(self, text="아래 항목들을 채우고 버튼을 눌러주세요.")
         self.intro.grid(row=0, column=0, columnspan=2, padx=5, pady=5)
         ctk.CTkLabel(self, text="구분").grid(row=1, column=0)
-        ctk.CTkLabel(self, text="이름").grid(row=2, column=0)
+        ctk.CTkLabel(self, text="제목").grid(row=2, column=0)
         self.category = category = ctk.CTkEntry(self, placeholder_text="구분명을 입력하세요.")
-        self.name = name = ctk.CTkEntry(self, placeholder_text="구분명을 입력하세요.")
+        self.name = name = ctk.CTkEntry(self, placeholder_text="제목을 입력하세요.")
         category.grid(row=1, column=1, pady=5, padx=5)
         name.grid(row=2, column=1, pady=5, padx=5)
         ctk.CTkButton(self, text="반영하기", command=self.add_template).grid(row=3, column=0, columnspan=2, pady=5)
@@ -169,7 +169,7 @@ class FontStyleBtns(ctk.CTkFrame):
         self.frame.collapse()
 
     def add_style(self):
-        FontStyleBtn(self.frame.frame_contents, self.app).pack(pady=5)
+        FontStyleBtn(self.frame.frame_contents, self.app).pack(pady=5, side=tk.LEFT)
 
 
 # %%
@@ -298,13 +298,17 @@ class RenameTemplateForm(ctk.CTkToplevel):
         self.image_path = image_path
         self.target_frame = target_frame
 
+        names = Path(file_path).stem.split("_")
+        current_category, current_name = (names[0], names[1]) if len(names) == 2 else (names[0], names[0]) 
 
-        self.intro = ctk.CTkLabel(self, text="아래 항목들을 채우고 버튼을 눌러주세요.")
+        self.intro = ctk.CTkLabel(self, text="아래 항목들을 바꾸고 버튼을 눌러주세요.")
         self.intro.grid(row=0, column=0, columnspan=2, padx=5, pady=5)
         ctk.CTkLabel(self, text="구분").grid(row=1, column=0)
-        ctk.CTkLabel(self, text="이름").grid(row=2, column=0)
+        ctk.CTkLabel(self, text="제목").grid(row=2, column=0)
         self.category = category = ctk.CTkEntry(self, placeholder_text="구분명을 입력하세요.")
-        self.name = name = ctk.CTkEntry(self, placeholder_text="구분명을 입력하세요.")
+        self.name = name = ctk.CTkEntry(self, placeholder_text="제목을 입력하세요.")
+        category.insert(0, current_category)
+        name.insert(0, current_name)
         category.grid(row=1, column=1, pady=5, padx=5)
         name.grid(row=2, column=1, pady=5, padx=5)
         ctk.CTkButton(self, text="반영하기", command=self.rename_template).grid(row=3, column=0, columnspan=2, pady=5)

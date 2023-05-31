@@ -72,7 +72,7 @@ class UpdateTemplateForm(ctk.CTkToplevel):
         categories = get_categories()
         for key, value in categories.items():
             cframe = CollapsibleFrame(self.template_frame, key)
-            cframe.pack(fill=tk.X, pady=5, padx=5, expand=True)
+            cframe.pack(fill=tk.X, pady=5, padx=5, anchor='w')
 
             for text, image_path, filename, n in value:
                 path = f"templates/{filename}.hwp"
@@ -84,7 +84,7 @@ class UpdateTemplateForm(ctk.CTkToplevel):
                     file_path=path,
                     image_path=image_path,
                     target_frame=self,
-                ).pack(fill=tk.X, pady=5, padx=5, expand=True)
+                ).pack(fill=tk.X, pady=5, padx=5, anchor='w')
     
     def refresh(self):
         for child in self.template_frame.winfo_children():
