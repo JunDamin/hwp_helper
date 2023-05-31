@@ -26,7 +26,7 @@ class Helper(ctk.CTk):
         # Override the default close behavior
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-        self.title("Hwp Helper v.0.2.0")
+        self.title("Hwp Helper v.0.2.1")
         self.iconbitmap(get_path("src/ai.ico"))
 
         # set app
