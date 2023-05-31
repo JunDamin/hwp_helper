@@ -19,7 +19,7 @@ refactoring
 - add logging features
 - [x] make template from selected area
 
-- template manageing form
+- [x] template manageing form
   - delete template
 - template set idea => import and export files
 

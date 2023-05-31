@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(
-    ['main.py'],
+    ['hwp_helper.py'],
     pathex=[],
     binaries=[],
     datas=[('c:/users/freed/.pyenv/pyenv-win/versions/3.10.1/lib/site-packages/customtkinter', 'customtkinter'), ('src', 'src')],
@@ -28,7 +28,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='main',
+    name='hwp_helper',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

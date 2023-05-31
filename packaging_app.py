@@ -14,7 +14,7 @@ for line in result.stdout.decode('utf-8').splitlines():
 
 info["Location"]
 ctk_path = info["Location"].replace("\\", "/")
-command = f'pyinstaller --noconfirm --onefile --windowed --add-data "{ctk_path}/customtkinter;customtkinter" --add-data "src;src" --icon=src/ai.ico main.py'
+command = f'pyinstaller --noconfirm --onefile --windowed --add-data "{ctk_path}/customtkinter;customtkinter" --add-data "src;src" --icon=src/ai.ico hwp_helper.py'
 
 print(command)
 result = subprocess.run(["powershell", "-Command", command], capture_output=True)
