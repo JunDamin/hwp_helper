@@ -9,6 +9,8 @@ from PIL import Image, ImageTk
 from itertools import count, cycle
 from functions import get_image, make_topmost, prettify_filename, update_template
 from hwpapi.dataclasses import CharShape, ParaShape
+from uuid import uuid1
+
 
 # %%
 class ImageLabel(tk.Label):
@@ -160,7 +162,7 @@ class FontStyleBtns(ctk.CTkFrame):
         self.app = context["app"]
         self.parent = parent
         self.context=context
-        self.font_styles = context["setting"].get("font_styles", [])
+        self.font_styles = context["setting"].get("font_styles", {})
 
         ctk.CTkFrame.__init__(self, parent, **kwargs)
         self.frame = CollapsibleFrame(self, text="글자서식")
@@ -171,22 +173,21 @@ class FontStyleBtns(ctk.CTkFrame):
         ToolTip(save_btn, text="현재 커서가 위치의 글자 서식과 문단 서식을 저장합니다.")
 
 
-        for font_style in self.font_styles:
-            style_index = font_style[0]
+        for idx, font_style in self.font_styles.items():
             charshape = CharShape()
-            charshape.fromdict(font_style[1])
+            charshape.fromdict(font_style[0])
             parashape = ParaShape()
-            parashape.fromdict(font_style[2])
+            parashape.fromdict(font_style[1])
 
-            FontStyleBtn(self.frame.frame_contents, context, style_index, charshape, parashape).pack(pady=5, anchor='w', fill=tk.X)
+            FontStyleBtn(self.frame.frame_contents, context, idx, charshape, parashape).pack(pady=5, anchor='w', fill=tk.X)
 
         
     def add_style(self):
         app = self.app
         charshape = app.get_charshape()
         parashape = app.get_parashape()
-        idx = len(self.font_styles)
-        self.font_styles.append((idx, charshape.todict(), parashape.todict()))
+        idx = str(uuid1())
+        self.font_styles[idx] = (charshape.todict(), parashape.todict())
         self.context["setting"]["font_styles"] = self.font_styles
         
         FontStyleBtn(self.frame.frame_contents, self.context, idx=idx, charshape=charshape, parashape=parashape).pack(pady=5, anchor='w', fill=tk.X)

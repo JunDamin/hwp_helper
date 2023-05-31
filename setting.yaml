@@ -1,17 +1,17 @@
 app_width: 821
 font_styles:
-- - 1
+  e86270ea-ff78-11ed-bdb2-5084928a150f:
   - Bold: 0
     DiacSymMark: 0
     Emboss: 0
     Engrave: 0
-    FaceNameHangul: "\uD55C\uCEF4 \uC724\uACE0\uB515 230"
-    FaceNameHanja: "\uD55C\uCEF4 \uC724\uACE0\uB515 230"
-    FaceNameJapanese: "\uD55C\uCEF4 \uC724\uACE0\uB515 230"
-    FaceNameLatin: "\uD55C\uCEF4 \uC724\uACE0\uB515 230"
-    FaceNameOther: "\uD55C\uCEF4 \uC724\uACE0\uB515 230"
-    FaceNameSymbol: "\uD55C\uCEF4 \uC724\uACE0\uB515 230"
-    FaceNameUser: "\uD55C\uCEF4 \uC724\uACE0\uB515 230"
+    FaceNameHangul: "\uD568\uCD08\uB86C\uBC14\uD0D5"
+    FaceNameHanja: "\uD568\uCD08\uB86C\uBC14\uD0D5"
+    FaceNameJapanese: "\uD568\uCD08\uB86C\uBC14\uD0D5"
+    FaceNameLatin: "\uD568\uCD08\uB86C\uBC14\uD0D5"
+    FaceNameOther: "\uD568\uCD08\uB86C\uBC14\uD0D5"
+    FaceNameSymbol: "\uD568\uCD08\uB86C\uBC14\uD0D5"
+    FaceNameUser: "\uD568\uCD08\uB86C\uBC14\uD0D5"
     FontTypeHangul: 1
     FontTypeHanja: 1
     FontTypeJapanese: 1
@@ -87,7 +87,7 @@ font_styles:
     KeepWithNext: 0
     LeftMargin: 0
     Level: 0
-    LineSpacing: 160
+    LineSpacing: 130
     LineSpacingType: 0
     LineWrap: 0
     NextSpacing: 0
@@ -99,18 +99,18 @@ font_styles:
     TailType: 0
     TextAlignment: 0
     WidowOrphan: 0
-- - 1
+  f586f082-ff78-11ed-9181-5084928a150f:
   - Bold: 0
     DiacSymMark: 0
     Emboss: 0
     Engrave: 0
-    FaceNameHangul: "\uD568\uCD08\uB86C\uBC14\uD0D5"
-    FaceNameHanja: "\uD568\uCD08\uB86C\uBC14\uD0D5"
-    FaceNameJapanese: "\uD568\uCD08\uB86C\uBC14\uD0D5"
-    FaceNameLatin: "\uD568\uCD08\uB86C\uBC14\uD0D5"
-    FaceNameOther: "\uD568\uCD08\uB86C\uBC14\uD0D5"
-    FaceNameSymbol: "\uD568\uCD08\uB86C\uBC14\uD0D5"
-    FaceNameUser: "\uD568\uCD08\uB86C\uBC14\uD0D5"
+    FaceNameHangul: "\uB3CB\uC6C0"
+    FaceNameHanja: "\uB3CB\uC6C0"
+    FaceNameJapanese: "\uB3CB\uC6C0"
+    FaceNameLatin: "\uB3CB\uC6C0"
+    FaceNameOther: "\uB3CB\uC6C0"
+    FaceNameSymbol: "\uB3CB\uC6C0"
+    FaceNameUser: "\uB3CB\uC6C0"
     FontTypeHangul: 1
     FontTypeHanja: 1
     FontTypeJapanese: 1
@@ -118,7 +118,7 @@ font_styles:
     FontTypeOther: 1
     FontTypeSymbol: 1
     FontTypeUser: 1
-    Height: 1000
+    Height: 1200
     Italic: 0
     OffsetHangul: 0
     OffsetHanja: 0
