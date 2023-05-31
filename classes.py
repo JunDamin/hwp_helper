@@ -19,6 +19,7 @@ class Helper(ctk.CTk):
     def __init__(self, context):
         super().__init__()
 
+        self.version = "Hwp Helper v.0.2.1"
         self.context = context
 
         context["helper"] = self
@@ -26,7 +27,7 @@ class Helper(ctk.CTk):
         # Override the default close behavior
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-        self.title("Hwp Helper v.0.2.1")
+        self.title(self.version)
         self.iconbitmap(get_path("src/ai.ico"))
 
         # set app
@@ -64,7 +65,7 @@ class Helper(ctk.CTk):
         icon.pack(anchor="w", side=tk.LEFT, padx=5, pady=5)
         header = ctk.CTkLabel(
             self.menu,
-            text="Hwp Helper v.0.2.0",
+            text=self.version,
         )
         header.pack(anchor="w", side=tk.LEFT, padx=5, pady=5)
 

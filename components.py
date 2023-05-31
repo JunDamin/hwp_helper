@@ -9,6 +9,7 @@ from PIL import Image, ImageTk
 from itertools import count, cycle
 from functions import get_image, make_topmost, prettify_filename, update_template
 from hwpapi.dataclasses import CharShape, ParaShape
+from hwpapi.core import App
 from uuid import uuid1
 
 
@@ -131,7 +132,9 @@ class AddTemplateForm(ctk.CTkToplevel):
         self.name = name = ctk.CTkEntry(self, placeholder_text="제목을 입력하세요.")
         category.grid(row=1, column=1, pady=5, padx=5)
         name.grid(row=2, column=1, pady=5, padx=5)
-        ctk.CTkButton(self, text="반영하기", command=self.add_template).grid(row=3, column=0, columnspan=2, pady=5)
+        
+        self.add_btn = ctk.CTkButton(self, text="반영하기", command=self.add_template)
+        self.add_btn.grid(row=3, column=0, columnspan=2, pady=5)
 
         make_topmost(self)
 
@@ -149,7 +152,14 @@ class AddTemplateForm(ctk.CTkToplevel):
             return self.intro.configure(text="같은 이름의 파일이 존재합니다. 다른 이름으로 수정해 주세요.")  # deletes the file
         Path(self.temp_path).rename(destination)
 
-        update_template(self.app, destination)
+        
+        self.add_btn.destroy()
+        self.intro.configure(text="작업중입니다. 이는 다소 시간이 소요 될 수 있습니다.")
+        
+        temp_app = App(is_visible=False)
+        update_template(temp_app, destination)
+        temp_app.quit()
+
         self.context["template_frame"].refresh()
         sh.rmtree("temp")
         self.destroy()
