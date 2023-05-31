@@ -100,6 +100,24 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
         )
         break_page_btn.grid(row=1, column=1, pady=3, padx=3, sticky="nsew")
 
+
+        koica_page_setup_btn = set_feature_btn(
+            layout_frame,
+            "기안기 여백설정",
+            command=self.setup_koica_page,
+            text="페이지여백을 KOICA 공문 기안기에 맞춰 설정합니다.",
+        )
+        koica_page_setup_btn.grid(row=2, column=0, pady=3, padx=3, sticky="nsew")
+
+        normal_page_setup_btn = set_feature_btn(
+            layout_frame,
+            "일반 여백설정",
+            command=self.setup_normal_page,
+            text="페이지여백을 좌우를 20mm, 위는 20mm, 머리말 15mm 아래는 15mm, 꼬리말 5mm, 제본 0mm로 설정합니다.",
+        )
+        normal_page_setup_btn.grid(row=2, column=1, pady=3, padx=3, sticky="nsew")
+
+
         # shape related feature
         ctk.CTkLabel(self, text="형태 설정 기능").pack()
         shape_frame = ctk.CTkFrame(self)
@@ -202,6 +220,15 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
     def decrease_line_spacing(self):
         return self.app.actions.ParagraphShapeDecreaseLineSpacing().run()
 
+    @back_to_app
+    def setup_koica_page(self):
+        return self.app.setup_page(top=30, bottom=15, left=20, right=15, header=0, footer=15, gutter=0)
+        
+
+    @back_to_app
+    def setup_normal_page(self):
+        return self.app.setup_page()
+        
 
 if __name__ == "__main__":
     root = ctk.CTk()
