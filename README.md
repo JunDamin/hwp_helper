@@ -1,22 +1,25 @@
 refactoring
 
 - Helper
-  - set_windows(width, height, x, y)
-  - set_fullscreen(ratio)
-- add tab
+  - [x] set_windows(width, height, x, y)
+  - [x] set_fullscreen(ratio)
+- [x] add tab
 
 - ask_dialog for save before closing.
 
-- blank page error
-- not matching image error => update?
+- [x] blank page error
+- [x] not matching image error => update?
 
 
-- add setting.json
+- [x] add setting.yaml
 - add setting page
 
-- add font style add and apply
+- [x] add font style add and apply
 
 - add logging features
-- make template from selected area
+- [x] make template from selected area
+
+- template manageing form
+  - delete template
 - template set idea => import and export files
 

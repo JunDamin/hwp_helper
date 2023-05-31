@@ -23,6 +23,14 @@ def prettify_filename(name):
     result = re.sub(r"[!\"\$\&\'\*\+\,/:;<=>\?@\\^_`{|}~\n]", "_", name)
     return re.sub(r" +", r" ", result)
 
+def get_image(image_path):
+    """set image button"""
+    image_path = Path(image_path)
+    img = Image.open(image_path)
+
+    return ctk.CTkImage(light_image=img, dark_image=img, size=img.size)
+
+
 def set_button(ctkframe, text, image_path, command=None):
     """set image button"""
     image_path = Path(image_path)
@@ -177,7 +185,12 @@ def get_path(path):
         base_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(base_dir, path)
 
-
+def make_topmost(window):
+    # Makes the window topmost
+    window.attributes('-topmost', 1)
+    # After 1 millisecond, turn off topmost
+    window.after(1, lambda: window.attributes('-topmost', 0))
+    
 # %%
 if __name__ == "__main__":
     update_templates()

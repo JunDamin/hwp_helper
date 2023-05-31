@@ -3,8 +3,11 @@
 import customtkinter as ctk
 from customtkinter import CTkFont
 import tkinter as tk
+from pathlib import Path
+import shutil as sh
 from PIL import Image, ImageTk
 from itertools import count, cycle
+from functions import get_image, make_topmost, prettify_filename, update_template
 
 
 # %%
@@ -110,6 +113,45 @@ class CollapsibleFrame(ctk.CTkFrame):
 
 # %%
 
+class AddTemplateForm(ctk.CTkToplevel):
+
+    def __init__(self, parent, context):
+        super().__init__(parent)
+        self.context = context
+        self.app = context["app"]
+
+
+        self.intro = ctk.CTkLabel(self, text="아래 항목들을 채우고 버튼을 눌러주세요.")
+        self.intro.grid(row=0, column=0, columnspan=2, padx=5, pady=5)
+        ctk.CTkLabel(self, text="구분").grid(row=1, column=0)
+        ctk.CTkLabel(self, text="이름").grid(row=2, column=0)
+        self.category = category = ctk.CTkEntry(self, placeholder_text="구분명을 입력하세요.")
+        self.name = name = ctk.CTkEntry(self, placeholder_text="구분명을 입력하세요.")
+        category.grid(row=1, column=1, pady=5, padx=5)
+        name.grid(row=2, column=1, pady=5, padx=5)
+        ctk.CTkButton(self, text="반영하기", command=self.add_template).grid(row=3, column=0, columnspan=2, pady=5)
+
+        make_topmost(self)
+
+    def add_template(self):
+        
+        self.temp = Path("temp")
+        self.temp.mkdir(exist_ok=True)
+        self.temp_path = temp_path = Path("temp/temp.hwp")
+        self.app.save_block(temp_path)
+
+        fname = prettify_filename(f"{self.category.get()}_{self.name.get()}")
+        
+        destination = Path(f"templates/{fname}.hwp")
+        if destination.exists():
+            return self.intro.configure(text="같은 이름의 파일이 존재합니다. 다른 이름으로 수정해 주세요.")  # deletes the file
+        Path(self.temp_path).rename(destination)
+
+        update_template(self.app, destination)
+        self.context["template_frame"].refresh()
+        sh.rmtree("temp")
+        self.destroy()
+        self.context["tabview"].set("templates")
 
 class FontStyleBtns(ctk.CTkFrame):
     def __init__(self, parent, app, **kwargs):
@@ -118,7 +160,7 @@ class FontStyleBtns(ctk.CTkFrame):
 
         ctk.CTkFrame.__init__(self, parent, **kwargs)
         self.frame = CollapsibleFrame(self, text="글자서식")
-        self.frame.pack(pady=5, fill='x')
+        self.frame.pack(pady=5, fill="x")
 
         ctk.CTkButton(
             self.frame.frame_contents, text="현재 서식 저장", command=self.add_style
@@ -156,9 +198,9 @@ class FontStyleBtn(ctk.CTkFrame):
         ctk.CTkButton(self, text="둘다적용", command=self.apply, width=70).grid(
             row=0, column=0, pady=5
         )
-        ctk.CTkButton(self, text="삭제하기", command=self.destroy, width=70, fg_color='red').grid(
-            row=1, column=0, pady=5
-        )
+        ctk.CTkButton(
+            self, text="삭제하기", command=self.destroy, width=70, fg_color="red"
+        ).grid(row=1, column=0, pady=5)
         FontDisplay(self, charshape, parashape).grid(
             row=0, rowspan=2, column=2, padx=5, pady=5
         )
@@ -166,7 +208,6 @@ class FontStyleBtn(ctk.CTkFrame):
     def apply(self):
         self.app.set_charshape(self.charshape)
         self.app.set_parashape(self.parashape)
-
 
     def apply_char(self):
         self.app.set_charshape(self.charshape)
@@ -191,9 +232,7 @@ class FontDisplay(ctk.CTkFrame):
             overstrike=1 if charshape.strike_out_type else 0,
         )
 
-        hangul = ctk.CTkLabel(
-            self, text=f"{charshape.hangul_font}", font=hangul_font
-        )
+        hangul = ctk.CTkLabel(self, text=f"{charshape.hangul_font}", font=hangul_font)
         hangul.grid(row=0, column=0, rowspan=2, padx=3)
         char_info = ctk.CTkLabel(
             self,
@@ -208,6 +247,84 @@ class FontDisplay(ctk.CTkFrame):
         )
         paragraph.grid(row=1, column=1, padx=5, pady=3)
 
+
+class TemplateControl(ctk.CTkFrame):
+    def __init__(self, parent, text, file_path, image_path, target_frame, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.file_path = file_path
+        self.image_path = image_path
+        self.parent = parent
+        self.target_frame = target_frame
+
+        ctk.CTkButton(self, text="삭제", command=self.check).grid(row=0, column=0, pady=5, padx=5)
+        ctk.CTkLabel(
+            self,
+            text=text,
+            image=get_image(image_path),
+            compound="bottom",
+        ).grid(row=0, column=1, rowspan=2, pady=5, padx=5)
+        ctk.CTkButton(self, text="이름 바꾸기", command=self.rename).grid(row=1, column=0, pady=5, padx=5)
+        
+
+
+    def check(self):
+        ConfirmDialog(self, text="삭제하시겠습니까?", command=self.delete_template)
+
+    def rename(self):
+        RenameTemplateForm(self, file_path=self.file_path, image_path=self.image_path, target_frame=self.target_frame)
+
+    def delete_template(self):
+        Path(self.file_path).unlink()
+        Path(self.image_path).unlink()
+        self.target_frame.refresh()
+
+
+class ConfirmDialog(ctk.CTkToplevel):
+    def __init__(self, parent, text, command, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.title("확인")
+        ctk.CTkLabel(self, text=text).grid(row=0, column=0, columnspan=2, pady=3, padx=5)
+        ctk.CTkButton(self, text="확인", command=command).grid(row=1, column=0, pady=3, padx=5)
+        ctk.CTkButton(self, text="취소", command=self.destroy).grid(row=1, column=1, pady=3, padx=5)
+        
+        make_topmost(self)
+
+
+class RenameTemplateForm(ctk.CTkToplevel):
+
+    def __init__(self, parent, file_path, image_path, target_frame):
+        super().__init__(parent)
+        self.file_path = file_path
+        self.image_path = image_path
+        self.target_frame = target_frame
+
+
+        self.intro = ctk.CTkLabel(self, text="아래 항목들을 채우고 버튼을 눌러주세요.")
+        self.intro.grid(row=0, column=0, columnspan=2, padx=5, pady=5)
+        ctk.CTkLabel(self, text="구분").grid(row=1, column=0)
+        ctk.CTkLabel(self, text="이름").grid(row=2, column=0)
+        self.category = category = ctk.CTkEntry(self, placeholder_text="구분명을 입력하세요.")
+        self.name = name = ctk.CTkEntry(self, placeholder_text="구분명을 입력하세요.")
+        category.grid(row=1, column=1, pady=5, padx=5)
+        name.grid(row=2, column=1, pady=5, padx=5)
+        ctk.CTkButton(self, text="반영하기", command=self.rename_template).grid(row=3, column=0, columnspan=2, pady=5)
+
+        make_topmost(self)
+        
+    def rename_template(self):
+
+        fname = prettify_filename(f"{self.category.get()}_{self.name.get()}")
+        n = Path(self.image_path).stem.split("_")[-1]
+
+        destination = Path(f"templates/{fname}.hwp")
+        if destination.exists():
+            return self.intro.configure(text="같은 이름의 파일이 존재합니다. 다른 이름으로 수정해 주세요.")  # deletes the file
+        Path(self.file_path).rename(destination)
+        image_destination = Path(f"images/{fname}_{n}.png")
+        Path(self.image_path).rename(image_destination)
+        
+        self.destroy()
+        self.target_frame.refresh()
 
 # %%
 if __name__ == "__main__":
