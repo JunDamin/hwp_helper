@@ -313,7 +313,7 @@ class ConfirmDialog(ctk.CTkToplevel):
         ctk.CTkButton(self, text="확인", command=command).grid(row=1, column=0, pady=3, padx=5)
         ctk.CTkButton(self, text="취소", command=self.destroy).grid(row=1, column=1, pady=3, padx=5)
         
-        make_topmost(self)
+        self.attributes('-topmost', 1)
 
 
 class RenameTemplateForm(ctk.CTkToplevel):
