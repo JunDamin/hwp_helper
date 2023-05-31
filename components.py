@@ -62,7 +62,7 @@ class ToolTip:
 
     def show_tooltip(self, event=None):
         x, y, _, _ = self.widget.bbox("insert")
-        x += self.widget.winfo_rootx() + 25
+        x += self.widget.winfo_rootx() - (350 - self.widget.winfo_width())
         y += self.widget.winfo_rooty() + 50
 
         self.tooltip_window = tw = tk.Toplevel(self.widget)
