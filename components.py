@@ -8,7 +8,7 @@ import shutil as sh
 from PIL import Image, ImageTk
 from itertools import count, cycle
 from functions import get_image, make_topmost, prettify_filename, update_template
-
+from hwpapi.dataclasses import CharShape, ParaShape
 
 # %%
 class ImageLabel(tk.Label):
@@ -153,10 +153,14 @@ class AddTemplateForm(ctk.CTkToplevel):
         self.destroy()
         self.context["tabview"].set("templates")
 
+# %% 
+
 class FontStyleBtns(ctk.CTkFrame):
-    def __init__(self, parent, app, **kwargs):
-        self.app = app
+    def __init__(self, parent, context, **kwargs):
+        self.app = context["app"]
         self.parent = parent
+        self.context=context
+        self.font_styles = context["setting"].get("font_styles", [])
 
         ctk.CTkFrame.__init__(self, parent, **kwargs)
         self.frame = CollapsibleFrame(self, text="글자서식")
@@ -166,28 +170,43 @@ class FontStyleBtns(ctk.CTkFrame):
             self.frame.frame_contents, text="현재 서식 저장", command=self.add_style
         ).pack(pady=5)
 
-        self.frame.collapse()
+        for font_style in self.font_styles:
+            style_index = font_style[0]
+            charshape = CharShape()
+            charshape.fromdict(font_style[1])
+            parashape = ParaShape()
+            parashape.fromdict(font_style[2])
 
+            FontStyleBtn(self.frame.frame_contents, context, style_index, charshape, parashape).pack(pady=5, anchor='w', fill=tk.X)
+
+        
     def add_style(self):
-        FontStyleBtn(self.frame.frame_contents, self.app).pack(pady=5, side=tk.LEFT)
+        app = self.app
+        charshape = app.get_charshape()
+        parashape = app.get_parashape()
+        idx = len(self.font_styles)
+        self.font_styles.append((idx, charshape.todict(), parashape.todict()))
+        self.context["setting"]["font_styles"] = self.font_styles
+        
+        FontStyleBtn(self.frame.frame_contents, self.context, idx=idx, charshape=charshape, parashape=parashape).pack(pady=5, anchor='w', fill=tk.X)
 
 
 # %%
 
 
 class FontStyleBtn(ctk.CTkFrame):
-    def __init__(self, parent, app, **kwargs):
-        charshape = app.get_charshape()
-        parashape = app.get_parashape()
+    def __init__(self, parent, context, idx, charshape, parashape, **kwargs):
+        self.context = context
+        self.app = context["app"]
+        self.idx = idx
+        self.charshape = charshape
+        self.parashape = parashape 
 
         charshape.super_script = 0
         charshape.sub_script = 0
 
-        self.app = app
-        self.parent = parent
-        self.charshape = charshape
-        self.parashape = parashape
 
+        
         ctk.CTkFrame.__init__(self, parent, **kwargs)
         ctk.CTkButton(self, text="글자적용", command=self.apply_char, width=70).grid(
             row=0, column=1, pady=5
@@ -199,7 +218,7 @@ class FontStyleBtn(ctk.CTkFrame):
             row=0, column=0, pady=5
         )
         ctk.CTkButton(
-            self, text="삭제하기", command=self.destroy, width=70, fg_color="red"
+            self, text="삭제하기", command=self.delete, width=70, fg_color="red"
         ).grid(row=1, column=0, pady=5)
         FontDisplay(self, charshape, parashape).grid(
             row=0, rowspan=2, column=2, padx=5, pady=5
@@ -214,6 +233,12 @@ class FontStyleBtn(ctk.CTkFrame):
 
     def apply_para(self):
         self.app.set_parashape(self.parashape)
+
+    def delete(self):
+        del self.context["setting"]["font_styles"][self.idx]
+        self.destroy()
+
+
 
 
 # %%

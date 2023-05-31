@@ -1,2 +1,102 @@
 app_width: 1000
+font_styles:
+- - 1
+  - Bold: 0
+    DiacSymMark: 0
+    Emboss: 0
+    Engrave: 0
+    FaceNameHangul: "\uD55C\uCEF4 \uC724\uACE0\uB515 230"
+    FaceNameHanja: "\uD55C\uCEF4 \uC724\uACE0\uB515 230"
+    FaceNameJapanese: "\uD55C\uCEF4 \uC724\uACE0\uB515 230"
+    FaceNameLatin: "\uD55C\uCEF4 \uC724\uACE0\uB515 230"
+    FaceNameOther: "\uD55C\uCEF4 \uC724\uACE0\uB515 230"
+    FaceNameSymbol: "\uD55C\uCEF4 \uC724\uACE0\uB515 230"
+    FaceNameUser: "\uD55C\uCEF4 \uC724\uACE0\uB515 230"
+    FontTypeHangul: 1
+    FontTypeHanja: 1
+    FontTypeJapanese: 1
+    FontTypeLatin: 1
+    FontTypeOther: 1
+    FontTypeSymbol: 1
+    FontTypeUser: 1
+    Height: 1000
+    Italic: 0
+    OffsetHangul: 0
+    OffsetHanja: 0
+    OffsetJapanese: 0
+    OffsetLatin: 0
+    OffsetOther: 0
+    OffsetSymbol: 0
+    OffsetUser: 0
+    OutLineType: 0
+    RatioHangul: 100
+    RatioHanja: 100
+    RatioJapanese: 100
+    RatioLatin: 100
+    RatioOther: 100
+    RatioSymbol: 100
+    RatioUser: 100
+    ShadeColor: 4294967295
+    ShadowColor: 12632256
+    ShadowOffsetX: 10
+    ShadowOffsetY: 10
+    ShadowType: 0
+    SizeHangul: 100
+    SizeHanja: 100
+    SizeJapanese: 100
+    SizeLatin: 100
+    SizeOther: 100
+    SizeSymbol: 100
+    SizeUser: 100
+    SmallCaps: 0
+    SpacingHangul: 0
+    SpacingHanja: 0
+    SpacingJapanese: 0
+    SpacingLatin: 0
+    SpacingOther: 0
+    SpacingSymbol: 0
+    SpacingUser: 0
+    StrikeOutColor: 0
+    StrikeOutShape: 0
+    StrikeOutType: 0
+    SubScript: 0
+    SuperScript: 0
+    TextColor: 0
+    UnderlineColor: 0
+    UnderlineShape: 0
+    UnderlineType: 0
+    UseFontSpace: 0
+    UseKerning: 0
+  - AlignType: 0
+    AutoSpaceEAsianEng: 0
+    AutoSpaceEAsianNum: 0
+    BorderConnect: 0
+    BorderOffsetBottom: 0
+    BorderOffsetLeft: 0
+    BorderOffsetRight: 0
+    BorderOffsetTop: 0
+    BorderText: 0
+    BreakLatinWord: 0
+    BreakNonLatinWord: 1
+    Checked: 0
+    Condense: 0
+    FontLineHeight: 0
+    HeadingType: 0
+    Indentation: 0
+    KeepLinesTogether: 0
+    KeepWithNext: 0
+    LeftMargin: 0
+    Level: 0
+    LineSpacing: 160
+    LineSpacingType: 0
+    LineWrap: 0
+    NextSpacing: 0
+    PagebreakBefore: 0
+    PrevSpacing: 0
+    RightMargin: 0
+    SnapToGrid: 1
+    SuppressLineNum: 0
+    TailType: 0
+    TextAlignment: 0
+    WidowOrphan: 0
 side: left

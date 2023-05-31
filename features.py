@@ -14,7 +14,7 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
         super().__init__(parent)
         self.app = context["app"]
 
-        font_style_btns = FontStyleBtns(self, self.app)
+        font_style_btns = FontStyleBtns(self, context)
         font_style_btns.pack(fill=tk.X, expand=True)
 
         # set a function for btn
