@@ -77,7 +77,7 @@ class Helper(ctk.CTk):
         ratio = get_ratio(self)
         self.geometry(f"{int(width*ratio)}x{int(height*ratio)}+{int(left)}+{int(top)}")
 
-    def set_fullscreen(self, ratio=None):
+    def set_fullscreen(self):
         setting = self.context["setting"]
         app_width = setting.get("app_width", 800)
         side = setting.get("side", "left")
@@ -98,6 +98,25 @@ class Helper(ctk.CTk):
         if self.app:
             set_window_position(self.app.get_hwnd(), hwp_x, hwp_y, hwp_width, height)
         self.set_window(app_x, app_y, width=(width - hwp_width), height=height)
+
+
+    def set_halfscreen(self):
+        setting = self.context["setting"]
+        app_width = setting.get("app_width", 800)
+        _, _, app_width, _ = self.get_window()
+        setting["app_width"] = app_width
+
+        x, y, width, height = get_screen_size()
+        x = x + int(width/2)
+        hwp_ratio = (width/2 - app_width) / (width/2)
+        hwp_width = int(max(width/2 * hwp_ratio, width/4))
+        hwp_x, hwp_y = x, y
+        app_x, app_y = x + hwp_width, y
+
+        if self.app:
+            set_window_position(self.app.get_hwnd(), hwp_x, hwp_y, hwp_width, height)
+        self.set_window(app_x, app_y, width=int(width/2 - hwp_width), height=height)
+
 
 
     def set_window(self, x, y, width, height):

@@ -9,6 +9,7 @@ from components import CollapsibleFrame, TemplateControl, AddTemplateForm, ToolT
 
 class NaviBar(ctk.CTkFrame):
     def __init__(self, parent, context, **kwargs):
+
         super().__init__(parent, **kwargs)
         self.app = context["app"]
         self.context = context
@@ -16,20 +17,27 @@ class NaviBar(ctk.CTkFrame):
         fullscreen_btn = ctk.CTkButton(
             self, text="전체화면", command=context["helper"].set_fullscreen, width=70,
         )
-        fullscreen_btn.pack(side="left", padx=10, pady=10)
+        fullscreen_btn.grid(row=0, column=0, padx=5, pady=5)
         ToolTip(fullscreen_btn, text="현재 앱 폭에 맞춰 전체화면으로 설정합니다.")
 
-        add_template_btn = ctk.CTkButton(
-            self, text="선택영역 탬플릿 추가", command=self.add_template
+        halfscreen_btn = ctk.CTkButton(
+            self, text="오른쪽화면", command=context["helper"].set_halfscreen, width=70,
         )
-        add_template_btn.pack(side="left", padx=10, pady=10)
-        ToolTip(add_template_btn, "한글에서 현재 선택중인 영역을 탬플릿으로 추가합니다.")
+        halfscreen_btn.grid(row=1, column=0, padx=5, pady=5)
+        ToolTip(halfscreen_btn, text="현재 앱 폭에 맞춰 화면의 절반으로 설정합니다.")
 
         update_btn = ctk.CTkButton(
             self, text="탬플릿 관리", command=self.update_templates, width=80
         )
-        update_btn.pack(side="left", padx=10, pady=10)
+        update_btn.grid(row=0, column=1,)
         ToolTip(update_btn, text="탬플릿 이름을 수정하거나 삭제, 또는 templates 폴더에 있는 내용으로 전체를 업데이트 합니다.")
+
+        add_template_btn = ctk.CTkButton(
+            self, text="선택영역 탬플릿 추가", command=self.add_template
+        )
+        add_template_btn.grid(row=1, column=1, padx=5, pady=5)
+        ToolTip(add_template_btn, "한글에서 현재 선택중인 영역을 탬플릿으로 추가합니다.")
+
     def update_templates(self):
         toplevel = UpdateTemplateForm(
             self, self.context["template_frame"], 

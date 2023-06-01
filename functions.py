@@ -30,6 +30,11 @@ def get_image(image_path):
 
     return ctk.CTkImage(light_image=img, dark_image=img, size=img.size)
 
+def get_image(image_path):
+    image_path = Path(image_path)
+    img = Image.open(image_path)
+
+    return ctk.CTkImage(light_image=img, dark_image=img, size=img.size)
 
 def set_button(ctkframe, text, image_path, command=None):
     """set image button"""
@@ -46,7 +51,7 @@ def set_button(ctkframe, text, image_path, command=None):
         compound="bottom",
         command=command,
     )
-    btn.pack()
+    btn.pack(anchor='w')
     return btn
 
 

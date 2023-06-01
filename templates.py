@@ -6,6 +6,7 @@ from functions import (
     get_categories,
     set_forewindows,
     check_app,
+    get_image
 )
 
 
@@ -43,18 +44,20 @@ class CategoryFrame(ctk.CTkScrollableFrame):
         categories = get_categories()
         for key, value in categories.items():
             cframe = CollapsibleFrame(self, key)
-            cframe.pack(fill=tk.X, pady=2, padx=2)
+            cframe.pack(fill=tk.X, padx=2, pady=2, anchor='nw')
 
             for text, image_path, filename, n in value:
                 path = f"templates/{filename}.hwp"
-
-                # create button
-                btn = set_button(
-                    cframe.frame_contents,
+                
+                image = get_image(image_path)
+                btn = ctk.CTkButton(cframe.frame_contents,
                     text=text,
-                    image_path=image_path,
                     command=make_func(path, n),
+                    fg_color="transparent",
+                    image=image,
+                    compound="bottom",
                 )
+                cframe.add_widget(btn, sticky='w')
             cframe.collapse()
 
 

@@ -94,25 +94,30 @@ class CollapsibleFrame(ctk.CTkFrame):
     def __init__(self, parent=None, text="toggle", **kwargs):
         ctk.CTkFrame.__init__(self, parent, **kwargs)
 
+        self._next_row = 0 
+
         self.button_toggle = ctk.CTkButton(
             self, text=text, command=self.toggle, border_spacing=1
         )
-        self.button_toggle.pack(fill="x")
+        self.button_toggle.pack(fill=tk.X, anchor='w')
 
         self.frame_contents = ctk.CTkFrame(
-            self,
+            self, 
         )
-        self.frame_contents.pack()
+        self.frame_contents.pack(fill=tk.X, anchor='w')
 
     def toggle(self):
         if self.frame_contents.winfo_viewable():
             self.frame_contents.pack_forget()
         else:
-            self.frame_contents.pack()
+            self.frame_contents.pack(fill=tk.X, anchor='w')
 
     def collapse(self):
         self.frame_contents.pack_forget()
 
+    def add_widget(self, widget, **grid_kwargs):
+        widget.grid(row=self._next_row, **grid_kwargs)
+        self._next_row += 1
 
 # %%
 
