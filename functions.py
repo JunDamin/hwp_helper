@@ -133,10 +133,13 @@ def get_categories():
     return categories
 
 
-def set_forewindows(app):
+def set_forewindow(app):
     hwnd = app.api.XHwpWindows.Active_XHwpWindow.WindowHandle
     return wg.SetForegroundWindow(hwnd)
 
+def show_window(app):
+    hwnd = app.api.XHwpWindows.Active_XHwpWindow.WindowHandle
+    return wg.ShowWindow(hwnd, 1)
 
 def get_screen_size():
     x1, y1, x2, y2 = GetMonitorInfo(MonitorFromPoint((0, 0))).get("Work")
@@ -176,7 +179,7 @@ def get_ratio(ctk_app):
 def back_to_app(method):
     def func_wrapper(self, *args, **kwargs):
         check_app(self.app)
-        set_forewindows(self.app)
+        set_forewindow(self.app)
         result = method(self, *args, **kwargs)
         return result
 

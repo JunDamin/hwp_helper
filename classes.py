@@ -8,6 +8,9 @@ from functions import (
     get_window_position,
     get_ratio,
     get_path,
+    check_app,
+    set_forewindow,
+    show_window
 )
 from features import HwpFeatureFrame
 from templates import CategoryFrame
@@ -117,6 +120,10 @@ class Helper(ctk.CTk):
             set_window_position(self.app.get_hwnd(), hwp_x, hwp_y, hwp_width, height)
         self.set_window(app_x, app_y, width=int(width/2 - hwp_width), height=height)
 
+    def check_hwp(self):
+        check_app(self.app)
+        set_forewindow(self.app)
+        show_window(self.app)
 
 
     def set_window(self, x, y, width, height):
