@@ -4,7 +4,7 @@ from components import CollapsibleFrame
 from functions import (
     set_button,
     get_categories,
-    set_forewindows,
+    set_forewindow,
     check_app,
     get_image
 )
@@ -32,7 +32,7 @@ class CategoryFrame(ctk.CTkScrollableFrame):
         def make_func(path, n):
             def func():
                 check_app(self.app)
-                set_forewindows(self.app)
+                set_forewindow(self.app)
                 self.app.insert_file(path)
                 for _ in range(n):
                     self.app.move("NextPara")
