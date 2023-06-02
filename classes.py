@@ -41,13 +41,16 @@ class Helper(ctk.CTk):
         self.menu = ctk.CTkFrame(self)
         self.menu.pack(fill=tk.X)
 
-        tabview = ctk.CTkTabview(master=self)
+        self.tabview = tabview = ctk.CTkTabview(master=self)
         tabview.pack(padx=3, pady=3, fill="both", expand=True)
         context["tabview"] = tabview
         
         tabview.add("templates")  # add tab at the end
         tabview.add("features")  # add tab at the end
-        tabview.set("features")  # set currently visible tab
+
+
+        tabname = context["setting"].get("tab", "features")
+        tabview.set(tabname)  # set currently visible tab
 
         # set category frame
         template_frame = CategoryFrame(tabview.tab("templates"), context)
@@ -139,6 +142,8 @@ class Helper(ctk.CTk):
         
          
     def on_closing(self):
+        current_tab = self.tabview.get()
+        self.context["setting"]["tab"] = current_tab
         with open("setting.yaml", "w") as f:
             yaml.safe_dump(self.context["setting"], f)
         self.destroy()
