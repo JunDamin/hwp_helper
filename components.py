@@ -123,6 +123,26 @@ class CollapsibleFrame(ctk.CTkFrame):
         widget.grid(row=i, column=j,  **grid_kwargs)
         self._next_row += 1
 
+
+class GridFrame(ctk.CTkFrame):
+    """This Frame is for auto grid frame"""
+
+    def __init__(self, parent=None, n_columns=1, **kwargs):
+        ctk.CTkFrame.__init__(self, parent, **kwargs)
+
+        self.count = 0 
+        self.n_columns=n_columns
+
+    def add_widget(self, widget, **grid_kwargs):
+        i = self.count // self.n_columns
+        j = self.count % self.n_columns
+
+        widget.grid(row=i, column=j, **grid_kwargs)
+        self.count += 1
+
+
+
+
 # %%
 
 class AddTemplateForm(ctk.CTkToplevel):

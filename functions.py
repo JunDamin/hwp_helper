@@ -187,6 +187,9 @@ def back_to_app(method):
 
 
 def get_path(path):
+    """get path"""
+    if not path:
+        return None
     if getattr(sys, "frozen", False):
         base_dir = sys._MEIPASS
     else:
