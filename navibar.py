@@ -85,6 +85,8 @@ class UpdateTemplateForm(ctk.CTkToplevel):
             self, text="update", command=self.update_templates
         )
         self.update_btn.pack(pady=5)
+        self.progress_bar = ctk.CTkProgressBar(self)
+        
 
         self.template_frame = ctk.CTkScrollableFrame(self)
         self.template_frame.pack(fill="both", expand=True)
@@ -122,7 +124,6 @@ class UpdateTemplateForm(ctk.CTkToplevel):
     def update_templates(self):
         self.update_btn.destroy()
 
-        self.progress_bar = ctk.CTkProgressBar(self)
         self.progress_bar.pack(padx=10, pady=10)
         self.progress_bar.set(0)
         self.update()
