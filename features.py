@@ -3,7 +3,7 @@ import tkinter as tk
 from functions import (
     get_path,
 )
-from callback import set_cell_border, set_header_style, set_para_indent, decrease_line_spacing, increase_line_spacing, break_page, break_section, setup_koica_page, setup_normal_page, super_script, insert_memo, delete_memo, insert_endnote, insert_footnote
+from callback import set_cell_border, set_header_style, set_para_indent, decrease_line_spacing, increase_line_spacing, break_page, break_section, setup_koica_page, setup_normal_page, super_script, insert_memo, delete_memo, insert_endnote, insert_footnote, delete_row, delete_column
 from components import ToolTip, FontStyleBtns, GridFrame
 
 
@@ -23,10 +23,10 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
         table_frame = GridFrame(self, n_columns=n_columns)
         table_frame.pack(fill=tk.X)
 
-        # alignment related feature
-        ctk.CTkLabel(self, text="정렬 기능").pack()
-        alignment_frame = GridFrame(self, n_columns=n_columns)
-        alignment_frame.pack(fill=tk.X)
+        # paragraph related feature
+        ctk.CTkLabel(self, text="문단 정렬 기능").pack()
+        para_frame = GridFrame(self, n_columns=n_columns)
+        para_frame.pack(fill=tk.X)
 
         # page break related feature
         ctk.CTkLabel(self, text="페이지 관련 기능").pack()
@@ -53,22 +53,38 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
                 "선택한 셀영역가장 아래 테두리를 두줄로 바꾸고 셀에 연노란 바탕색을 넣습니다.",
                 "src/table_header_btn.gif",
             ),
+            
             (
-                alignment_frame,
+                table_frame,
+                "행 삭제하기",
+                lambda : delete_row(self.app),
+                "현재 위치의 행을 지웁니다.",
+                "src/delete_row_btn.gif",
+            ),
+            
+            (
+                table_frame,
+                "열 삭제하기",
+                lambda : delete_column(self.app),
+                "현재 위치의 열을 지웁니다.",
+                "src/delete_column_btn.gif",
+            ),
+            (
+                para_frame,
                 "현재위치 들여쓰기\n(shift+tab)",
                 lambda: set_para_indent(self.app),
                 "현재 커서 위치에 맞춰 들여쓰기를 적용합니다. 표에서는 ctrl+shift+tab으로 가능합니다.",
                 "src/align_btn.gif",
             ),
             (
-                alignment_frame,
+                para_frame,
                 "줄간격 줄이기\n(alt+shift+A)",
                 lambda: decrease_line_spacing(self.app),
                 "현재 커서 위치 문장 간격을 줄입니다.",
                 "src/decrease_line_spacing_btn.gif",
             ),
             (
-                alignment_frame,
+                para_frame,
                 "줄간격 늘리기\n(alt+shift+Z)",
                 lambda: increase_line_spacing(self.app),
                 "현재 커서 위치 문장 간격을 늘립니다.",

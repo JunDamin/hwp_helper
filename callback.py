@@ -1,3 +1,5 @@
+
+# %% 
 from functions import back_to_app
 
 @back_to_app
@@ -61,3 +63,20 @@ def setup_koica_page(app):
 @back_to_app
 def setup_normal_page(app):
     return app.setup_page()
+
+
+@back_to_app
+def delete_row(app):
+    action = app.actions.TableDeleteRowColumn()
+    p = action.pset
+    p.type = 1
+    return action.run()
+
+@back_to_app
+def delete_column(app):
+    action = app.actions.TableDeleteRowColumn()
+    p = action.pset
+    p.type = 0
+    return action.run()
+
+# %%
