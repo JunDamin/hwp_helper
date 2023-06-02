@@ -85,21 +85,18 @@ class Helper(ctk.CTk):
 
     def set_fullscreen(self):
         setting = self.context["setting"]
-        app_width = setting.get("app_width", 800)
-        side = setting.get("side", "left")
+
+        app_width = setting.get("app_width", 674)
+        
         _, _, app_width, _ = self.get_window()
         setting["app_width"] = app_width
+        app_width = max(750, app_width)
 
         x, y, width, height = get_screen_size()
-        hwp_ratio = (width - app_width) / width
-        hwp_width = int(width * hwp_ratio)
+        hwp_width = width - app_width
 
-        hwp_x, hwp_y = x + int(width * (1 - hwp_ratio)), y
-        app_x, app_y = x, y
-
-        if side == "left":
-            hwp_x, hwp_y = x, y
-            app_x, app_y = x + hwp_width, y
+        hwp_x, hwp_y = x, y
+        app_x, app_y = x + hwp_width, y
 
         if self.app:
             set_window_position(self.app.get_hwnd(), hwp_x, hwp_y, hwp_width, height)
