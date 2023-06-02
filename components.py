@@ -91,10 +91,11 @@ class ToolTip:
 class CollapsibleFrame(ctk.CTkFrame):
     """This Frame is for create collapsible frame for sub components"""
 
-    def __init__(self, parent=None, text="toggle", **kwargs):
+    def __init__(self, parent=None, text="toggle", n_columns=1, **kwargs):
         ctk.CTkFrame.__init__(self, parent, **kwargs)
 
         self._next_row = 0 
+        self.n_columns=n_columns
 
         self.button_toggle = ctk.CTkButton(
             self, text=text, command=self.toggle, border_spacing=1
@@ -116,7 +117,10 @@ class CollapsibleFrame(ctk.CTkFrame):
         self.frame_contents.pack_forget()
 
     def add_widget(self, widget, **grid_kwargs):
-        widget.grid(row=self._next_row, **grid_kwargs)
+        i = self._next_row // self.n_columns
+        j = self._next_row % self.n_columns
+
+        widget.grid(row=i, column=j,  **grid_kwargs)
         self._next_row += 1
 
 # %%

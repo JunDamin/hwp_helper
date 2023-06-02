@@ -1,64 +1,69 @@
 import customtkinter as ctk
 import tkinter as tk
-from functions import (
-    update_templates,
-    get_categories,
-    make_topmost
-)
+from functions import update_templates, get_categories, make_topmost
 from components import CollapsibleFrame, TemplateControl, AddTemplateForm, ToolTip
+
 
 class NaviBar(ctk.CTkFrame):
     def __init__(self, parent, context, **kwargs):
-
         super().__init__(parent, **kwargs)
         self.app = context["app"]
         self.context = context
 
-
         hwp_btn = ctk.CTkButton(
-            self, text="한글보이기", command=context["helper"].check_hwp, width=80,
+            self,
+            text="한글보이기",
+            command=context["helper"].check_hwp,
+            width=80,
         )
         hwp_btn.grid(row=0, column=0, padx=2, pady=2)
         ToolTip(hwp_btn, text="연결되어 있는 한글을 보입니다. 연결된 한글이 없으면 새로 엽니다.")
 
-
         fullscreen_btn = ctk.CTkButton(
-            self, text="전체화면", command=context["helper"].set_fullscreen, width=80,
+            self,
+            text="전체화면",
+            command=context["helper"].set_fullscreen,
+            width=80,
         )
         fullscreen_btn.grid(row=0, column=1, padx=2, pady=2)
         ToolTip(fullscreen_btn, text="현재 앱 폭에 맞춰 전체화면으로 설정합니다.")
 
         halfscreen_btn = ctk.CTkButton(
-            self, text="오른쪽화면", command=context["helper"].set_halfscreen, width=80,
+            self,
+            text="오른쪽화면",
+            command=context["helper"].set_halfscreen,
+            width=80,
         )
         halfscreen_btn.grid(row=0, column=2, padx=2, pady=2)
         ToolTip(halfscreen_btn, text="현재 앱 폭에 맞춰 화면의 절반으로 설정합니다.")
 
-
-
         add_template_btn = ctk.CTkButton(
             self, text="선택영역 탬플릿 추가", command=self.add_template
         )
-        add_template_btn.grid(row=1, column=0, columnspan=2, padx=2, pady=2, sticky='nesw')
+        add_template_btn.grid(
+            row=1, column=0, columnspan=2, padx=2, pady=2, sticky="nesw"
+        )
         ToolTip(add_template_btn, "한글에서 현재 선택중인 영역을 탬플릿으로 추가합니다.")
-
 
         update_btn = ctk.CTkButton(
             self, text="탬플릿 관리", command=self.update_templates, width=80
         )
-        update_btn.grid(row=1, column=2,pady=2, padx=2)
-        ToolTip(update_btn, text="탬플릿 이름을 수정하거나 삭제, 또는 templates 폴더에 있는 내용으로 전체를 업데이트 합니다.")
-
+        update_btn.grid(row=1, column=2, pady=2, padx=2)
+        ToolTip(
+            update_btn, text="탬플릿 이름을 수정하거나 삭제, 또는 templates 폴더에 있는 내용으로 전체를 업데이트 합니다."
+        )
 
     def update_templates(self):
         toplevel = UpdateTemplateForm(
-            self, self.context["template_frame"], 
+            self,
+            self.context["template_frame"],
         )  # master argument is optional
         toplevel.focus()
 
     def add_template(self):
         toplevel = AddTemplateForm(self, self.context)
         toplevel.focus()
+
 
 class UpdateTemplateForm(ctk.CTkToplevel):
     def __init__(self, parent, template_form, **kwargs):
@@ -92,28 +97,27 @@ class UpdateTemplateForm(ctk.CTkToplevel):
         categories = get_categories()
         for key, value in categories.items():
             cframe = CollapsibleFrame(self.template_frame, key)
-            cframe.pack(fill=tk.X, pady=5, padx=5, anchor='w')
+            cframe.pack(fill=tk.X, pady=5, padx=5, anchor="w")
 
             for text, image_path, filename, n in value:
                 path = f"templates/{filename}.hwp"
 
-                # create button
-                TemplateControl(
-                    cframe.frame_contents,
-                    text=text,
-                    file_path=path,
-                    image_path=image_path,
-                    target_frame=self,
-                ).pack(fill=tk.X, pady=5, padx=5, anchor='w')
-    
+                cframe.add_widget(
+                    TemplateControl(
+                        cframe.frame_contents,
+                        text=text,
+                        file_path=path,
+                        image_path=image_path,
+                        target_frame=self,
+                    ), sticky='w'
+                )
+
     def refresh(self):
         for child in self.template_frame.winfo_children():
             child.destroy()
 
         self.set_frame()
         self.template_form.refresh()
-
-    
 
     def update_templates(self):
         self.update_btn.destroy()
@@ -136,15 +140,11 @@ class UpdateTemplateForm(ctk.CTkToplevel):
         self.destroy()
 
 
-
-
-
-
-if __name__=="__main__":
-    
+if __name__ == "__main__":
     from types import SimpleNamespace
+
     # create mockup
-    d = {'set_fullscreen': 1, "set_halfscreen": 1, 'check_hwp': 2}
+    d = {"set_fullscreen": 1, "set_halfscreen": 1, "check_hwp": 2}
     ns = SimpleNamespace(**d)
 
     root = ctk.CTk()
