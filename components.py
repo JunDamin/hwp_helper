@@ -7,7 +7,7 @@ from pathlib import Path
 import shutil as sh
 from PIL import Image, ImageTk
 from itertools import count, cycle
-from functions import get_image, make_topmost, prettify_filename, update_template
+from functions import get_image, make_topmost, prettify_filename, update_template, get_screen_size
 from hwpapi.dataclasses import CharShape, ParaShape
 from hwpapi.core import App
 from uuid import uuid1
@@ -63,14 +63,20 @@ class ToolTip:
         self.widget.bind("<Enter>", self.show_tooltip)
         self.widget.bind("<Leave>", self.hide_tooltip)
 
+        _, _, width, height = get_screen_size()
+        self.screen_width = width
+        self.screen_height = height
+
     def show_tooltip(self, event=None):
-        x, y, _, _ = self.widget.bbox("insert")
-        x += self.widget.winfo_rootx() - (350 - self.widget.winfo_width())
-        y += self.widget.winfo_rooty() + 50
+        self.widget.update_idletasks()
+
+        x, y, width, height = self.widget.bbox("insert")
+        x += self.widget.winfo_rootx()
+        y += self.widget.winfo_rooty() + height
 
         self.tooltip_window = tw = tk.Toplevel(self.widget)
         tw.wm_overrideredirect(True)  # Remove window decorations
-        tw.wm_geometry(f"+{x}+{y}")  # Position tooltip
+        # tw.wm_geometry(f"+{x}+{y}")  # Position tooltip
 
         label = tk.Label(
             tw, text=self.text, background="#dddddd", wraplength=350, font=15, pady=5
@@ -81,6 +87,18 @@ class ToolTip:
             imagelabel.pack()
             imagelabel.load(self.gif)
 
+        tw.update_idletasks()
+
+        tw_width, tw_height = tw.winfo_width(), tw.winfo_height()
+        
+        if x + tw_width > self.screen_width:
+            x -= (tw_width - width) 
+        if y + tw_height > self.screen_height:
+            y -= (tw_height + height)
+
+        tw.wm_geometry(f"+{x}+{y}")  # Position tooltip
+
+        
     def hide_tooltip(self, event=None):
         if self.tooltip_window:
             self.tooltip_window.destroy()
