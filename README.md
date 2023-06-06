@@ -1,25 +1,29 @@
-refactoring
+# HWp Helper
 
-- Helper
-  - [x] set_windows(width, height, x, y)
-  - [x] set_fullscreen(ratio)
-- [x] add tab
+## 한글을 사용하기 쉽게 만들기 위한 지원 도구
 
-- ask_dialog for save before closing.
+hwp로 문서 작업을 하면서 가장 많이 하는 활동은 보통 복사 + 붙여넣기 입니다.
+여러 문서를 참고해서 복사하고 붙여 넣기도 하고 서식이나 양식을 위해서 하기도 합니다. 
 
-- [x] blank page error
-- [x] not matching image error => update?
+이런 작업을 하다보면 예전에 보았던 좋아보이던 문서가 있는데 그 문서에서 복사해서 붙여 넣고 싶을 때가 생기게 됩니다. 그래서 어디에 모아두고 싶다는 생각을 하게 되기도 합니다.
+
+특수문자도 엄청 많지만 결국 쓰던 거만 계속 쓰게 되는데 그런 문제를 해결하고자 한컴을 위한 헬퍼를 만들었습니다.
+
+## 기능 소개
+
+크게 두가지 기능으로 구분할 수 있습니다.
+하나는 자주 사용하는 기능을 모은 feature입니다. 자주 사용하는 기능을 단축키와 함께 제시하여 나중에는 단축키로 사용할 수 있게 하고자 합니다.
+
+두번째 기능은 template기능으로 사전에 준비한 탬플릿을 사용하여 빠르게 문서를 완성할 수 있게 하는 기능입니다.
+이를 위해 단순하게나마 추가하고 관리할 수 있는 기능을 만들었습니다.
 
 
-- [x] add setting.yaml
-- add setting page
+## 사용방법
 
-- [x] add font style add and apply
+사용하기 위해서는 hwpapi, yaml, pyinstaller를 pip 을 이용해 설치해야 합니다.
 
-- add logging features
-- [x] make template from selected area
+```
+pip install hwpapi yaml pyinstaller
+```
 
-- [x] template manageing form
-  - delete template
-- template set idea => import and export files
-
+pyinstaller는 패키징을 해 배포하기 위해 필요합니다.

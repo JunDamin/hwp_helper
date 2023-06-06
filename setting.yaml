@@ -1,4 +1,4 @@
-app_width: 643
+app_width: 674
 font_styles:
   e86270ea-ff78-11ed-bdb2-5084928a150f:
   - Bold: 0
@@ -199,3 +199,4 @@ font_styles:
     TextAlignment: 0
     WidowOrphan: 0
 side: left
+tab: features
