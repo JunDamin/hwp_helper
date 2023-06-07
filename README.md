@@ -27,3 +27,6 @@ pip install hwpapi yaml pyinstaller
 ```
 
 pyinstaller는 패키징을 해 배포하기 위해 필요합니다.
+
+이미 패키징이 된 것은 추후 공유하도록 하겠습니다.
+
