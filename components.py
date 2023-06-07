@@ -177,6 +177,11 @@ class AddTemplateForm(ctk.CTkToplevel):
         ctk.CTkLabel(self, text="제목").grid(row=2, column=0)
         self.category = category = ctk.CTkEntry(self, placeholder_text="구분명을 입력하세요.")
         self.name = name = ctk.CTkEntry(self, placeholder_text="제목을 입력하세요.")
+        
+        formal_category = context["setting"].get("last_category", None)
+        if formal_category:
+            category.insert(0, formal_category)
+        
         category.grid(row=1, column=1, pady=5, padx=5)
         name.grid(row=2, column=1, pady=5, padx=5)
         
@@ -192,7 +197,9 @@ class AddTemplateForm(ctk.CTkToplevel):
         self.temp_path = temp_path = Path("temp/temp.hwp")
         self.app.save_block(temp_path)
 
-        fname = prettify_filename(f"{self.category.get()}_{self.name.get()}")
+        category = self.category.get()
+        name = self.name.get()
+        fname = prettify_filename(f"{category}_{name}")
         
         destination = Path(f"templates/{fname}.hwp")
         if destination.exists():
@@ -210,6 +217,7 @@ class AddTemplateForm(ctk.CTkToplevel):
         self.context["template_frame"].refresh()
         sh.rmtree("temp")
         self.destroy()
+        self.context["setting"]["last_category"] = category
         self.context["tabview"].set("templates")
 
 # %% 
