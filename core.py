@@ -16,6 +16,7 @@ from features import HwpFeatureFrame
 from templates import CategoryFrame
 from navibar import NaviBar
 import win32gui as wg
+from pathlib import Path
 
 
 class Helper(ctk.CTk):
@@ -35,6 +36,10 @@ class Helper(ctk.CTk):
 
         self.version = "Hwp Helper v.0.2.1"
         self.context = context
+
+        # create essential folder
+        Path("templates").mkdir(exist_ok=True)
+        Path("images").mkdir(exist_ok=True)
 
         context["helper"] = self
 
