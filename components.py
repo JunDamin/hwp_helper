@@ -233,7 +233,7 @@ class FontStyleBtns(ctk.CTkFrame):
         self.frame = CollapsibleFrame(self, text="글자서식")
         self.frame.pack(pady=5, fill="x")
 
-        save_btn = ctk.CTkButton(self.frame.frame_contents, text="현재 서식 저장", command=self.add_style)
+        save_btn = ctk.CTkButton(self.frame.frame_contents, text="현재 서식 저장", command=self.add_style, fg_color="green")
         save_btn.pack(pady=5)
         ToolTip(save_btn, text="현재 커서가 위치의 글자 서식과 문단 서식을 저장합니다.")
 

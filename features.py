@@ -49,7 +49,7 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
         layout_frame.pack(fill=tk.X)
 
         # shape related feature
-        ctk.CTkLabel(self, text="형태 설정 기능").pack()
+        ctk.CTkLabel(self, text="메모 관련 기능").pack()
         shape_frame = GridFrame(self, n_columns=n_columns)
         shape_frame.pack(fill=tk.X)
 
