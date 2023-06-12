@@ -10,7 +10,7 @@ from functions import (
     get_path,
     check_app,
     set_forewindow,
-    show_window
+    show_window,
 )
 from features import HwpFeatureFrame
 from templates import CategoryFrame
@@ -58,12 +58,11 @@ class Helper(ctk.CTk):
         self.menu.pack(fill=tk.X)
 
         self.tabview = tabview = ctk.CTkTabview(master=self)
-        tabview.pack(padx=3, pady=3, fill="both", expand=True)
+        tabview.pack(padx=1, pady=1, fill="both", expand=True)
         context["tabview"] = tabview
-        
+
         tabview.add("templates")  # add tab at the end
         tabview.add("features")  # add tab at the end
-
 
         tabname = context["setting"].get("tab", "features")
         tabview.set(tabname)  # set currently visible tab
@@ -100,15 +99,17 @@ class Helper(ctk.CTk):
         self.geometry(f"{int(width*ratio)}x{int(height*ratio)}+{int(left)}+{int(top)}")
 
     def set_fullscreen(self):
+        self.check_hwp()
+
         setting = self.context["setting"]
 
         app_width = setting.get("app_width", 674)
-        
+
         _, _, app_width, _ = self.get_window()
         setting["app_width"] = app_width
         x, y, width, height = get_screen_size()
-        
-        app_width = max(width/4, app_width)
+
+        app_width = max(width / 4, app_width)
         hwp_width = width - app_width
 
         hwp_x, hwp_y = x, y
@@ -118,42 +119,40 @@ class Helper(ctk.CTk):
             set_window_position(self.app.get_hwnd(), hwp_x, hwp_y, hwp_width, height)
         self.set_window(app_x, app_y, width=(width - hwp_width), height=height)
 
-
     def set_halfscreen(self):
+        self.check_hwp()
+
         setting = self.context["setting"]
         app_width = setting.get("app_width", 800)
         _, _, app_width, _ = self.get_window()
         setting["app_width"] = app_width
 
         x, y, width, height = get_screen_size()
-        x = x + int(width/2)
-        hwp_ratio = (width/2 - app_width) / (width/2)
-        hwp_width = int(max(width/2 * hwp_ratio, width/4))
+        x = x + int(width / 2)
+        hwp_ratio = (width / 2 - app_width) / (width / 2)
+        hwp_width = int(max(width / 2 * hwp_ratio, width / 4))
         hwp_x, hwp_y = x, y
         app_x, app_y = x + hwp_width, y
 
         if self.app:
             set_window_position(self.app.get_hwnd(), hwp_x, hwp_y, hwp_width, height)
-        self.set_window(app_x, app_y, width=int(width/2 - hwp_width), height=height)
+        self.set_window(app_x, app_y, width=int(width / 2 - hwp_width), height=height)
 
     def check_hwp(self):
         check_app(self.app)
         set_forewindow(self.app)
         show_window(self.app)
 
-
     def set_window(self, x, y, width, height):
         self.update_idletasks()
         hwnd = wg.GetParent(self.winfo_id())
         set_window_position(hwnd, x, y, width, height)
-        
 
     def get_window(self):
         self.update_idletasks()
         hwnd = wg.GetParent(self.winfo_id())
         return get_window_position(hwnd)
-        
-         
+
     def on_closing(self):
         current_tab = self.tabview.get()
         self.context["setting"]["tab"] = current_tab
@@ -164,7 +163,7 @@ class Helper(ctk.CTk):
 
 if __name__ == "__main__":
     context = {"app": None}
-    with open("setting.yaml", encoding='utf-8') as f:
+    with open("setting.yaml", encoding="utf-8") as f:
         context["setting"] = yaml.safe_load(f)
     app = Helper(context)
     app.set_fullscreen()
