@@ -106,9 +106,9 @@ class Helper(ctk.CTk):
         
         _, _, app_width, _ = self.get_window()
         setting["app_width"] = app_width
-        app_width = max(750, app_width)
-
         x, y, width, height = get_screen_size()
+        
+        app_width = max(width/4, app_width)
         hwp_width = width - app_width
 
         hwp_x, hwp_y = x, y
