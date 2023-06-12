@@ -21,27 +21,9 @@ class CategoryFrame(ctk.CTkFrame):
         self.parent = parent
         self.app = context["app"]
         self.context = context
-
-        self.frame = ctk.CTkFrame(self)
-        self.frame.pack()
-        add_template_btn = ctk.CTkButton(
-            self.frame, text="선택영역 탬플릿 추가", command=self.add_template, fg_color="green"
-        )
-        add_template_btn.grid(
-            row=1, column=0, columnspan=2, padx=2, pady=2, sticky="nesw"
-        )
-        ToolTip(add_template_btn, "한글에서 현재 선택중인 영역을 탬플릿으로 추가합니다.")
-
-        update_btn = ctk.CTkButton(
-            self.frame, text="탬플릿 관리", command=self.update_templates, fg_color="green"
-        )
-        update_btn.grid(row=1, column=2, pady=2, padx=2)
-        ToolTip(
-            update_btn, text="탬플릿 이름을 수정하거나 삭제, 또는 templates 폴더에 있는 내용으로 전체를 업데이트 합니다."
-        )
-
         self.template_frame = ctk.CTkScrollableFrame(self)
         self.template_frame.pack(fill="both", expand=True)
+
         self.set_frames()
 
     def update_templates(self):
@@ -62,7 +44,26 @@ class CategoryFrame(ctk.CTkFrame):
         self.set_frames()
 
     def set_frames(self):
+
         
+        self.frame = ctk.CTkFrame(self.template_frame)
+        self.frame.pack()
+        add_template_btn = ctk.CTkButton(
+            self.frame, text="선택영역 탬플릿 추가", command=self.add_template, fg_color="green"
+        )
+        add_template_btn.grid(
+            row=1, column=0, columnspan=2, padx=2, pady=2, sticky="nesw"
+        )
+        ToolTip(add_template_btn, "한글에서 현재 선택중인 영역을 탬플릿으로 추가합니다.")
+
+        update_btn = ctk.CTkButton(
+            self.frame, text="탬플릿 관리", command=self.update_templates, fg_color="green"
+        )
+        update_btn.grid(row=1, column=2, pady=2, padx=2)
+        ToolTip(
+            update_btn, text="탬플릿 이름을 수정하거나 삭제, 또는 templates 폴더에 있는 내용으로 전체를 업데이트 합니다."
+        )
+
 
         # make command
         def make_func(path, n):
