@@ -139,7 +139,7 @@ class Helper(ctk.CTk):
         self.set_window(app_x, app_y, width=int(width / 2 - hwp_width), height=height)
 
     def check_hwp(self):
-        check_app(self.app)
+        app = check_app(self.app)
         set_forewindow(self.app)
         show_window(self.app)
 

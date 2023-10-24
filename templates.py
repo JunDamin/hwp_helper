@@ -68,7 +68,8 @@ class CategoryFrame(ctk.CTkFrame):
         # make command
         def make_func(path, n):
             def func():
-                check_app(self.app)
+                if not check_app(self.app):
+                    pass
                 set_forewindow(self.app)
                 self.app.insert_file(path)
                 for _ in range(n):

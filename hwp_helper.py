@@ -8,7 +8,7 @@ import customtkinter as ctk
 from core import Helper
 from hwpapi.core import App
 import yaml
-
+from functions import check_app
 
 
 ctk.set_appearance_mode("dark")
@@ -17,7 +17,7 @@ context = {}
 with open("setting.yaml", encoding='utf-8') as f:
     context["setting"] = yaml.safe_load(f)
 
-context["app"] = App()
+context["app"] = check_app(None)
 helper = Helper(context)
 helper.set_fullscreen()
 helper.mainloop()

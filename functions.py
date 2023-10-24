@@ -8,9 +8,11 @@ Created on Tue May  9 09:31:12 2023
 import customtkinter as ctk
 from PIL import Image, ImageChops
 from pathlib import Path
+import subprocess
 import re
 import shutil as sh
-from hwpapi.core import App
+from time import sleep
+from hwpapi.core import App, Engines
 import win32gui as wg
 from win32api import GetMonitorInfo, MonitorFromPoint
 import pywintypes
@@ -162,12 +164,28 @@ def set_window_position(hwnd, x, y, width, height):
     wg.SetWindowPos(hwnd, win32con.HWND_TOP, x, y, width, height, 0)
 
 
+def run_hwp(i=0):
+    path = list(Path(r"C:\Program Files (x86)\HNC").rglob("hwp.exe"))[i]
+    subprocess.Popen(path)
+
 def check_app(app):
     try:
-        return app.api.PageCount
-    except pywintypes.com_error as e:
-        return app.reload()
-
+        app.api.PageCount
+        return app
+    except (pywintypes.com_error, AttributeError) as e:
+        run_hwp()
+        while True:
+            engines = Engines()
+            if len(engines) < 1:
+                sleep(1)
+                continue
+            if isinstance(app, App):
+                app.engine = engines[0]
+                break
+            app = App(engines[0])
+            break
+    return app
+    
 
 def get_ratio(ctk_app):
     app_width = ctk_app.winfo_screenwidth()
