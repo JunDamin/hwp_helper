@@ -166,7 +166,9 @@ def set_window_position(hwnd, x, y, width, height):
 
 def run_hwp(i=0):
     path = list(Path(r"C:\Program Files (x86)\HNC").rglob("hwp.exe"))[i]
-    subprocess.Popen(path)
+    if len(Engines()) < 1:
+        subprocess.Popen(path)
+    return 
 
 def check_app(app):
     try:
@@ -182,7 +184,7 @@ def check_app(app):
             if isinstance(app, App):
                 app.engine = engines[0]
                 break
-            app = App(engines[0])
+            app = App(engines[0], dll_path=r"bin/FilePathCheckerModuleExample.dll")
             break
     return app
     
