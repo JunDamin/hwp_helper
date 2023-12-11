@@ -1,7 +1,6 @@
 import customtkinter as ctk
 from components import ToolTip
 
-
 class NaviBar(ctk.CTkFrame):
     def __init__(self, parent, context, **kwargs):
         super().__init__(parent, **kwargs)

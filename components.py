@@ -210,7 +210,7 @@ class AddTemplateForm(ctk.CTkToplevel):
         self.add_btn.destroy()
         self.intro.configure(text="작업중입니다. 이는 다소 시간이 소요 될 수 있습니다.")
         
-        temp_app = App(is_visible=False)
+        temp_app = App(is_visible=False, new_app=True)
         update_template(temp_app, destination)
         temp_app.quit()
 
