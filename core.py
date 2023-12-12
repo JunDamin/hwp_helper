@@ -26,7 +26,9 @@ class Helper(ctk.CTk):
         self._setup_basic_attributes()
         self._create_essential_folders()
         self._setup_ui()
+
         self.app = context["app"]
+
 
         
         # create essential folder
@@ -55,6 +57,7 @@ class Helper(ctk.CTk):
         self._setup_tabview()
         self._setup_frames()
         self._setup_navigation_bar()
+        self._setup_initial_windows()
 
     def _setup_menu(self):
         self.menu = ctk.CTkFrame(self)
@@ -101,7 +104,12 @@ class Helper(ctk.CTk):
         navi_bar.pack(side=tk.RIGHT)
         self.context["navi_bar"] = navi_bar
 
-    # Rest of the methods (set_windows, set_fullscreen, etc.) remain largely unchanged
+    def _setup_initial_windows(self):
+        _, _, app_width, _ = self.get_window()
+        x, y, width, height = get_screen_size()
+        app_x, app_y = x + width - app_width, y
+        self.set_window(app_x, app_y, width=app_width, height=height)
+
 
     def on_closing(self):
         current_tab = self.tabview.get()
