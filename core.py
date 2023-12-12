@@ -18,7 +18,7 @@ from navibar import NaviBar
 import win32gui as wg
 from pathlib import Path
 
-version = "0.3.0"
+version = "0.3.1"
 
 class Helper(ctk.CTk):
 

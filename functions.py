@@ -20,6 +20,7 @@ import sys
 import os
 import win32con
 import re
+from time import sleep
 
 def prettify_filename(name):
     result = re.sub(r"[!\"\$\&\'\*\+\,/:;<=>\?@\\^_`{|}~\n]", "_", name)
@@ -87,6 +88,19 @@ def update_template(app, hwp_path):
 
     _, n, _ = app.api.GetPos()
     temp = Path(f"temp/{hwp.stem}_{n}.png")
+
+    #delete master page info
+    app.api.SetMessageBoxMode(0x00010001)
+    master_page_delete = app.actions.MasterPageDelete()
+    master_page_delete.pset.Duplicate = 0
+    master_page_delete.pset.Front = 0
+    master_page_delete.pset.type = 0
+    master_page_delete.run()
+
+    sleep(0.1)
+    app.api.SetMessageBoxMode(0xf0000)
+
+    # save as image file
     app.save(temp)
     cropped = crop_background("temp/" + temp.stem + "001.png")
 
