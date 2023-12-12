@@ -540,17 +540,39 @@ class TemplateControl(ctk.CTkFrame):
 # %%
 
 class ConfirmDialog(ctk.CTkToplevel):
+    """
+    A confirmation dialog window.
+    """
+
     def __init__(self, parent, text, command, **kwargs):
         super().__init__(parent, **kwargs)
         self.title("확인")
-        ctk.CTkLabel(self, text=text).grid(row=0, column=0, columnspan=2, pady=2, padx=2)
-        ctk.CTkButton(self, text="확인", command=command).grid(row=1, column=0, pady=2, padx=2)
-        ctk.CTkButton(self, text="취소", command=self.destroy).grid(row=1, column=1, pady=2, padx=2)
-        
+        self._setup_ui(text, command)
         self.attributes('-topmost', 1)
 
+    def _setup_ui(self, text, command):
+        """ Set up the user interface components of the dialog. """
+        self._create_label(text)
+        self._create_confirm_button(command)
+        self._create_cancel_button()
 
+    def _create_label(self, text):
+        """ Create a label displaying the confirmation text. """
+        ctk.CTkLabel(self, text=text).grid(row=0, column=0, columnspan=2, pady=2, padx=2)
+
+    def _create_confirm_button(self, command):
+        """ Create a confirm button. """
+        ctk.CTkButton(self, text="확인", command=command).grid(row=1, column=0, pady=2, padx=2)
+
+    def _create_cancel_button(self):
+        """ Create a cancel button. """
+        ctk.CTkButton(self, text="취소", command=self.destroy).grid(row=1, column=1, pady=2, padx=2)
+
+# %%
 class RenameTemplateForm(ctk.CTkToplevel):
+    """
+    A form for renaming a template.
+    """
 
     def __init__(self, parent, file_path, image_path, target_frame):
         super().__init__(parent)
@@ -558,37 +580,61 @@ class RenameTemplateForm(ctk.CTkToplevel):
         self.image_path = image_path
         self.target_frame = target_frame
 
-        names = Path(file_path).stem.split("_")
-        current_category, current_name = (names[0], names[1]) if len(names) == 2 else (names[0], names[0]) 
+        self._setup_ui()
+        self.attributes('-topmost', 1)
 
+    def _setup_ui(self):
+        """ Set up the user interface components of the form. """
         self.intro = ctk.CTkLabel(self, text="아래 항목들을 바꾸고 버튼을 눌러주세요.")
         self.intro.grid(row=0, column=0, columnspan=2, padx=5, pady=5)
+        self._create_labels_and_entries()
+        self._create_rename_button()
+
+    def _create_labels_and_entries(self):
+        """ Create labels and entries for renaming the template. """
         ctk.CTkLabel(self, text="구분").grid(row=1, column=0)
         ctk.CTkLabel(self, text="제목").grid(row=2, column=0)
-        self.category = category = ctk.CTkEntry(self, placeholder_text="구분명을 입력하세요.")
-        self.name = name = ctk.CTkEntry(self, placeholder_text="제목을 입력하세요.")
-        category.insert(0, current_category)
-        name.insert(0, current_name)
-        category.grid(row=1, column=1, pady=5, padx=5)
-        name.grid(row=2, column=1, pady=5, padx=5)
+
+        self.category, self.name = self._get_current_names()
+        self.category.grid(row=1, column=1, pady=5, padx=5)
+        self.name.grid(row=2, column=1, pady=5, padx=5)
+
+    def _get_current_names(self):
+        """ Get the current names from the file path and populate the entries. """
+        names = Path(self.file_path).stem.split("_")
+        category, name = (names[0], names[1]) if len(names) == 2 else (names[0], names[0])
+        category_entry = ctk.CTkEntry(self, placeholder_text="구분명을 입력하세요.")
+        name_entry = ctk.CTkEntry(self, placeholder_text="제목을 입력하세요.")
+        category_entry.insert(0, category)
+        name_entry.insert(0, name)
+        return category_entry, name_entry
+
+    def _create_rename_button(self):
+        """ Create a button for renaming the template. """
         ctk.CTkButton(self, text="반영하기", command=self.rename_template).grid(row=3, column=0, columnspan=2, pady=5)
 
-        self.attributes('-topmost', 1)
-        
     def rename_template(self):
-
-        fname = prettify_filename(f"{self.category.get()}_{self.name.get()}")
+        """ Rename the template based on user input. """
+        new_fname = prettify_filename(f"{self.category.get()}_{self.name.get()}")
         n = Path(self.image_path).stem.split("_")[-1]
+        self._rename_files(new_fname, n)
+        self._refresh_and_close()
 
-        destination = Path(f"templates/{fname}.hwp")
+    def _rename_files(self, new_fname, n):
+        """ Rename the template and image files. """
+        destination = Path(f"templates/{new_fname}.hwp")
         if destination.exists():
-            return self.intro.configure(text="같은 이름의 파일이 존재합니다. 다른 이름으로 수정해 주세요.")  # deletes the file
+            self.intro.configure(text="같은 이름의 파일이 존재합니다. 다른 이름으로 수정해 주세요.")
+            return
+
         Path(self.file_path).rename(destination)
-        image_destination = Path(f"images/{fname}_{n}.png")
+        image_destination = Path(f"images/{new_fname}_{n}.png")
         Path(self.image_path).rename(image_destination)
-        
-        self.destroy()
+
+    def _refresh_and_close(self):
+        """ Refresh the target frame and close the form. """
         self.target_frame.refresh()
+        self.destroy()
 
 # %%
 if __name__ == "__main__":
