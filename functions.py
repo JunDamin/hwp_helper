@@ -98,6 +98,7 @@ def update_template(app, hwp_path):
     master_page_delete.run()
 
     sleep(0.1)
+    app.save()
     app.api.SetMessageBoxMode(0xf0000)
 
     # save as image file
@@ -122,7 +123,7 @@ def update_templates():
     hwps = list(Path("templates").glob("*"))
     n = len(hwps)
 
-    app = App(is_visible=False)
+    app = App(new_app=True, is_visible=False)
     for i, hwp in enumerate(hwps):
         update_template(app, hwp)
         yield i, n
