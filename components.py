@@ -350,10 +350,8 @@ class FontStyleBtns(ctk.CTkFrame):
 
     def _create_shapes_from_dict(self, font_style):
         """ Create CharShape and ParaShape objects from saved font style. """
-        charshape = CharShape()
-        charshape.fromdict(font_style[0])
-        parashape = ParaShape()
-        parashape.fromdict(font_style[1])
+        charshape = CharShape().fromdict(font_style[0])
+        parashape = ParaShape().fromdict(font_style[1])
         return charshape, parashape
 
     def _create_font_style_button(self, idx, charshape, parashape):
