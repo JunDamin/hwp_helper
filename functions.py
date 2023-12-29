@@ -199,7 +199,7 @@ def check_app(app):
             if isinstance(app, App):
                 app.engine = engines[0]
                 break
-            app = App(engines[0], dll_path=r"bin/FilePathCheckerModuleExample.dll")
+            app = App(dll_path=r"bin/FilePathCheckerModuleExample.dll")
             break
     return app
     
