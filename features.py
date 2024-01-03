@@ -1,19 +1,43 @@
 import tkinter as tk
 import customtkinter as ctk
 from callback import (
-    align_center, align_distributed, align_justified,
-    align_left, align_right, break_page, break_section,
-    decrease_fontsize, decrease_line_spacing,
-    decrease_spacing, delete_column, delete_memo, delete_row,
-    increase_fontsize, increase_line_spacing,
-    increase_spacing, insert_endnote, insert_footnote,
-    insert_memo, set_black, set_blue, set_cell_border,
-    set_green, set_header_style, set_para_indent, set_red,
-    set_white, setup_koica_page, setup_normal_page,
-    super_script
+    align_center,
+    align_distributed,
+    align_justified,
+    align_left,
+    align_right,
+    break_page,
+    break_section,
+    decrease_fontsize,
+    decrease_line_spacing,
+    decrease_spacing,
+    delete_column,
+    delete_memo,
+    delete_row,
+    increase_fontsize,
+    increase_line_spacing,
+    increase_spacing,
+    insert_endnote,
+    insert_footnote,
+    insert_memo,
+    set_black,
+    set_blue,
+    set_cell_border,
+    set_green,
+    set_header_style,
+    set_para_indent,
+    set_red,
+    set_white,
+    setup_koica_page,
+    setup_normal_page,
+    super_script,
+    color_doublespace,
+    uncolor_doublespace,
+    process_font,
 )
 from components import FontStyleBtns, GridFrame, ToolTip
 from functions import get_path
+
 
 class HwpFeatureFrame(ctk.CTkScrollableFrame):
     def __init__(self, parent, context):
@@ -30,13 +54,16 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
         self._create_feature_section("테이블 관련 기능", self._table_features(), 3)
         self._create_feature_section("페이지 관련 기능", self._layout_features(), 3)
         self._create_feature_section("메모 관련 기능", self._shape_features(), 3)
+        self._create_feature_section("검토 기능", self._review_features(), 3)
 
     def _create_feature_section(self, title, features, n_columns):
         ctk.CTkLabel(self, text=title).pack()
         frame = GridFrame(self, n_columns=n_columns)
         frame.pack(fill=tk.X)
         for name, command, tooltip_text, image_path in features:
-            btn = self._create_feature_button(frame, name, command, tooltip_text, image_path)
+            btn = self._create_feature_button(
+                frame, name, command, tooltip_text, image_path
+            )
             frame.add_widget(btn, pady=2, padx=2, sticky="news")
 
     def _create_feature_button(self, parent, name, command, tooltip_text, image_path):
@@ -184,7 +211,7 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
 
     def _layout_features(self):
         return [
-             (
+            (
                 "구역 나누기\n(alt+shift+enter)",
                 lambda: break_section(self.app),
                 "구역 나누기를 합니다. 구역이 나누어지면 다른 페이지 여백을 설정하거나 이후부터 페이지 가로 세로를 바꾸는 적용이 가능해 집니다.",
@@ -243,6 +270,29 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
                 "src/remove_memo_btn.gif",
             ),
         ]
+
+    def _review_features(self):
+        return [
+            # (
+            #     "연속 공백 색칠하기",
+            #     lambda: color_doublespace(self.app),
+            #     "공백이 연속해서 들어가 있는 경우 주황색으로 음영색을 칠합니다.",
+            #     None,
+            # ),
+            # (
+            #     "공백 색 지우기",
+            #     lambda: uncolor_doublespace(self.app),
+            #     "공백의 음영색을 지웁니다.",
+            #     None,
+            # ),
+            (
+                "Bold 처리 폰트로 변환하기",
+                lambda: process_font(self.app),
+                "Kopub 볼드 처리 글자를 볼드를 폰트를 바꿔 줍니다.",
+                None,
+            ),
+        ]
+
 
 if __name__ == "__main__":
     root = ctk.CTk()

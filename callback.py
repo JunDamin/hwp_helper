@@ -1,5 +1,6 @@
 # %%
 from functions import back_to_app
+from hwpapi.dataclasses import CharShape
 
 
 @back_to_app
@@ -138,6 +139,7 @@ def align_justified(app):
 def align_distributed(app):
     return app.actions.ParagraphShapeAlignDistribute().run()
 
+
 @back_to_app
 def set_red(app):
     return app.actions.CharShapeTextColorRed().run()
@@ -152,6 +154,7 @@ def set_green(app):
 def set_blue(app):
     return app.actions.CharShapeTextColorBlue().run()
 
+
 @back_to_app
 def set_black(app):
     return app.actions.CharShapeTextColorBlack().run()
@@ -161,5 +164,60 @@ def set_black(app):
 def set_white(app):
     return app.actions.CharShapeTextColorWhite().run()
 
+
+### get color for double space
+
+color = "#ffaa11"
+
+
+@back_to_app
+def color_doublespace(app):
+    app.replace_all(
+        "  ",
+        "  ",
+        old_charshape=CharShape(),
+        new_charshape=CharShape(shade_color=color),
+        find_reg_exp=True,
+    )
+
+
+@back_to_app
+def uncolor_doublespace(app):
+    app.replace_all(
+        " ",
+        " ",
+        old_charshape=CharShape(shade_color=color),
+        new_charshape=CharShape(shade_color=4294967295),
+        find_reg_exp=True,
+    )
+
+@back_to_app
+def process_font(app):
+    font_families = [
+        ["KoPubWorld돋움체 Bold", ("KoPubWorld돋움체 Medium", "KoPubWorld돋움체 Light")],
+        ["KoPubWorld바탕체 Bold", ("KoPubWorld바탕체 Medium", "KoPubWorld바탕체 Light")],
+        [
+            "KoPub돋움체 Bold",
+            ("KoPub돋움체 Medium", "KoPub돋움체 Light"),
+        ],
+        [
+            "KoPub바탕체 Bold",
+            (
+                "KoPub바탕체 Medium",
+                "KoPub바탕체 Light",
+            ),
+        ],
+    ]
+
+    for bold_font, fonts in font_families:
+        for font in fonts:
+            app.replace_all(
+                old_charshape=CharShape(font=font, bold=True),
+                new_charshape=CharShape(font=bold_font, bold=False),
+            )
+            app.replace_all(
+                old_charshape=CharShape(font=bold_font, bold=True),
+                new_charshape=CharShape(font=bold_font, bold=False),
+            )
 
 # %%
