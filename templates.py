@@ -19,11 +19,9 @@ class CategoryFrame(ctk.CTkFrame):
     def __init__(self, parent, context):
         super().__init__(parent)
         self.app = context["app"]
+        self.context = context
         self.template_frame = ctk.CTkScrollableFrame(self)
         self.template_frame.pack(fill="both", expand=True)
-        self.frame_header = ctk.CTkFrame(self.template_frame)
-        self.frame_header.pack()
-
         self._initialize_frames()
 
     def _initialize_frames(self):
@@ -32,6 +30,10 @@ class CategoryFrame(ctk.CTkFrame):
         self._populate_category_frames()
 
     def _create_add_template_button(self):
+        
+        self.frame_header = ctk.CTkFrame(self.template_frame)
+        self.frame_header.pack()
+        
         add_template_btn = ctk.CTkButton(
             self.frame_header,
             text="선택영역 탬플릿 추가",
@@ -92,7 +94,7 @@ class CategoryFrame(ctk.CTkFrame):
 
     def add_template(self):
         toplevel = AddTemplateForm(
-            self, {"app": self.app, "template_frame": self.template_frame}
+            self, {"app": self.app, "template_frame": self.template_frame, "setting": self.context["setting"], "parent": self}
         )
         toplevel.focus()
 

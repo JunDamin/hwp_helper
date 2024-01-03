@@ -299,11 +299,9 @@ class AddTemplateForm(ctk.CTkToplevel):
 
     def _update_context_and_close(self):
         """ Update the context and close the form. """
-        self.context["template_frame"].refresh()
         sh.rmtree("temp")
         self.destroy()
-        self.context["setting"]["last_category"] = self.category.get()
-        self.context["tabview"].set("templates")
+        self.context["parent"].refresh()
 
 
 # %% 

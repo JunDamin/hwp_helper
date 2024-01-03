@@ -12,7 +12,7 @@ from navibar import NaviBar
 import win32gui as wg
 from pathlib import Path
 
-VERSION = "0.3.1"
+VERSION = "0.3.2"
 TEMPLATES_DIR = "templates"
 IMAGES_DIR = "images"
 ICON_PATH = "src/ai.ico"
