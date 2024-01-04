@@ -6,7 +6,6 @@ Created on Tue May  9 09:31:12 2023
 """
 import customtkinter as ctk
 from core import Helper
-from hwpapi.core import App
 import yaml
 from functions import check_app
 

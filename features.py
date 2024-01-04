@@ -273,18 +273,18 @@ class HwpFeatureFrame(ctk.CTkScrollableFrame):
 
     def _review_features(self):
         return [
-            # (
-            #     "연속 공백 색칠하기",
-            #     lambda: color_doublespace(self.app),
-            #     "공백이 연속해서 들어가 있는 경우 주황색으로 음영색을 칠합니다.",
-            #     None,
-            # ),
-            # (
-            #     "공백 색 지우기",
-            #     lambda: uncolor_doublespace(self.app),
-            #     "공백의 음영색을 지웁니다.",
-            #     None,
-            # ),
+            (
+                "연속 공백 색칠하기",
+                lambda: color_doublespace(self.app),
+                "공백이 연속해서 들어가 있는 경우 주황색으로 음영색을 칠합니다.",
+                None,
+            ),
+            (
+                "공백 색 지우기",
+                lambda: uncolor_doublespace(self.app),
+                "공백의 음영색을 지웁니다.",
+                None,
+            ),
             (
                 "Bold 처리 폰트로 변환하기",
                 lambda: process_font(self.app),
