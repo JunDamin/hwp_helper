@@ -5,7 +5,7 @@ Created on Tue May  9 09:31:12 2023
 @author: 2015026
 """
 # %%
-import customtkinter as ctk
+# tkinter import removed - using Flet now
 from PIL import Image, ImageChops
 from pathlib import Path
 import subprocess
@@ -27,35 +27,17 @@ def prettify_filename(name):
     return re.sub(r" +", r" ", result)
 
 def get_image(image_path):
-    """set image button"""
-    image_path = Path(image_path)
-    img = Image.open(image_path)
+    """Get image path for Flet"""
+    return str(Path(image_path))
 
-    return ctk.CTkImage(light_image=img, dark_image=img, size=img.size)
-
-def get_image(image_path):
-    image_path = Path(image_path)
-    img = Image.open(image_path)
-
-    return ctk.CTkImage(light_image=img, dark_image=img, size=img.size)
-
-def set_button(ctkframe, text, image_path, command=None):
-    """set image button"""
-    image_path = Path(image_path)
-    img = Image.open(image_path)
-
-    image = ctk.CTkImage(light_image=img, dark_image=img, size=img.size)
-
-    btn = ctk.CTkButton(
-        ctkframe,
+def set_button(parent, text, image_path, command=None):
+    """Create a Flet button - deprecated, use Flet components directly"""
+    import flet as ft
+    return ft.ElevatedButton(
         text=text,
-        image=image,
-        fg_color="transparent",
-        compound="bottom",
-        command=command,
+        on_click=command,
+        # Note: Flet handles images differently, this is a placeholder
     )
-    btn.pack(anchor='w')
-    return btn
 
 
 def crop_background(image):

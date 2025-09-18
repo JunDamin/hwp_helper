@@ -1,5 +1,5 @@
 import flet as ft
-from components import AddTemplateDialog, TemplateManagementDialog
+from components_flet import AddTemplateDialog, TemplateManagementDialog
 from functions import (
     update_templates,
     get_categories,

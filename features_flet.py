@@ -34,7 +34,7 @@ from callback import (
     uncolor_doublespace,
     process_font,
 )
-from components import FontStyleManager
+from components_flet import FontStyleManager
 
 
 class HwpFeatureFrame(ft.UserControl):
