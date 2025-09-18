@@ -7,7 +7,7 @@ from hwpapi.core import App
 from uuid import uuid1
 
 
-class FontStyleManager(ft.UserControl):
+class FontStyleManager(ft.Container):
     """
     A Flet component for managing font styles. 
     It includes buttons for saving current font styles and displaying saved styles.
@@ -19,11 +19,10 @@ class FontStyleManager(ft.UserControl):
         self.context = context
         self.font_styles = context["setting"].get("font_styles", {})
         self.font_style_controls = ft.Column()
-
-    def build(self):
+        
         self.refresh_font_styles()
         
-        return ft.ExpansionPanelList(
+        self.content = ft.ExpansionPanelList(
             [
                 ft.ExpansionPanel(
                     header=ft.ListTile(title=ft.Text("글자서식")),

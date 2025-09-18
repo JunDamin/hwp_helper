@@ -1,7 +1,7 @@
 import flet as ft
 
 
-class NaviBar(ft.UserControl):
+class NaviBar(ft.Container):
     """
     Navigation bar with buttons for various actions including showing the main app, 
     fullscreen, half-screen modes, and toggling 'always on top' state.
@@ -12,9 +12,8 @@ class NaviBar(ft.UserControl):
         self.context = context
         self.helper = context["helper"]
         self.page = context["helper"].page
-
-    def build(self):
-        return ft.Row([
+        
+        self.content = ft.Row([
             ft.IconButton(
                 icon=ft.Icons.VISIBILITY,
                 on_click=self.check_hwp,

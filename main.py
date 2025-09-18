@@ -69,7 +69,7 @@ def main(page: ft.Page):
         ft.Row([
             ft.Image(src=get_path(AI_IMAGE_PATH), width=50, height=50),
             ft.Text(page.title),
-            ft.Spacer(),
+            ft.Container(expand=True),
             navi_bar
         ]),
         tabs,

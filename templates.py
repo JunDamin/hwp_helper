@@ -9,7 +9,7 @@ from functions import (
 )
 
 
-class CategoryFrame(ft.UserControl):
+class CategoryFrame(ft.Container):
     """
     A frame that displays categories from images file.
     """
@@ -19,12 +19,11 @@ class CategoryFrame(ft.UserControl):
         self.app = context["app"]
         self.context = context
         self.page = context["helper"].page
-
-    def build(self):
+        
         self.template_content = ft.Column(scroll=ft.ScrollMode.AUTO)
         self._populate_templates()
         
-        return ft.Column([
+        self.content = ft.Column([
             ft.Row([
                 ft.ElevatedButton(
                     text="선택영역 탬플릿 추가",

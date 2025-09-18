@@ -37,13 +37,12 @@ from callback import (
 from components import FontStyleManager
 
 
-class HwpFeatureFrame(ft.UserControl):
+class HwpFeatureFrame(ft.Container):
     def __init__(self, context):
         super().__init__()
         self.app = context["app"]
         self.context = context
-
-    def build(self):
+        
         content = ft.Column(scroll=ft.ScrollMode.AUTO)
         
         # Font Style Manager
@@ -57,7 +56,7 @@ class HwpFeatureFrame(ft.UserControl):
         content.controls.append(self._create_feature_section("메모 관련 기능", self._shape_features(), 3))
         content.controls.append(self._create_feature_section("검토 기능", self._review_features(), 3))
         
-        return content
+        self.content = content
 
     def _create_feature_section(self, title, features, n_columns):
         section = ft.Column()
