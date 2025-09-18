@@ -1,6 +1,6 @@
 # %%
 from functions import back_to_app
-from hwpapi.dataclasses import CharShape
+from hwpapi.classes import CharShape
 
 
 @back_to_app
