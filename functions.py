@@ -151,8 +151,37 @@ def get_categories():
 
 
 def set_forewindow(app):
-    hwnd = app.api.XHwpWindows.Active_XHwpWindow.WindowHandle
-    return wg.SetForegroundWindow(hwnd)
+    """Safely bring the HWP window to the foreground"""
+    try:
+        hwnd = app.api.XHwpWindows.Active_XHwpWindow.WindowHandle
+        
+        # First try to show the window if it's minimized
+        wg.ShowWindow(hwnd, win32con.SW_RESTORE)
+        
+        # Try to set foreground window
+        result = wg.SetForegroundWindow(hwnd)
+        
+        # If SetForegroundWindow fails, try alternative methods
+        if not result:
+            # Try using SetWindowPos to bring window to top
+            wg.SetWindowPos(hwnd, win32con.HWND_TOP, 0, 0, 0, 0, 
+                          win32con.SWP_NOMOVE | win32con.SWP_NOSIZE | win32con.SWP_SHOWWINDOW)
+            
+            # Try BringWindowToTop as a fallback
+            wg.BringWindowToTop(hwnd)
+            
+            # Final attempt: Use SetActiveWindow if the window belongs to current thread
+            try:
+                wg.SetActiveWindow(hwnd)
+            except pywintypes.error:
+                pass  # This may fail if window belongs to different thread
+        
+        return True
+        
+    except (pywintypes.error, AttributeError) as e:
+        # Log the error but don't crash the application
+        print(f"Warning: Could not bring HWP window to foreground: {e}")
+        return False
 
 def show_window(app):
     hwnd = app.api.XHwpWindows.Active_XHwpWindow.WindowHandle
@@ -213,7 +242,8 @@ def get_ratio(ctk_app):
 
 def back_to_app(func):
     def func_wrapper(app, *args, **kwargs):
-        check_app(app)
+        app = check_app(app)
+        # Try to bring window to foreground, but continue even if it fails
         set_forewindow(app)
         result = func(app, *args, **kwargs)
         return result
