@@ -1,16 +1,22 @@
 """Main entry point for HWP Helper application."""
 
 import flet as ft
-import pythoncom
+import pywintypes  # Explicit import to ensure packaging
+import win32com.client  # Explicit import for COM support
 
 from hwp_helper.core.helper import HwpHelper
 from hwp_helper.ui.main_window import MainWindow
+from hwp_helper.utils.com_utils import ensure_com_initialized, cleanup_com
 
 
 def main(page: ft.Page) -> None:
     """Main application entry point."""
     # Initialize COM for HWP API
-    pythoncom.CoInitialize()
+    if not ensure_com_initialized():
+        error_msg = "Failed to initialize COM. Please ensure pywin32 is properly installed."
+        print(error_msg)
+        page.add(ft.Text(error_msg))
+        return
     
     helper = None
     try:
@@ -22,7 +28,7 @@ def main(page: ft.Page) -> None:
         def on_page_close(e):
             if helper:
                 helper.on_closing()
-            pythoncom.CoUninitialize()
+            cleanup_com()
         
         page.on_window_event = on_page_close
         
@@ -32,7 +38,7 @@ def main(page: ft.Page) -> None:
         # Clean up COM if initialization failed
         if helper:
             helper.on_closing()
-        pythoncom.CoUninitialize()
+        cleanup_com()
 
 
 if __name__ == "__main__":

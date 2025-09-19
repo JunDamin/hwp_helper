@@ -25,9 +25,9 @@ dependencies = [
     "flet>=0.28.0",
     "hwpapi>=0.0.2.1",
     "pywin32>=306; sys_platform == 'win32'",
+    "pywin32-ctypes>=0.2.0; sys_platform == 'win32'",
     "PyYAML>=6.0.2",
     "Pillow>=10.0.0",
-    "pythoncom>=0.1.0",
 ]
 
 [project.optional-dependencies]
@@ -54,6 +54,35 @@ copyright = "Copyright (C) 2025 by HWP Helper Team"
 path = "."
 module = "main"
 assets_dir = "src"
+
+[tool.flet.app.windows]
+include_packages = [
+    "win32com", 
+    "pythoncom", 
+    "pywintypes", 
+    "win32api", 
+    "win32gui", 
+    "win32con",
+    "win32com.client",
+    "pywin32_system32"
+]
+hidden_imports = [
+    "win32com.client", 
+    "pythoncom", 
+    "pywintypes",
+    "win32timezone",
+    "win32com.shell",
+    "win32com.propsys",
+    "win32com.taskscheduler"
+]
+# Additional PyInstaller options for better COM support
+pyinstaller_options = [
+    "--collect-all=pywin32",
+    "--collect-all=pythoncom", 
+    "--collect-all=pywintypes",
+    "--hidden-import=win32timezone",
+    "--add-data=pywin32_system32;pywin32_system32"
+]
 
 [build-system]
 requires = ["setuptools>=68.0.0", "wheel", "setuptools-scm>=8.0.0"]
