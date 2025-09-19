@@ -39,4 +39,4 @@ if __name__ == "__main__":
     # Use absolute path for assets directory when running as script
     import os
     assets_dir = os.path.dirname(os.path.abspath(__file__))
-    ft.app(target=main, assets_dir=assets_dir)
+    ft.run(main=main, assets_dir=assets_dir)

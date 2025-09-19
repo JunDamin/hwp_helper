@@ -14,7 +14,7 @@ class TemplatesPage(ft.Container):
     def __init__(self, context: Dict[str, Any]):
         super().__init__()
         self.context = context
-        self.page = context["page"]
+        self._page = context["page"]
         self.template_service = TemplateService()
         self.hwp_ops = HwpOperationService(context["app_manager"])
         
@@ -24,11 +24,11 @@ class TemplatesPage(ft.Container):
         self.content = ft.Column([
             ft.Row([
                 ft.ElevatedButton(
-                    text="선택영역 탬플릿 추가",
+                    content=ft.Text("선택영역 탬플릿 추가"),
                     on_click=self._add_template
                 ),
                 ft.ElevatedButton(
-                    text="탬플릿 관리",
+                    content=ft.Text("탬플릿 관리"),
                     on_click=self._manage_templates
                 ),
             ]),
@@ -47,7 +47,7 @@ class TemplatesPage(ft.Container):
                 template_path = f"templates/{filename}.hwp"
                 buttons.append(
                     ft.ElevatedButton(
-                        text=text,
+                        content=ft.Text(text),
                         on_click=self._create_template_handler(template_path, n),
                     )
                 )
@@ -75,7 +75,7 @@ class TemplatesPage(ft.Container):
     def _add_template(self, e) -> None:
         """Show add template dialog."""
         dialog = AddTemplateDialog(
-            self.page, 
+            self._page, 
             self.context,
             on_complete=self.refresh
         )
@@ -85,7 +85,7 @@ class TemplatesPage(ft.Container):
         """Show template management dialog."""
         categories = self.template_service.get_categories()
         dialog = TemplateManagementDialog(
-            self.page,
+            self._page,
             categories,
             on_refresh=self.refresh
         )

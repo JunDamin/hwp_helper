@@ -56,7 +56,7 @@ class FeaturesPage(ft.Container):
         for name, command, tooltip_text, image_path in features:
             grid.controls.append(
                 ft.ElevatedButton(
-                    text=name,
+                    content=ft.Text(name),
                     on_click=lambda e, cmd=command: cmd(),
                     tooltip=tooltip_text,
                 )

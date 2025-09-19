@@ -7,17 +7,41 @@ requires-python = ">=3.9"
 authors = [
     { name = "freed", email = "you@example.com" }
 ]
+keywords = ["hwp", "hangul", "word-processor", "gui", "flet", "korean"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Office Suites",
+    "Topic :: Text Processing :: Markup",
+]
 dependencies = [
-    "flet>=0.21.0",
-    "PyYAML>=6.0",
-    "Pillow>=9.0.0",
-    "pywin32>=306",
-    "hwpapi>=0.1.0"
+    "flet>=0.28.0",
+    "hwpapi>=0.0.2.1",
+    "pywin32>=306; sys_platform == 'win32'",
+    "PyYAML>=6.0.2",
+    "Pillow>=10.0.0",
+    "pythoncom>=0.1.0",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pyinstaller>=5.0.0"
+    "pyinstaller>=5.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+]
+build = [
+    "build>=0.10.0",
+    "twine>=4.0.0",
 ]
 
 [tool.flet]
@@ -28,9 +52,11 @@ copyright = "Copyright (C) 2025 by HWP Helper Team"
 
 [tool.flet.app]
 path = "."
+module = "main"
+assets_dir = "src"
 
 [build-system]
-requires = ["setuptools>=45", "wheel"]
+requires = ["setuptools>=68.0.0", "wheel", "setuptools-scm>=8.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project.scripts]
@@ -38,3 +64,81 @@ hwp-helper = "main:main"
 
 [project.gui-scripts]
 hwp-helper-gui = "main:main"
+
+[project.urls]
+Homepage = "https://github.com/freed/hwp-helper"
+Repository = "https://github.com/freed/hwp-helper.git"
+Issues = "https://github.com/freed/hwp-helper/issues"
+Documentation = "https://github.com/freed/hwp-helper/blob/main/README.md"
+
+# Tool configurations
+[tool.black]
+line-length = 88
+target-version = ['py39']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--cov=hwp_helper",
+    "--cov-report=term-missing:skip-covered",
+    "--cov-report=html",
+    "--cov-report=xml",
+]
+
+[tool.coverage.run]
+source = ["hwp_helper"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/build/*",
+    "*/dist/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]

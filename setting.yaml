@@ -5,13 +5,13 @@ font_styles:
     DiacSymMark: 0
     Emboss: 0
     Engrave: 0
-    FaceNameHangul: "KoPub\uB3CB\uC6C0\uCCB4 Bold"
-    FaceNameHanja: "KoPub\uB3CB\uC6C0\uCCB4 Bold"
-    FaceNameJapanese: "KoPub\uB3CB\uC6C0\uCCB4 Bold"
-    FaceNameLatin: "KoPub\uB3CB\uC6C0\uCCB4 Bold"
-    FaceNameOther: "KoPub\uB3CB\uC6C0\uCCB4 Bold"
-    FaceNameSymbol: "KoPub\uB3CB\uC6C0\uCCB4 Bold"
-    FaceNameUser: "KoPub\uB3CB\uC6C0\uCCB4 Bold"
+    FaceNameHangul: KoPub돋움체 Bold
+    FaceNameHanja: KoPub돋움체 Bold
+    FaceNameJapanese: KoPub돋움체 Bold
+    FaceNameLatin: KoPub돋움체 Bold
+    FaceNameOther: KoPub돋움체 Bold
+    FaceNameSymbol: KoPub돋움체 Bold
+    FaceNameUser: KoPub돋움체 Bold
     FontTypeHangul: 1
     FontTypeHanja: 1
     FontTypeJapanese: 1
@@ -104,13 +104,13 @@ font_styles:
     DiacSymMark: 0
     Emboss: 0
     Engrave: 0
-    FaceNameHangul: "\uD568\uCD08\uB86C\uBC14\uD0D5"
-    FaceNameHanja: "\uD568\uCD08\uB86C\uBC14\uD0D5"
-    FaceNameJapanese: "\uD568\uCD08\uB86C\uBC14\uD0D5"
-    FaceNameLatin: "\uD568\uCD08\uB86C\uBC14\uD0D5"
-    FaceNameOther: "\uD568\uCD08\uB86C\uBC14\uD0D5"
-    FaceNameSymbol: "\uD568\uCD08\uB86C\uBC14\uD0D5"
-    FaceNameUser: "\uD568\uCD08\uB86C\uBC14\uD0D5"
+    FaceNameHangul: 함초롬바탕
+    FaceNameHanja: 함초롬바탕
+    FaceNameJapanese: 함초롬바탕
+    FaceNameLatin: 함초롬바탕
+    FaceNameOther: 함초롬바탕
+    FaceNameSymbol: 함초롬바탕
+    FaceNameUser: 함초롬바탕
     FontTypeHangul: 1
     FontTypeHanja: 1
     FontTypeJapanese: 1
@@ -198,6 +198,7 @@ font_styles:
     TailType: 0
     TextAlignment: 0
     WidowOrphan: 0
-last_category: "\uD14C\uC2A4\uD2B8"
+last_category: 테스트
 side: left
 tab: features
+window_always_on_top: false

@@ -11,7 +11,7 @@ class NavigationBar(ft.Container):
         super().__init__(**kwargs)
         self.context = context
         self.helper = context["helper"]
-        self.page = context["page"]
+        self._page = context["page"]
         
         self.content = ft.Row([
             ft.IconButton(
@@ -50,5 +50,5 @@ class NavigationBar(ft.Container):
 
     def _toggle_always_on_top(self, e) -> None:
         """Toggle the 'always on top' state of the window."""
-        self.page.window_always_on_top = not self.page.window_always_on_top
-        self.page.update()
+        self._page.window_always_on_top = not self._page.window_always_on_top
+        self._page.update()

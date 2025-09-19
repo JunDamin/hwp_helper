@@ -53,25 +53,16 @@ class MainWindow:
         features_page = FeaturesPage(self.context)
         templates_page = TemplatesPage(self.context)
         
-        # Create tabs
-        tabs = ft.Tabs(
-            selected_index=self.helper.config.get("tab", 0),
-            animation_duration=300,
-            tabs=[
-                ft.Tab(
-                    text="Features",
-                    content=features_page,
-                ),
-                ft.Tab(
-                    text="Templates",
-                    content=templates_page,
-                ),
-            ],
-            expand=1,
-        )
+        # For now, just show features page (simplified navigation)
+        self.current_page = features_page
+        self.features_page = features_page
+        self.templates_page = templates_page
         
-        # Store tabs reference for saving state
-        self.tabs = tabs
+        # Create navigation buttons
+        nav_buttons = ft.Row([
+            ft.ElevatedButton(content=ft.Text("Features"), on_click=self._show_features),
+            ft.ElevatedButton(content=ft.Text("Templates"), on_click=self._show_templates),
+        ])
         
         # Create header with logo and navigation
         ai_image_path = get_path("src/ai.png")
@@ -82,17 +73,28 @@ class MainWindow:
             nav_bar
         ])
         
+        # Create main content area
+        self.main_content = ft.Container(content=self.current_page, expand=True)
+        
         # Add components to page
-        self.page.add(header, tabs)
+        self.page.add(header, nav_buttons, self.main_content)
+        self.page.update()
+
+    def _show_features(self, e) -> None:
+        """Show features page."""
+        self.current_page = self.features_page
+        self.main_content.content = self.current_page
+        self.page.update()
+    
+    def _show_templates(self, e) -> None:
+        """Show templates page."""
+        self.current_page = self.templates_page
+        self.main_content.content = self.current_page
         self.page.update()
 
     def _on_window_event(self, e) -> None:
         """Handle window events."""
         if e.data == "close":
-            # Save current tab state
-            if hasattr(self, 'tabs'):
-                self.helper.config.set("tab", self.tabs.selected_index)
-            
             # Handle closing
             self.helper.on_closing()
             self.page.window_destroy()

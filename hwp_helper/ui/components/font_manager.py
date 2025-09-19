@@ -25,7 +25,7 @@ class FontStyleManager(ft.Container):
             ft.ExpansionPanel(
                 header=ft.ListTile(title=ft.Text("글자서식")),
                 content=ft.Column([
-                    ft.ElevatedButton("현재 서식 저장", on_click=self._add_style),
+                    ft.ElevatedButton(content=ft.Text("현재 서식 저장"), on_click=self._add_style),
                     self.font_style_controls
                 ])
             )
@@ -77,9 +77,9 @@ class FontStyleManager(ft.Container):
             self.update()
 
         return ft.Row([
-            ft.ElevatedButton("둘다적용", on_click=apply_both),
-            ft.ElevatedButton("글자적용", on_click=apply_char),
-            ft.ElevatedButton("문단적용", on_click=apply_para),
-            ft.ElevatedButton("삭제하기", on_click=delete_style),
+            ft.ElevatedButton(content=ft.Text("둘다적용"), on_click=apply_both),
+            ft.ElevatedButton(content=ft.Text("글자적용"), on_click=apply_char),
+            ft.ElevatedButton(content=ft.Text("문단적용"), on_click=apply_para),
+            ft.ElevatedButton(content=ft.Text("삭제하기"), on_click=delete_style),
             ft.Text(f"{charshape.hangul_font} {charshape.fontsize}pt")
         ])
