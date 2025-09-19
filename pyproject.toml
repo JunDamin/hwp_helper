@@ -1,0 +1,37 @@
+[project]
+name = "hwp-helper"
+version = "0.3.3"
+description = "한글을 사용하기 쉽게 만들기 위한 지원 도구 - A helper tool for easier use of Hangul Word Processor"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+    { name = "freed", email = "you@example.com" }
+]
+dependencies = [
+    "flet>=0.21.0",
+    "PyYAML>=6.0",
+    "Pillow>=9.0.0",
+    "pywin32>=306",
+    "hwpapi>=0.1.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pyinstaller>=5.0.0"
+]
+
+[tool.flet]
+org = "com.hwphelper"
+product = "HwpHelper"
+company = "HWP Helper Team"
+copyright = "Copyright (C) 2025 by HWP Helper Team"
+
+[tool.flet.app]
+path = "."
+
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+hwp-helper = "main:main"
