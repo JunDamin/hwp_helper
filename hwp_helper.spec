@@ -31,7 +31,6 @@ a = Analysis(
     ] + pywin32_system32_datas,
     hiddenimports=[
         # COM and Windows API imports
-        'pythoncom',
         'pywintypes', 
         'win32com.client',
         'win32com.server',
@@ -79,7 +78,6 @@ exe = EXE(
     upx=True,
     upx_exclude=[
         # Exclude COM-related DLLs from UPX compression to avoid issues
-        'pythoncom*.dll',
         'pywintypes*.dll',
     ],
     runtime_tmpdir=None,

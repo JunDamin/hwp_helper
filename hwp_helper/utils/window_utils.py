@@ -2,16 +2,12 @@
 
 import win32gui as wg
 import win32con
-import pywintypes
-import pythoncom
 from win32api import GetMonitorInfo, MonitorFromPoint
 from typing import Tuple
 
 
 def set_forewindow(app) -> bool:
     """Safely bring the HWP window to the foreground."""
-    # Ensure COM is initialized for this thread
-    pythoncom.CoInitialize()
     
     try:
         hwnd = app.api.XHwpWindows.Active_XHwpWindow.WindowHandle
@@ -36,12 +32,12 @@ def set_forewindow(app) -> bool:
             # Final attempt: Use SetActiveWindow if the window belongs to current thread
             try:
                 wg.SetActiveWindow(hwnd)
-            except pywintypes.error:
+            except :
                 pass  # This may fail if window belongs to different thread
         
         return True
         
-    except (pywintypes.error, AttributeError) as e:
+    except (AttributeError) as e:
         # Log the error but don't crash the application
         print(f"Warning: Could not bring HWP window to foreground: {e}")
         return False
@@ -49,13 +45,11 @@ def set_forewindow(app) -> bool:
 
 def show_window(app) -> bool:
     """Show the HWP window."""
-    # Ensure COM is initialized for this thread
-    pythoncom.CoInitialize()
     
     try:
         hwnd = app.api.XHwpWindows.Active_XHwpWindow.WindowHandle
         return wg.ShowWindow(hwnd, 1)
-    except (pywintypes.error, AttributeError):
+    except (AttributeError):
         return False
 
 

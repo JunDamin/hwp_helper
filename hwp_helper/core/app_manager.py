@@ -3,7 +3,6 @@
 from pathlib import Path
 import subprocess
 import pywintypes
-import pythoncom
 from time import sleep
 from typing import Optional
 
@@ -32,9 +31,6 @@ class HwpAppManager:
     
     def _is_app_valid(self, app: App) -> bool:
         """Check if the HWP app instance is still valid."""
-        # Ensure COM is initialized for this thread
-        pythoncom.CoInitialize()
-        
         try:
             _ = app.api.PageCount
             return True
@@ -43,8 +39,6 @@ class HwpAppManager:
     
     def _create_or_connect_app(self) -> App:
         """Create new HWP app or connect to existing one."""
-        # Ensure COM is initialized for this thread
-        pythoncom.CoInitialize()
         
         try:
             # Try to connect to existing app first
@@ -95,6 +89,5 @@ class HwpAppManager:
         try:
             if self._app:
                 self._app = None
-            pythoncom.CoUninitialize()
         except Exception:
             pass  # Ignore cleanup errors

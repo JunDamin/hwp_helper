@@ -58,7 +58,6 @@ assets_dir = "src"
 [tool.flet.app.windows]
 include_packages = [
     "win32com", 
-    "pythoncom", 
     "pywintypes", 
     "win32api", 
     "win32gui", 
@@ -68,7 +67,6 @@ include_packages = [
 ]
 hidden_imports = [
     "win32com.client", 
-    "pythoncom", 
     "pywintypes",
     "win32timezone",
     "win32com.shell",
@@ -78,7 +76,6 @@ hidden_imports = [
 # Additional PyInstaller options for better COM support
 pyinstaller_options = [
     "--collect-all=pywin32",
-    "--collect-all=pythoncom", 
     "--collect-all=pywintypes",
     "--hidden-import=win32timezone",
     "--add-data=pywin32_system32;pywin32_system32"

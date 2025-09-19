@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 Alternative build script using flet pack instead of flet build.
-This may resolve pythoncom packaging issues.
 """
 
 import subprocess
@@ -23,12 +22,10 @@ def build_with_flet_pack():
         "--name", "HwpHelper",
         "--icon", "src/ai.ico",
         "--add-data", "src;src",
-        "--hidden-import", "pythoncom",
         "--hidden-import", "pywintypes", 
         "--hidden-import", "win32com.client",
         "--hidden-import", "win32timezone",
         "--collect-all", "pywin32",
-        "--collect-all", "pythoncom",
         "--collect-all", "pywintypes",
         "--onefile",
         "--windowed"
