@@ -1,6 +1,7 @@
 """Template management service."""
 
 import shutil
+import pythoncom
 from pathlib import Path
 from time import sleep
 from typing import Dict, List, Tuple, Iterator, Optional
@@ -43,6 +44,9 @@ class TemplateService:
     
     def update_templates(self) -> Iterator[Tuple[int, int]]:
         """Update all templates from templates folder."""
+        # Ensure COM is initialized for this thread
+        pythoncom.CoInitialize()
+        
         # Clean up old files
         if self.images_dir.exists():
             shutil.rmtree(self.images_dir)
@@ -118,6 +122,9 @@ class TemplateService:
     
     def add_template(self, app: App, category: str, name: str) -> bool:
         """Add a new template from selected content."""
+        # Ensure COM is initialized for this thread
+        pythoncom.CoInitialize()
+        
         try:
             # Create temp directory
             self.temp_dir.mkdir(exist_ok=True)

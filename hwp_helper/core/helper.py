@@ -51,6 +51,9 @@ class HwpHelper:
         
         # Save configuration
         self.config.save_config()
+        
+        # Clean up COM resources
+        self.app_manager.cleanup()
     
     def set_fullscreen(self) -> None:
         """Set application to fullscreen mode."""

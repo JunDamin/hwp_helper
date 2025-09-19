@@ -12,14 +12,27 @@ def main(page: ft.Page) -> None:
     # Initialize COM for HWP API
     pythoncom.CoInitialize()
     
+    helper = None
     try:
         # Create helper and main window
         helper = HwpHelper(page)
         main_window = MainWindow(helper)
         
+        # Set up page close handler
+        def on_page_close(e):
+            if helper:
+                helper.on_closing()
+            pythoncom.CoUninitialize()
+        
+        page.on_window_event = on_page_close
+        
     except Exception as e:
         print(f"Error initializing application: {e}")
         page.add(ft.Text(f"Error: {e}"))
+        # Clean up COM if initialization failed
+        if helper:
+            helper.on_closing()
+        pythoncom.CoUninitialize()
 
 
 if __name__ == "__main__":

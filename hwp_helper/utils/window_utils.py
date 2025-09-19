@@ -3,12 +3,16 @@
 import win32gui as wg
 import win32con
 import pywintypes
+import pythoncom
 from win32api import GetMonitorInfo, MonitorFromPoint
 from typing import Tuple
 
 
 def set_forewindow(app) -> bool:
     """Safely bring the HWP window to the foreground."""
+    # Ensure COM is initialized for this thread
+    pythoncom.CoInitialize()
+    
     try:
         hwnd = app.api.XHwpWindows.Active_XHwpWindow.WindowHandle
         
@@ -45,6 +49,9 @@ def set_forewindow(app) -> bool:
 
 def show_window(app) -> bool:
     """Show the HWP window."""
+    # Ensure COM is initialized for this thread
+    pythoncom.CoInitialize()
+    
     try:
         hwnd = app.api.XHwpWindows.Active_XHwpWindow.WindowHandle
         return wg.ShowWindow(hwnd, 1)
